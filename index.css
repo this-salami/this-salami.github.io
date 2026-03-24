@@ -1,0 +1,72 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+#project-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+#project-container > div {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tags > span {
+    background-color: gray;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.tags > .js {
+    background-color: #f0db4f;
+    color: black;
+}
+.tags > .python {
+    background-color: #306998;
+    color: white;
+}
+.tags > .react {
+    background-color: #61dafb;
+    color: black;
+}
+.tags > .html {
+    background-color: #e34c26;
+    color: white;
+}
+.tags > .css {
+    background-color: #264de4;
+    color: white;
+}
+.tags > .php {
+    background-color: #777bb4;
+    color: white;
+}
+.tags > .lua {
+    background-color: #000080;
+    color: white;
+}
+
+.tags > span:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
