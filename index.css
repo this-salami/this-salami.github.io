@@ -4,6 +4,106 @@ body, html {
     font-family: 'Arial', sans-serif;
 }
 
+.unselectable {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+
+
+#filter-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.multiselect {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto;
+
+    justify-items: center;
+
+    width: 100%;
+}
+
+.selectBox {
+    grid-row: 1;
+    position: relative;
+    width: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectBox > svg {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.selectBox > svg > circle {
+    transition: cx 0.3s ease;
+}
+
+.selectBox:hover {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.selectBox:active {
+    font-size: 16px;
+}
+
+.selectBox:hover > svg > circle:nth-child(4n + 2) {
+    cx: 15;
+}
+
+.selectBox:hover > svg > circle:nth-child(4) {
+    cx: 5;
+}
+
+.selectBox span {
+    font-weight: bold;
+}
+
+.overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#checkboxes {
+    grid-row: 2;
+
+    display: flex;
+    width: 30%;
+    margin: 0;
+    padding: 10px;
+
+    overflow: hidden;
+
+    transition: height 0.3s ease, padding 0.3s ease;
+}
+
+#checkboxes.hidden {
+    height: 0;
+    padding: 0;
+}
+
+#checkboxes > span {
+    transition: transform 0.3s ease;
+}
+
+#checkboxes.hidden > span {
+    transform: translate(0, -200px);
+}
+
+
 #project-container {
     display: flex;
     flex-wrap: wrap;
@@ -21,16 +121,40 @@ body, html {
     text-align: center;
 }
 
+.tags > span.ignore {
+    text-decoration: line-through;
+    
+    /*
+    filter: gray;
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+    */
+    color: white;
+    background-color: gray;
+    opacity: 0.5;
+    text-decoration-color: rgba(255, 30, 30, 0.5);
+    text-decoration-thickness: 2px;
+    font-style: italic;
+}
+
+.tags > .exclusive {
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 4px;
+}
+
 .tags {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+
     gap: 10px;
     margin-top: 10px;
 }
 
 .tags > span {
-    background-color: gray;
+    background-color: darkgray;
     color: white;
     padding: 5px 10px;
     border-radius: 4px;
@@ -50,7 +174,7 @@ body, html {
     color: black;
 }
 .tags > .html {
-    background-color: #e34c26;
+    background-color: #e33926;
     color: white;
 }
 .tags > .css {
@@ -66,7 +190,26 @@ body, html {
     color: white;
 }
 
+.tags > .game-design {
+    background-color: #ff6347;
+    color: white;
+}
+.tags > .ui {
+    background-color: #20b2aa;
+    color: white;
+}
+.tags > .front-end {
+    background-color: #ff69b4;
+    color: white;
+}
+
 .tags > span:hover {
     opacity: 0.8;
     cursor: pointer;
+
+    padding: 6px 11px;
+}
+
+.tags > span:active {
+    padding: 5px 10px;
 }

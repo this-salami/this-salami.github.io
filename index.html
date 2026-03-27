@@ -10,8 +10,29 @@
     <h1>Place holder title</h1>
     <p>Place holder text</p>
 
+    <div id="filter-container" class="unselectable">
+        <div class="multiselect">
+            <div class="selectBox" onclick="showFilterList()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="2" width="20" height="2" fill="black"></rect>
+                    <circle cx="5" cy="3" r="2" stroke-width="2" stroke="black" fill="white"></circle>
+                    <rect x="0" y="7" width="20" height="2" fill="black"></rect>
+                    <circle cx="15" cy="8" r="2" stroke-width="2" stroke="black" fill="white"></circle>
+                    <rect x="0" y="12" width="20" height="2" fill="black"></rect>
+                    <circle cx="5" cy="13" r="2" stroke-width="2" stroke="black" fill="white"></circle>
+                </svg>
+                <span>Filters</span>
+                <div class="overSelect"></div>
+            </div>
+            <div id="checkboxes" class="tags">
+                <!-- tags added w/ JS -->
+            </div>
+        </div>
+    </div>
+
     <div id="project-container"></div>
 
     <script src="index.js"></script>
+    <script src="filter.js"></script>
 </body>
 </html>
