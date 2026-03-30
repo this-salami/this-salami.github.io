@@ -77,30 +77,69 @@ body, html {
     bottom: 0;
 }
 
-#checkboxes {
+#filter-box {
     grid-row: 2;
 
-    display: flex;
+    display: grid;
+    grid-template-columns: 1;
+    grid-template-rows: 24px auto;
+
+    align-items: center;
+    justify-content: center;
+
+    row-gap: 5px;
+
     width: 30%;
     margin: 0;
-    padding: 10px;
 
     overflow: hidden;
 
+    interpolate-size: allow-keywords;
     transition: height 0.3s ease, padding 0.3s ease;
 }
 
-#checkboxes.hidden {
+#filter-box.hidden {
     height: 0;
     padding: 0;
 }
 
-#checkboxes > span {
+#filter-box > p {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    margin: 1px;
+    font-weight: bold;
+
     transition: transform 0.3s ease;
 }
 
-#checkboxes.hidden > span {
-    transform: translate(0, -200px);
+#filter-box > p > span {
+    font-size: 10px;
+}
+
+#filters {
+    grid-row: 2;
+
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+
+    transition: height 0.3s ease, padding 0.3s ease;
+}
+
+
+#filters > span {
+    transition: transform 0.3s ease;
+}
+
+#filter-box.hidden > #filters > span {
+    height: 0px;
+    transform: translate(0, -300px);
+}
+
+#filter-box.hidden > p {
+    transform: translate(0, -300px);
 }
 
 #timeline-container {
@@ -205,7 +244,7 @@ body, html {
     width: 90%;
 }
 
-.tags > span.ignore {
+.tags > span.ignore, #key.tags > span.ignore {
     text-decoration: line-through;
     
     /*
@@ -215,6 +254,8 @@ body, html {
     */
     color: white;
     background-color: gray;
+    background: gray;
+    animation: none;
     opacity: 0.5;
     text-decoration-color: rgba(255, 30, 30, 0.5);
     text-decoration-thickness: 2px;
@@ -235,6 +276,13 @@ body, html {
 
     gap: 10px;
     margin-top: 10px;
+}
+
+#key.tags > span {
+    /*background: linear-gradient(to right, #ff0000, #00ff00, #0000ff);*/
+    /*background: linear-gradient(to right, red, orange, yellow, green, blue, indigo);*/
+    background: linear-gradient(to right, darkred, rgb(117, 117, 0), darkblue, darkmagenta);
+    /*background-color: rgb(50, 50, 50);*/
 }
 
 .tags > span {

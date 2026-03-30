@@ -1,14 +1,14 @@
 let expanded = true;
-const checkboxes = document.getElementById("checkboxes");
+const filters = document.getElementById("filter-box");
 
 function showFilterList() {
   if (expanded) {
-    checkboxes.classList.add("hidden");
-    //checkboxes.style.display = "none";
+    filters.classList.add("hidden");
+    //filters.style.display = "none";
     expanded = false;
   } else {
-    checkboxes.classList.remove("hidden");
-    //checkboxes.style.display = "flex";
+    filters.classList.remove("hidden");
+    //filters.style.display = "flex";
     expanded = true;
   }
 }

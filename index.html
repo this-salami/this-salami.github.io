@@ -24,13 +24,21 @@
                 <span>Filters</span>
                 <div class="overSelect"></div>
             </div>
-            <div id="checkboxes" class="tags">
-                <!-- tags added w/ JS -->
+            <div id="filter-box">
+                <p id="key" class="tags">Legend: 
+                    <span id="valid">optional</span> 
+                    <span id="ignored" class="ignore">ignored</span> 
+                    <span id="required" class="exclusive">required</span>
+                </p> 
+                
+                <div id="filters" class="tags">
+                    <!-- tags added w/ JS -->
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="timeline-container" data-month-height="100">
+    <div id="timeline-container" data-month-height="200">
         <div id="timeline" class="unselectable"></div>
         <div id="project-container"></div>
     </div>
@@ -39,3 +47,19 @@
     <script src="filter.js"></script>
 </body>
 </html>
+
+<!-- TODO:
+get project data 
+placeholder text
+
+hover over project
+check date logic
+breaks between projects
+months under years issue
+
+ui/ux & animations
+years change by digit
+handle large amount of timelines
+
+mobile site
+-->
