@@ -1,117 +1,145 @@
 const projects = [
     {
         name: "fg",
-        description: "desc",
+        description: "WIP - Getting data", // TODO: get data
         link: "",
-        time: [[new Date("2021-01-01"), new Date("2021-07-01")]],
-        tags: ["lua", "game-design", "ui"]
+        time: [[new Date("2020-12-01"), new Date("2021-07-01")]],
+        tags: ["lua", "game-design", "ui", "video-demo"]
     },
-    {
-        name: "df?",
+    { // TODO: find more of my python macros
+        name: "Python Autoclicker",
         description: "",
         link: "",
-        time: [],
-        tags: ["lua"]
+        time: [[new Date("2022-06-01")]],
+        tags: ["python", "open-source", "video-demo"] // TODO: add demo
     },
     {
-        name: "pm",
+        name: "Python Piano Tiles Bot",
         description: "",
         link: "",
-        time: [[new Date("2021-02-01"), new Date("2025-08-01")]], // FIX
-        tags: ["python"]
+        time: [[new Date("2023-02-01")]],
+        tags: ["python", "open-source", "video-demo"] // TODO: add demo
     },
     {
-        name: "jsb",
-        description: "",
-        link: "",
-        time: [[new Date("2021-03-01"), new Date("2021-09-01")]], // Find out 
-        tags: ["js"]
+        name: "Minesweeper Bookmarklet",
+        description: "", // TODO: add data
+        link: "https://github.com/this-salami/minesweeper-bookmarklet",
+        time: [[new Date("2023-02-01"), new Date("2023-04-01")]], // TODO: Find out exact dates
+        tags: ["js", "open-source", "video-demo"] // TODO: add demo
+    },
+    {
+        name: "Isometric Map Test",
+        description: "", // TODO: add data
+        link: "https://github.com/this-salami/Isometric-Map-Test-2025",
+        time: [[new Date("2023-09-01"), new Date("2023-11-01")]], // TODO: Find out exact dates
+        tags: ["js", "open-source", "video-demo"] // TODO: add demo
     },
     {
         name: "hsc",
         description: "",
         link: "",
-        time: [[new Date("2024-07-01"), new Date("2025-05-01")]], // Placeholder for multiple
-        tags: ["python", "game-design", "ui", "front-end"]
+        time: [[new Date("2024-07-01"), new Date("2025-05-01")]], // TODO: Placeholder for multiple
+        tags: ["python", "game-design", "ui", "front-end", "open-source", "video-demo", "interactive-demo"]
     },
     {
-        name: "scrim",
-        description: "",
-        link: "",
-        time: [], // Placeholder for like 10 lowk
-        tags: ["js", "html", "css", "game-design", "ui", "front-end"]
+        name: "Button Outline Demo",
+        description: "", // TODO: add data
+        link: "https://github.com/this-salami/button-outline-demo",
+        time: [[new Date("2022-02-01"), new Date("2022-03-01")]], // TODO: Find out exact dates
+        tags: ["js", "open-source", "video-demo"] // TODO: add demo
     },
     {
+        name: "Web Based Command Line",
+        description: "", // TODO: add data
+        link: "https://github.com/this-salami/cmd-line-2025",
+        time: [[new Date("2024-02-01"), new Date("2024-04-01")]], // TODO: Find out exact dates
+        tags: ["js", "open-source", "interactive-demo"] // TODO: add demo
+    },
+    {
+        name: "A* Pathfinding Demo",
+        description: "", // TODO: add data
+        link: "https://github.com/this-salami/A-star-pathfinding-2025-demo",
+        time: [[new Date("2024-04-01"), new Date("2024-06-01")]], // TODO: Find out exact dates
+        tags: ["js", "open-source", "interactive-demo"] // TODO: add demo
+    },
+    {
+        name: "3D Card Showcase",
+        description: "", // TODO: add data
+        link: "https://github.com/this-salami/3d-card-showcase",
+        time: [[new Date("2021-12-01")]], // TODO: Find out exact dates
+        tags: ["js", "open-source", "interactive-demo"] // TODO: add demo
+    },
+    { // TODO: finish/find
         name: "dsa",
         description: "",
         link: "",
         time: [],
-        tags: ["js", "html", "css", "ui", "front-end"]
+        tags: ["js", "html", "css", "ui", "front-end", "open-source", "interactive-demo"]
     },
-    {
+    { // TODO: find
         name: "es",
         description: "",
         link: "",
         time: [],
-        tags: ["python", "ui"]
+        tags: ["python", "ui", "open-source", "video-demo"]
     },
-    {
+    { // TODO: finish/find
         name: "egep",
         description: "",
         link: "",
         time: [],
-        tags: ["python", "ui"]
+        tags: ["python", "ui", "open-source"] // bro finish ts
     },
-    {
+    { // TODO: finish/find
         name: "lg",
         description: "",
         link: "",
         time: [],
-        tags: ["js", "html", "css", "ui", "front-end"] // server TODO: figure out
+        tags: ["js", "html", "css", "ui", "front-end", "open-source"] // server TODO: figure out
     },
     {
         name: "rf",
         description: "",
         link: "",
         time: [[new Date("2025-10-01")]],
-        tags: ["js", "html", "css"]
+        tags: ["js", "html", "css", "open-source", "interactive-demo"] // TODO: add demo
     },
-    {
+    { // TODO: finish
         name: "cs",
         description: "",
         link: "",
         time: [[new Date("2026-01-01"), new Date("2026-04-01")]],
-        tags: ["js", "html", "css", "php", "react", "front-end"]
+        tags: ["js", "html", "css", "php", "react", "front-end", "open-source", "interactive-demo"]
     },
-    {
+    { // TODO: find
         name: "db",
         description: "",
         link: "",
         time: [], // maybe idk
         tags: ["python"] // maybe back-end TODO: idk
     },
-    {
+    { // TODO: finish/find
         name: "bnm",
         description: "",
         link: "",
         time: [], // bro finish ts
-        tags: ["js", "html", "css", "ui", "front-end"]
+        tags: ["js", "html", "css", "ui", "front-end", "open-source"]
     },
-    {
+    { // TODO: finish/find
         name: "msmc",
         description: "",
         link: "",
         time: [], // bro finish ts
         tags: ["js", "html", "css", "ui", "front-end"]
     },
-    {
+    { // TODO: finish/find
         name: "wds",
         description: "",
         link: "",
         time: [], // bro finish ts
         tags: ["js", "html", "css", "ui", "front-end"]
     },
-    {
+    { // TODO: finish/find
         name: "ts",
         description: "",
         link: "",
