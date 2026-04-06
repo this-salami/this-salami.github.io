@@ -26,7 +26,7 @@ body, html {
     background: url("./icons/GitHub_Invertocat_White.svg") no-repeat center / contain;
 
     width: 1em;
-    height: 1em;
+    height: 0.9em;
     margin-right: 0.1em;
     margin-left: 0.2em;
 
@@ -38,7 +38,7 @@ body, html {
     background: url("./icons/LinkedIn_icon.svg") no-repeat center / contain;
 
     width: 1em;
-    height: 1em;
+    height: 0.9em;
     margin-right: 0.1em;
     margin-left: 0.2em;
 }
