@@ -158,6 +158,7 @@ const filterContainer = document.getElementById("filter-container");
 const filterCheckboxContainer = document.getElementById("filters");
 
 const MONTH_HEIGHT = timelineContainer.getAttribute("data-month-height");
+const COLLAPSED_MONTH_HEIGHT = timelineContainer.getAttribute("data-collapsed-month-height");
 
 function getFilteredProjects() {
     let res = [];
@@ -326,6 +327,46 @@ function createTimeline() {
         timelines.push(timeline);
     }
 
+    let whitespaceTimeline = new Array(
+        latestTime.getFullYear() * 12 +  latestTime.getMonth() - (earlierstTime.getFullYear() * 12 + earlierstTime.getMonth()) + 1
+    ).fill(3); // 3 = 11 (last bit = whitespace, rest = count)
+
+    for (let i = 0; i < timelines[0].length; i++) {
+        const project = timelines[0][i];
+        if (project.time.length === 0) { continue; }
+        project.time.forEach(timeRange => {
+            const start = timeRange[0];
+            const end = timeRange[1] || start;
+            
+            //const startIndex = (start.getFullYear() * 12 + start.getMonth()) - (earlierstTime.getFullYear() * 12 + earlierstTime.getMonth());
+            //const endIndex = (end.getFullYear() * 12 + end.getMonth()) - (earlierstTime.getFullYear() * 12 + earlierstTime.getMonth());
+            const startIndex = (latestTime.getFullYear() * 12 + latestTime.getMonth()) - (start.getFullYear() * 12 + start.getMonth());
+            const endIndex = (latestTime.getFullYear() * 12 + latestTime.getMonth()) - (end.getFullYear() * 12 + end.getMonth());
+
+            // TODO: bandaid solution for incosistency
+            for (let j = endIndex; j <= startIndex; j++) {
+                whitespaceTimeline[j] = 2; // 2 = 10 (last bit = not whitespace, rest = count)
+            }
+        });
+    }
+
+    whitespaceTimeline = whitespaceTimeline.reduce((acc, curr, i) => {
+        if (acc.length === 0) {
+            acc.push(curr);
+            return acc;
+        }
+        if ((curr & 1) === (acc[acc.length - 1] & 1)) {
+            acc[acc.length - 1] += curr >> 1 << 1; // add count, ignore isWhitespace bit
+        } else {
+            acc.push(curr);
+        }
+        return acc;
+    }, []);
+
+    for (let i = 0; i < whitespaceTimeline.length; i++) {
+        console.log(whitespaceTimeline[i] & 1, whitespaceTimeline[i] >> 1);
+    }
+
     console.log(timelines.length);
     
     /*
@@ -341,19 +382,31 @@ function createTimeline() {
     console.log(earlierstTime, latestTime);
 
     createTimelineBar(earlierstTime, latestTime);
-    createProjectTimelines(timelines, earlierstTime, latestTime);
+    createProjectTimelines(timelines, earlierstTime, latestTime, whitespaceTimeline);
 }
 
 // creates project elements and timeline elements
-function createProjectTimelines(timelines, start, end = new Date()) {
+function createProjectTimelines(timelines, start, end = new Date(), whitespaceTimeline) {
     const MonthCount = (end.getMonth() + end.getFullYear() * 12) - (start.getMonth() + start.getFullYear() * 12);
     for (let i = 0; i < timelines.length; i++) {
         const projectTimelineElement = document.createElement("div");
         projectTimelineElement.classList.add("project-timeline");
         projectTimelineElement.setAttribute("data-index", i);
-        projectTimelineElement.style.gridTemplateRows = `repeat(${MonthCount}, ${MONTH_HEIGHT}px)`;
+        //projectTimelineElement.style.gridTemplateRows = `repeat(${MonthCount}, ${MONTH_HEIGHT}px)`;
+        projectTimelineElement.style.gridTemplateRows = whitespaceTimeline.map(value => {
+            if ((value & 1) === 1) { // is whitespace
+                return `repeat(${value >> 1}, ${COLLAPSED_MONTH_HEIGHT}px)`;
+            }
+            return `repeat(${value >> 1}, ${MONTH_HEIGHT}px)`;
+        }).join(' ');
 
-        timelineElement.style.gridTemplateRows = `repeat(${MonthCount}, ${MONTH_HEIGHT}px)`;
+        //timelineElement.style.gridTemplateRows = `repeat(${MonthCount}, ${MONTH_HEIGHT}px)`;
+        timelineElement.style.gridTemplateRows = whitespaceTimeline.map(value => {
+            if ((value & 1) === 1) { // is whitespace
+                return `repeat(${value >> 1}, ${COLLAPSED_MONTH_HEIGHT}px)`;
+            }
+            return `repeat(${value >> 1}, ${MONTH_HEIGHT}px)`;
+        }).join(' ');
 
         let prevProjectEnd = end;
 
@@ -363,8 +416,6 @@ function createProjectTimelines(timelines, start, end = new Date()) {
                 const projectEnd = timeRange[1] || projectStart;
                 const projectElement = document.createElement("div");
                 projectElement.classList.add("project");
-                //projectElement.style.top = `${((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) * MONTH_HEIGHT}px`;
-                //projectElement.style.height = `${((projectEnd.getMonth() + projectEnd.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) * MONTH_HEIGHT}px`;
                 projectElement.innerHTML = `
                     <h3>${project.name}</h3>
                     <div class="tags">
@@ -416,18 +467,11 @@ function createTimelineBar(start, end=new Date()) {
     const startYear = start.getFullYear();
     const height = ((finalMonth - 1 + finalYear * 12) - (startMonth + startYear * 12)) * MONTH_HEIGHT;
 
-    timelineContainer.style.height = `${height}px`;
+    //timelineContainer.style.height = `${height}px`;
 
     let currentMonth = finalMonth;
     let currentYear = finalYear;
     let isFirst = true;
-
-    /*
-    let yearBar = document.createElement("div");
-    yearBar.style.top = `0px`;
-    yearBar.style.height = `${currentMonth * MONTH_HEIGHT}px`;
-    timelineElement.appendChild(yearBar);
-    */
 
     while (true) {
         const monthBar = document.createElement("div");
@@ -454,6 +498,9 @@ function createTimelineBar(start, end=new Date()) {
             const yearCell = document.createElement("div");
             yearCell.classList.add("year-cell");
             yearCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${currentMonth === 11 ? 12 : (currentMonth + 1)}`;
+            if (currentYear === startYear){
+                yearCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${(currentYear * 12 + currentMonth) - (startYear * 12 + startMonth) + 1}`;
+            }
             timelineElement.appendChild(yearCell);
         
             const yearElement = document.createElement("span");
@@ -465,7 +512,10 @@ function createTimelineBar(start, end=new Date()) {
         if (isFirst || (currentYear + 1) % 10 === 0) {
             const decadeCell = document.createElement("div");
             decadeCell.classList.add("decade-cell");
-            decadeCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${(currentYear + 1) % 10 === 0 ? 120 : (currentYear % 10) * 12 + currentMonth + 1}`;
+            decadeCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${(currentYear + 1) % 10 === 0 ? 120 : (currentYear % 10) * 12 + currentMonth}`;
+            if (currentYear - 10 <= startYear){
+                decadeCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${(currentYear * 12 + currentMonth) - (startYear * 12 + startMonth) + 1}`;
+            }
             timelineElement.appendChild(decadeCell);
 
             const decadeElement = document.createElement("span");
