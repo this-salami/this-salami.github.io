@@ -1,3 +1,7 @@
+:root {
+    --project-opacity: 1;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -178,8 +182,8 @@ body, html {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 4px;
-    height: 100%;
+    width: 7px;
+    height: calc(100%);
     background-color: #8d8d8d;
 }
 
@@ -188,14 +192,19 @@ body, html {
     font-weight: bold;
 
     text-align: left;
-    width: calc(50% - 5px);
-    transform: translate(calc(50% + 5px), 0);
+    width: 100%;
+    left: -2px;
+
+    background-color: white;
+    padding: 2px 5px;
 }
 
 
 #timeline > div > .month {
     font-size: 10px;
     color: #8d8d8d;
+
+    border-bottom: #8d8d8d 4px solid;
 }
 
 #timeline > div > .current {
@@ -238,10 +247,26 @@ body, html {
     justify-items: center;
 
     position: relative;
+
+    opacity: 0;
+
+    transform: translateX(-100px);
+
+    transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.project.in-view {
+    transform: translateX(0);
+    opacity: var(--project-opacity, 1);
 }
 
 .project > .tags {
     width: 90%;
+}
+
+.project:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    opacity: 1;
 }
 
 .tags > span.ignore, #key.tags > span.ignore {

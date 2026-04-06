@@ -148,6 +148,8 @@ const projects = [
     }
 ]
 
+const root = document.documentElement;
+
 const tags = new Set();
 const timelineContainer = document.getElementById("timeline-container");
 const timelineElement = document.getElementById("timeline");
@@ -372,6 +374,24 @@ function createProjectTimelines(timelines, start, end = new Date()) {
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 1;
                 timelineElement.appendChild(projectElement);
+
+                projectElement.addEventListener("mouseover", () => {
+                    root.style.setProperty('--project-opacity', '0.5');
+                });
+                projectElement.addEventListener("mouseout", () => {
+                    root.style.setProperty('--project-opacity', '1');
+                });
+
+                const inViewHandler = () => {
+                    const rect = projectElement.getBoundingClientRect();
+                    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+                    if (isInView) {
+                        projectElement.classList.add("in-view");
+                    }
+                }
+
+                window.addEventListener("scroll", inViewHandler);
+                setTimeout(inViewHandler, 100); // Check if in view on load
             });
         });
 
@@ -407,7 +427,7 @@ function createTimelineBar(start, end=new Date()) {
 
     while (true) {
         const monthElement = document.createElement("span");
-        monthElement.style.top = `${((currentYear == finalYear ? finalMonth : 12) - currentMonth) * MONTH_HEIGHT}px`;
+        monthElement.style.top = `${((currentYear == finalYear ? finalMonth : 12) - currentMonth) * MONTH_HEIGHT + 14}px`;
         if (isFirst) {
             if (isCurrent) {
                 monthElement.classList.add("current");
