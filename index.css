@@ -176,35 +176,60 @@ body, html {
 
 #timeline-container {
     display: grid;
-    grid-template-columns: 50px auto;
+    grid-template-columns: 5em auto;
     grid-template-rows: auto;
 }
 
 #timeline {
     grid-column: 1;
-    grid-row: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto;
 
     height: 100%;
     position: relative;
+
+    padding-top: 20px;
+
+    font-size: 1em;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+#timeline .month-bar {
+    grid-column: 1;
+
+    width: 7px;
+    background-color: #8d8d8d;
+    height: calc(100% - 30px);
+}
+
+#timeline > div {
+    grid-column: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+#timeline > div > span {
+    position: sticky;
+    align-content: bottom;
+
+    bottom: 0px;
+}
+
+#timeline > div > span.month {
+    padding-right: 3em;
+}
+#timeline > div > span.year {
+    padding-left: 4em;
+}
+#timeline > div > span.decade {
+    padding-left: 3em;
+    padding-right: 1.5em;
 }
 
 /*
-#timeline::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 100%;
-    background-color: #8d8d8d;
-}
-*/
-
 #timeline > div {
     position: absolute;
     top: 0;
@@ -220,7 +245,7 @@ body, html {
     font-weight: bold;
 
     text-align: left;
-    width: 100%;
+    width: 200%;
     left: -2px;
 
     background-color: white;
@@ -247,6 +272,7 @@ body, html {
     background-color: white;
     z-index: 1;
 }
+*/
 
 #project-container {
     display: flex;
