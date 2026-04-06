@@ -473,33 +473,38 @@ function createTimelineBar(start, end=new Date()) {
     let currentYear = finalYear;
     let isFirst = true;
 
+    // helper functions
+    const toMonthShortForm = (currentYear, currentMonth) => new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' });
+    const gridRowStart = (currentYear, currentMonth) => (finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth) + 1;
+    const clampedGridRowSpan = (currentYear, currentMonth) => (currentYear * 12 + currentMonth) - (startYear * 12 + startMonth) + 1;
+
     while (true) {
         const monthBar = document.createElement("div");
         monthBar.classList.add("month-bar");
-        monthBar.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span 1`;
+        monthBar.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span 1`;
         timelineElement.appendChild(monthBar);
 
         const monthCell = document.createElement("div");
         monthCell.classList.add("month-cell");
-        monthCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span 1`;
+        monthCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span 1`;
         timelineElement.appendChild(monthCell);
 
         const monthElement = document.createElement("span");
         monthElement.classList.add("month");
-        monthElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })}`;
+        monthElement.innerText = `${toMonthShortForm(currentYear, currentMonth)}`;
         monthCell.appendChild(monthElement);
         
         const staticElement = document.createElement("span");
         staticElement.classList.add("static");
-        staticElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })} ${currentYear}`;
+        staticElement.innerText = `${toMonthShortForm(currentYear, currentMonth)} ${currentYear}`;
         monthCell.appendChild(staticElement);
 
         if (isFirst || currentMonth === 11) {
             const yearCell = document.createElement("div");
             yearCell.classList.add("year-cell");
-            yearCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${currentMonth === 11 ? 12 : (currentMonth + 1)}`;
+            yearCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span ${currentMonth === 11 ? 12 : (currentMonth + 1)}`;
             if (currentYear === startYear){
-                yearCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${(currentYear * 12 + currentMonth) - (startYear * 12 + startMonth) + 1}`;
+                yearCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span ${clampedGridRowSpan(currentYear, currentMonth)}`;
             }
             timelineElement.appendChild(yearCell);
         
@@ -512,9 +517,9 @@ function createTimelineBar(start, end=new Date()) {
         if (isFirst || (currentYear + 1) % 10 === 0) {
             const decadeCell = document.createElement("div");
             decadeCell.classList.add("decade-cell");
-            decadeCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${(currentYear + 1) % 10 === 0 ? 120 : (currentYear % 10) * 12 + currentMonth}`;
+            decadeCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span ${(currentYear + 1) % 10 === 0 ? 120 : (currentYear % 10) * 12 + currentMonth}`;
             if (currentYear - 10 <= startYear){
-                decadeCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${(currentYear * 12 + currentMonth) - (startYear * 12 + startMonth) + 1}`;
+                decadeCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span ${clampedGridRowSpan(currentYear, currentMonth)}`;
             }
             timelineElement.appendChild(decadeCell);
 
