@@ -176,7 +176,7 @@ body, html {
 
 #timeline-container {
     display: grid;
-    grid-template-columns: 5em auto;
+    grid-template-columns: 6em auto;
     grid-template-rows: auto;
 }
 
@@ -197,12 +197,31 @@ body, html {
 }
 
 #timeline .month-bar {
+    position: absolute;
     grid-column: 1;
+
+    justify-content: center;
 
     width: 7px;
     background-color: #8d8d8d;
-    height: calc(100% - 30px);
+    height: calc(100% - 10px);
     padding-left: 0;
+
+    bottom: 0.2lh;
+    left: 3px;
+}
+
+#timeline .month-bar::after {
+    content: "";
+    position: sticky;
+    width: 7px;
+    aspect-ratio: 1;
+    background-color: white;
+    border-radius: 100%;
+    border: 4px solid #8d8d8d;
+
+    bottom: 0px;
+    transform: translateX(-25%);
 }
 
 #timeline > div {
@@ -224,7 +243,7 @@ body, html {
 }
 
 #timeline > div > span.month, #timeline > div > span.static {
-    transform: translate(0ch);
+    transform: translate(2ch);
 }
 #timeline > div > span.static {
     position: relative;
@@ -232,54 +251,16 @@ body, html {
     bottom: 1lh;
 }
 #timeline > div > span.year {
-    transform: translateX(7ch);
+    transform: translateX(9ch);
 }
 #timeline > div > span.decade {
-    transform: translateX(4ch);
+    transform: translateX(6ch);
 }
 
 /*
-#timeline > div {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 7px;
-    height: calc(100%);
-    background-color: #8d8d8d;
-}
-
-#timeline > div > span {
-    position: absolute;
-    font-weight: bold;
-
-    text-align: left;
-    width: 200%;
-    left: -2px;
-
-    background-color: white;
-    padding: 2px 5px;
-}
-
-
-#timeline > div > .month {
-    font-size: 10px;
-    color: #8d8d8d;
-
-    border-bottom: #8d8d8d 4px solid;
-}
-
 #timeline > div > .current {
     font-size: 10px;
     color: #ff0000;
-}
-
-#timeline > div > .year {
-    font-size: 14px;
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 1;
 }
 */
 
