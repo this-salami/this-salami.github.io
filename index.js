@@ -430,23 +430,26 @@ function createTimelineBar(start, end=new Date()) {
     */
 
     while (true) {
-        const monthElement = document.createElement("span");
-        //monthElement.style.top = `${((currentYear == finalYear ? finalMonth : 12) - currentMonth) * MONTH_HEIGHT + 14}px`;
-        monthElement.classList.add("month");
-
         const monthBar = document.createElement("div");
         monthBar.classList.add("month-bar");
-        //monthBar.style.top = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) * MONTH_HEIGHT + 40}px`;
-        //monthBar.style.height = `${MONTH_HEIGHT - 30}px`;
         monthBar.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span 1`;
+        timelineElement.appendChild(monthBar);
 
         const monthCell = document.createElement("div");
         monthCell.classList.add("month-cell");
         monthCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span 1`;
-
-        timelineElement.appendChild(monthBar);
         timelineElement.appendChild(monthCell);
+
+        const monthElement = document.createElement("span");
+        monthElement.classList.add("month");
+        monthElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })}`;
+        monthCell.appendChild(monthElement);
         
+        const staticElement = document.createElement("span");
+        staticElement.classList.add("static");
+        staticElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })} ${currentYear}`;
+        monthCell.appendChild(staticElement);
+
         if (isFirst || currentMonth === 11) {
             const yearCell = document.createElement("div");
             yearCell.classList.add("year-cell");
@@ -471,49 +474,12 @@ function createTimelineBar(start, end=new Date()) {
             decadeCell.appendChild(decadeElement);
         }
 
-        if (isFirst) {
-            if (isCurrent) {
-                monthElement.classList.add("current");
-                monthElement.innerText = "Now";
-                monthElement.style.top = "-20px";
-            }
-            isFirst = false;
-            
-            /*
-            const yearElement = document.createElement("span");
-            yearElement.classList.add("year");
-            yearElement.innerText = `${currentYear}`;
-            yearElement.style.top = "0px";
-            yearBar.appendChild(yearElement);
-            */
-        }/* else if (currentMonth === 11) {
-            const yearElement = document.createElement("span");
-            yearElement.classList.add("year");
-            yearElement.innerText = `${currentYear}`;
-            yearElement.style.top = "0px";
-
-            yearBar = document.createElement("div");
-            yearBar.style.top = `${((finalMonth + finalYear * 12) - ((currentYear + 1) * 12)) * MONTH_HEIGHT}px`;
-            yearBar.style.height = `${MONTH_HEIGHT * 12}px`;
-            if (currentYear === startYear){
-                console.log(startMonth);
-                yearBar.style.height = `${(12 - startMonth) * MONTH_HEIGHT}px`;
-            }
-            timelineElement.appendChild(yearBar);
-
-            yearBar.appendChild(yearElement);
-
-            monthElement.classList.add("month");
-            monthElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })}`;
-            // TODO: maybe change digits idividually for cool effect, also check logic
-        }*/ else {
-            //monthElement.classList.add("month");
-            monthElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })}`;
+        if (isFirst && isCurrent) {
+            monthElement.classList.add("current");
+            monthElement.innerText = "Now";
+            monthElement.style.top = "-20px";
         }
-        //monthBar.appendChild(monthElement);
-        monthElement.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span 1`;
-        monthCell.appendChild(monthElement);
-        //monthElement.style.top = `${((finalMonth + finalYear * 12) - (currentMonth + currentYear * 12)) * MONTH_HEIGHT}px`;
+        isFirst = false;
 
         if (currentMonth === 0) {
             currentMonth = 11;

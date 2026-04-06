@@ -202,13 +202,18 @@ body, html {
     width: 7px;
     background-color: #8d8d8d;
     height: calc(100% - 30px);
+    padding-left: 0;
 }
 
 #timeline > div {
     grid-column: 1;
-    display: flex;
-    align-items: flex-end;
+    display: grid;
+    align-items: last baseline;
     justify-content: center;
+    padding-left: 3px;
+
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
 }
 
 #timeline > div > span {
@@ -218,15 +223,19 @@ body, html {
     bottom: 0px;
 }
 
-#timeline > div > span.month {
-    padding-right: 3em;
+#timeline > div > span.month, #timeline > div > span.static {
+    transform: translate(0ch);
+}
+#timeline > div > span.static {
+    position: relative;
+    opacity: 0.5;
+    bottom: 1lh;
 }
 #timeline > div > span.year {
-    padding-left: 4em;
+    transform: translateX(7ch);
 }
 #timeline > div > span.decade {
-    padding-left: 3em;
-    padding-right: 1.5em;
+    transform: translateX(4ch);
 }
 
 /*
