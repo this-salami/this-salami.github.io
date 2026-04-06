@@ -15,6 +15,38 @@ body, html {
     -ms-user-select: none;
 }
 
+.external-link {
+    font-weight: bold;
+    font-style: italic;
+    display: inline-flex;
+    align-items: center;
+}
+.external-link.github::after {
+    content: "";
+    background: url("./icons/GitHub_Invertocat_White.svg") no-repeat center / contain;
+
+    width: 1em;
+    height: 1em;
+    margin-right: 0.1em;
+    margin-left: 0.2em;
+
+    filter: brightness(0);
+    -webkit-filter: brightness(0);
+}
+.external-link.linkedin::after {
+    content: "";
+    background: url("./icons/LinkedIn_icon.svg") no-repeat center / contain;
+
+    width: 1em;
+    height: 1em;
+    margin-right: 0.1em;
+    margin-left: 0.2em;
+}
+
+#headerSection {
+    text-align: justify;
+    padding: 20px;
+}
 
 
 #filter-container {
