@@ -348,9 +348,11 @@ function createTimeline() {
 function createProjectTimelines(timelines, start, end = new Date()) {
     const MonthCount = (end.getMonth() + end.getFullYear() * 12) - (start.getMonth() + start.getFullYear() * 12);
     for (let i = 0; i < timelines.length; i++) {
-        const timelineElement = document.createElement("div");
-        timelineElement.classList.add("project-timeline");
-        timelineElement.setAttribute("data-index", i);
+        const projectTimelineElement = document.createElement("div");
+        projectTimelineElement.classList.add("project-timeline");
+        projectTimelineElement.setAttribute("data-index", i);
+        projectTimelineElement.style.gridTemplateRows = `repeat(${MonthCount}, ${MONTH_HEIGHT}px)`;
+
         timelineElement.style.gridTemplateRows = `repeat(${MonthCount}, ${MONTH_HEIGHT}px)`;
 
         let prevProjectEnd = end;
@@ -373,7 +375,7 @@ function createProjectTimelines(timelines, start, end = new Date()) {
                 `;
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 1;
-                timelineElement.appendChild(projectElement);
+                projectTimelineElement.appendChild(projectElement);
 
                 projectElement.addEventListener("mouseover", () => {
                     root.style.setProperty('--project-opacity', '0.5');
@@ -395,7 +397,7 @@ function createProjectTimelines(timelines, start, end = new Date()) {
             });
         });
 
-        projectContainer.appendChild(timelineElement);
+        projectContainer.appendChild(projectTimelineElement);
     }
 }
 
@@ -420,53 +422,64 @@ function createTimelineBar(start, end=new Date()) {
     let currentYear = finalYear;
     let isFirst = true;
 
+    /*
     let yearBar = document.createElement("div");
     yearBar.style.top = `0px`;
     yearBar.style.height = `${currentMonth * MONTH_HEIGHT}px`;
     timelineElement.appendChild(yearBar);
+    */
 
     while (true) {
+        const monthBar = document.createElement("div");
+        monthBar.classList.add("month-bar");
+        monthBar.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span 1`;
+        timelineElement.appendChild(monthBar);
+
+        const monthCell = document.createElement("div");
+        monthCell.classList.add("month-cell");
+        monthCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span 1`;
+        timelineElement.appendChild(monthCell);
+
         const monthElement = document.createElement("span");
-        monthElement.style.top = `${((currentYear == finalYear ? finalMonth : 12) - currentMonth) * MONTH_HEIGHT + 14}px`;
-        if (isFirst) {
-            if (isCurrent) {
-                monthElement.classList.add("current");
-                monthElement.innerText = "Now";
-                monthElement.style.top = "-20px";
-            }
-            isFirst = false;
-            
+        monthElement.classList.add("month");
+        monthElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })}`;
+        monthCell.appendChild(monthElement);
+        
+        const staticElement = document.createElement("span");
+        staticElement.classList.add("static");
+        staticElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })} ${currentYear}`;
+        monthCell.appendChild(staticElement);
+
+        if (isFirst || currentMonth === 11) {
+            const yearCell = document.createElement("div");
+            yearCell.classList.add("year-cell");
+            yearCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${currentMonth === 11 ? 12 : (currentMonth + 1)}`;
+            timelineElement.appendChild(yearCell);
+        
             const yearElement = document.createElement("span");
             yearElement.classList.add("year");
-            yearElement.innerText = `${currentYear}`;
-            yearElement.style.top = "0px";
-            yearBar.appendChild(yearElement);
-        } else if (currentMonth === 11) {
-            const yearElement = document.createElement("span");
-            yearElement.classList.add("year");
-            yearElement.innerText = `${currentYear}`;
-            yearElement.style.top = "0px";
-
-            yearBar = document.createElement("div");
-            yearBar.style.top = `${((finalMonth + finalYear * 12) - ((currentYear + 1) * 12)) * MONTH_HEIGHT}px`;
-            yearBar.style.height = `${MONTH_HEIGHT * 12}px`;
-            if (currentYear === startYear){
-                console.log(startMonth);
-                yearBar.style.height = `${(12 - startMonth) * MONTH_HEIGHT}px`;
-            }
-            timelineElement.appendChild(yearBar);
-
-            yearBar.appendChild(yearElement);
-
-            monthElement.classList.add("month");
-            monthElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })}`;
-            // TODO: maybe change digits idividually for cool effect, also check logic
-        } else {
-            monthElement.classList.add("month");
-            monthElement.innerText = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'short' })}`;
+            yearElement.innerText = `${currentYear % 10}`;
+            yearCell.appendChild(yearElement);
         }
-        yearBar.appendChild(monthElement);
-        //monthElement.style.top = `${((finalMonth + finalYear * 12) - (currentMonth + currentYear * 12)) * MONTH_HEIGHT}px`;
+
+        if (isFirst || (currentYear + 1) % 10 === 0) {
+            const decadeCell = document.createElement("div");
+            decadeCell.classList.add("decade-cell");
+            decadeCell.style.gridRow = `${((finalMonth + finalYear * 12) - (currentYear * 12 + currentMonth)) + 1} / span ${(currentYear + 1) % 10 === 0 ? 120 : (currentYear % 10) * 12 + currentMonth + 1}`;
+            timelineElement.appendChild(decadeCell);
+
+            const decadeElement = document.createElement("span");
+            decadeElement.classList.add("decade");
+            decadeElement.innerText = `${Math.floor(currentYear / 10)}`;
+            decadeCell.appendChild(decadeElement);
+        }
+
+        if (isFirst && isCurrent) {
+            monthElement.classList.add("current");
+            monthElement.innerText = "Now";
+            monthElement.style.top = "-20px";
+        }
+        isFirst = false;
 
         if (currentMonth === 0) {
             currentMonth = 11;
