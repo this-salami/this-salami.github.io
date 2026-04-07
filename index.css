@@ -319,6 +319,12 @@ body, html {
     width: 90%;
 }
 
+.project > p {
+    margin: 10px 20px;
+    font-size: 14px;
+    color: #151515;
+}
+
 .project:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     opacity: 1;
