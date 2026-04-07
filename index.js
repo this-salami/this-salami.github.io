@@ -8,7 +8,7 @@ const projects = [
     },
     { // TODO: find more of my python macros
         name: "Python Autoclicker",
-        description: "A simple Python script that automates mouse clicks, useful for repetitive tasks or games.",
+        description: "A simple Python script that automates mouse clicks.",
         link: "https://github.com/this-salami/python-macros/blob/main/AutoClick.py",
         time: [[new Date("2022-06-01")]],
         tags: ["python", "open-source", "video-demo"] // TODO: add demo
@@ -35,39 +35,53 @@ const projects = [
         tags: ["js", "open-source", "video-demo"] // TODO: add demo
     },
     {
-        name: "hsc",
-        description: "",
-        link: "",
-        time: [[new Date("2024-07-01"), new Date("2025-05-01")]], // TODO: Placeholder for multiple
-        tags: ["python", "game-design", "ui", "front-end", "open-source", "video-demo", "interactive-demo"]
+        name: "Chess.com Python API",
+        description: "Assignment in Highschool coding class, uses Chess.com API to fetch player data.",
+        link: "", // TODO: add link
+        time: [[new Date("2024-09-01")]], 
+        tags: ["python", "open-source", "video-demo"] // TODO: add demo
+    },
+    {
+        name: "Python Wordle Game",
+        description: "Assignment in Highschool coding class, where I implemented Wordle in Python.",
+        link: "", // TODO: add link
+        time: [[new Date("2024-09-01"), new Date("2024-11-01")]], 
+        tags: ["python", "open-source", "video-demo", "ui"] // TODO: add demo
+    },
+    {
+        name: "Python Chess Game",
+        description: "Assignment in Highschool coding class, the game of chess implemented in Python.",
+        link: "", // TODO: add link
+        time: [[new Date("2025-01-01"), new Date("2025-04-01")]], 
+        tags: ["python", "open-source", "video-demo", "ui"] // TODO: add demo
     },
     {
         name: "Button Outline Demo",
         description: "A small animation demo showcasing button outline effects using CSS and JavaScript, inspired by Scrimba button animation.", // TODO: add data
         link: "https://github.com/this-salami/button-outline-demo",
         time: [[new Date("2022-02-01"), new Date("2022-03-01")]], // TODO: Find out exact dates
-        tags: ["js", "open-source", "video-demo"] // TODO: add demo
+        tags: ["js", "css", "open-source", "video-demo"] // TODO: add demo
     },
     {
         name: "Web Based Command Line",
         description: "Very basic web-based command line interface for executing commands in a simulated environment, has no functionality, just design for now.", // TODO: add data
         link: "https://github.com/this-salami/cmd-line-2025",
         time: [[new Date("2024-02-01"), new Date("2024-04-01")]], // TODO: Find out exact dates
-        tags: ["js", "open-source", "interactive-demo"] // TODO: add demo
+        tags: ["js", "css", "open-source", "interactive-demo"] // TODO: add demo
     },
     {
         name: "A* Pathfinding Demo",
         description: "A demonstration of the A* pathfinding algorithm, showcasing its ability to find the shortest path in a grid-based environment.", // TODO: add data
         link: "https://github.com/this-salami/A-star-pathfinding-2025-demo",
         time: [[new Date("2024-04-01"), new Date("2024-06-01")]], // TODO: Find out exact dates
-        tags: ["js", "open-source", "interactive-demo"] // TODO: add demo
+        tags: ["js", "css", "open-source", "interactive-demo"] // TODO: add demo
     },
     {
         name: "3D Card Showcase",
         description: "A small project displaying a card as a 3-d element with JS and CSS.", // TODO: add data
         link: "https://github.com/this-salami/3d-card-showcase",
         time: [[new Date("2021-12-01")]], // TODO: Find out exact dates
-        tags: ["js", "open-source", "interactive-demo"] // TODO: add demo
+        tags: ["js", "css", "open-source", "interactive-demo"] // TODO: add demo
     },
     { // TODO: finish/find
         name: "dsa",
