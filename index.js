@@ -98,16 +98,16 @@ const projects = [
         tags: ["js", "html", "css", "ui", "front-end", "open-source"] // server TODO: figure out
     },
     {
-        name: "rf",
-        description: "",
-        link: "",
+        name: "Read Fast",
+        description: "A short project I made to test out a speed reading method called Spritz. It was pretty fun to make, and my friends and I use it on occasion.", 
+        link: "https://github.com/this-salami/read-fast",
         time: [[new Date("2025-10-01")]],
-        tags: ["js", "html", "css", "open-source", "interactive-demo"] // TODO: add demo
+        tags: ["js", "html", "css", "open-source", "interactive-demo"]
     },
     { // TODO: finish
-        name: "cs",
-        description: "",
-        link: "",
+        name: "Degree Planner (WIP)",
+        description: "A WIP project that I started to aid in class selection and degree matching. Uses a webscrape to check for class requirements and generates a schedule based on the classes you want to take.",
+        link: "https://github.com/this-salami/class-selector",
         time: [[new Date("2026-01-01"), new Date("2026-04-01")]],
         tags: ["js", "html", "css", "php", "react", "front-end", "open-source", "interactive-demo"]
     },
