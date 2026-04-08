@@ -1,4 +1,4 @@
-export const projects = [
+const projects = [
     {
         name: "Fidget Game",
         description: "One of my first projects, a simple game which garnered 50,000 plays on Roblox.", // TODO: get data

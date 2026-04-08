@@ -1,5 +1,3 @@
-import { projects } from "./projects.js";
-
 const root = document.documentElement;
 
 const tags = new Set();
