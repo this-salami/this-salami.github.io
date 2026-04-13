@@ -244,18 +244,25 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
         projectTimelineElement.setAttribute("data-index", i);
         //projectTimelineElement.style.gridTemplateRows = `repeat(${MonthCount}, ${MONTH_HEIGHT}px)`;
         projectTimelineElement.style.gridTemplateRows = whitespaceTimeline.map(value => {
-            if ((value & 1) === 1) { // is whitespace
-                return `repeat(${value >> 1}, ${COLLAPSED_MONTH_HEIGHT}px)`;
+            const isWhitespace = (value & 1) === 1;
+            const monthCount = value >> 1; // ignore isWhitespace bit
+            if (isWhitespace) { // is whitespace
+                return `repeat(${monthCount}, ${COLLAPSED_MONTH_HEIGHT}px)`;
             }
-            return `repeat(${value >> 1}, ${MONTH_HEIGHT}px)`;
+            return `repeat(${monthCount}, ${MONTH_HEIGHT}px)`;
+            //return `repeat(${monthCount}, auto)`;
         }).join(' ');
 
         //timelineElement.style.gridTemplateRows = `repeat(${MonthCount}, ${MONTH_HEIGHT}px)`;
+        //timelineElement.style.gridTemplateRows = projectTimelineElement.computedStyleMap().get("grid-template-rows").toString();
+        
         timelineElement.style.gridTemplateRows = whitespaceTimeline.map(value => {
-            if ((value & 1) === 1) { // is whitespace
-                return `repeat(${value >> 1}, ${COLLAPSED_MONTH_HEIGHT}px)`;
+            const isWhitespace = (value & 1) === 1;
+            const monthCount = value >> 1; // ignore isWhitespace bit
+            if (isWhitespace) { // is whitespace
+                return `repeat(${monthCount}, ${COLLAPSED_MONTH_HEIGHT}px)`;
             }
-            return `repeat(${value >> 1}, ${MONTH_HEIGHT}px)`;
+            return `repeat(${monthCount}, ${MONTH_HEIGHT}px)`;
         }).join(' ');
 
         let prevProjectEnd = end;
@@ -379,11 +386,13 @@ function createTimelineBar(start, end=new Date()) {
             decadeCell.appendChild(decadeElement);
         }
 
+        /*
         if (isFirst && isCurrent) {
             monthElement.classList.add("current");
             monthElement.innerText = "Now";
             monthElement.style.top = "-20px";
         }
+        */
         isFirst = false;
 
         if (currentMonth === 0) {
