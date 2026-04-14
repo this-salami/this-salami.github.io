@@ -335,8 +335,14 @@ body, html {
 }
 
 .project.in-view:hover {
+    cursor: pointer;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    /*
     opacity: 1;
+    height: var(--project-max-height, auto);
+    */
+}
+.project.in-view.project-focused {
     height: var(--project-max-height, auto);
 }
 

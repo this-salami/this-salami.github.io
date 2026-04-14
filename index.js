@@ -284,11 +284,26 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 timelineElement.appendChild(projectElement);
 
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 20px)`);
-                projectElement.addEventListener("mouseover", () => {
-                    root.style.setProperty('--project-opacity', '0.5');
+                projectElement.addEventListener("click", () => {
+                    //root.style.setProperty('--project-opacity', '0.5');
+                    if (projectElement.classList.contains("project-focused")) {
+                        projectElement.classList.remove("project-focused");
+                        return;
+                    }
+                    projectElement.classList.add("project-focused");
+                    window.scrollTo({
+                        top: projectElement.getBoundingClientRect().top + window.scrollY,
+                        behavior: 'smooth'
+                    });
                 });
                 projectElement.addEventListener("mouseout", () => {
-                    root.style.setProperty('--project-opacity', '1');
+                    //root.style.setProperty('--project-opacity', '1');
+                    /*
+                    window.scrollTo({
+                        top: projectElement.getBoundingClientRect().top + window.scrollY,
+                        behavior: 'smooth'
+                    });
+                    */
                 });
 
                 const inViewHandler = () => {
