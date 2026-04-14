@@ -1,14 +1,14 @@
 const root = document.documentElement;
 
 const tags = new Set();
-const timelineContainer = document.getElementById("timeline-container");
+//const timelineContainer = document.getElementById("timeline-container");
 const timelineElement = document.getElementById("timeline");
-const projectContainer = document.getElementById("project-container");
+//const projectContainer = document.getElementById("project-container");
 const filterContainer = document.getElementById("filter-container");
 const filterCheckboxContainer = document.getElementById("filters");
 
-const MONTH_HEIGHT = timelineContainer.getAttribute("data-month-height");
-const COLLAPSED_MONTH_HEIGHT = timelineContainer.getAttribute("data-collapsed-month-height");
+const MONTH_HEIGHT = timelineElement.getAttribute("data-month-height");
+const COLLAPSED_MONTH_HEIGHT = timelineElement.getAttribute("data-collapsed-month-height");
 
 function getFilteredProjects() {
     let res = [];
@@ -33,24 +33,6 @@ function getFilteredProjects() {
             res.push(project);
         }
     });
-    /*
-    const projectElements = projectContainer.querySelectorAll(".project");
-    projectElements.forEach(projectElement => {
-        const projectTags = Array.from(projectElement.querySelectorAll(".tags span")).map(tag => tag.innerText);
-        
-        const hasIgnoredTag = ignoredFilters.some(filter => projectTags.includes(filter));
-        const projectExclusiveTags = exclusiveFilters.filter(filter => projectTags.includes(filter));
-
-        if (hasIgnoredTag) {
-            projectElement.style.display = "none";
-        } else if (exclusiveFilters.length > 0 && projectExclusiveTags.length !== exclusiveFilters.length) {
-            projectElement.style.display = "none";
-        } else {
-            projectElement.style.display = "block"; 
-            res.push(projects[projectElement.getAttribute("data-index")]);
-        }
-    });
-    */
     return res;
 }
 
@@ -113,7 +95,7 @@ for (let i = 0; i < projects.length; i++) {
 
 function clearTimeline() {
     timelineElement.innerHTML = "";
-    projectContainer.innerHTML = "";
+    //projectContainer.innerHTML = "";
 }
 
 // creates entire timeline
@@ -239,6 +221,7 @@ function createTimeline() {
 function createProjectTimelines(timelines, start, end = new Date(), whitespaceTimeline) {
     const MonthCount = (end.getMonth() + end.getFullYear() * 12) - (start.getMonth() + start.getFullYear() * 12);
     for (let i = 0; i < timelines.length; i++) {
+        /*
         const projectTimelineElement = document.createElement("div");
         projectTimelineElement.classList.add("project-timeline");
         projectTimelineElement.setAttribute("data-index", i);
@@ -252,6 +235,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
             return `repeat(${monthCount}, ${MONTH_HEIGHT}px)`;
             //return `repeat(${monthCount}, auto)`;
         }).join(' ');
+        */
 
         //timelineElement.style.gridTemplateRows = `repeat(${MonthCount}, ${MONTH_HEIGHT}px)`;
         //timelineElement.style.gridTemplateRows = projectTimelineElement.computedStyleMap().get("grid-template-rows").toString();
@@ -262,8 +246,10 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
             if (isWhitespace) { // is whitespace
                 return `repeat(${monthCount}, ${COLLAPSED_MONTH_HEIGHT}px)`;
             }
-            return `repeat(${monthCount}, ${MONTH_HEIGHT}px)`;
+            //return `repeat(${monthCount}, ${MONTH_HEIGHT}px)`;
+            return `repeat(${monthCount}, auto)`;
         }).join(' ');
+        timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, auto)`;
 
         let prevProjectEnd = end;
 
@@ -283,7 +269,9 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 `;
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 1;
-                projectTimelineElement.appendChild(projectElement);
+                //projectTimelineElement.appendChild(projectElement);
+                projectElement.style.gridColumn = `${i + 2} / span 1`;
+                timelineElement.appendChild(projectElement);
 
                 projectElement.addEventListener("mouseover", () => {
                     root.style.setProperty('--project-opacity', '0.5');
@@ -305,7 +293,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
             });
         });
 
-        projectContainer.appendChild(projectTimelineElement);
+        //projectContainer.appendChild(projectTimelineElement);
     }
 }
 
@@ -337,13 +325,15 @@ function createTimelineBar(start, end=new Date()) {
 
     while (true) {
         const monthBar = document.createElement("div");
-        monthBar.classList.add("month-bar");
+        monthBar.classList.add("month-bar", "unselectable", "timeline-element");
         monthBar.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span 1`;
+        monthBar.style.gridColumn = `1 / span 1`;
         timelineElement.appendChild(monthBar);
 
         const monthCell = document.createElement("div");
-        monthCell.classList.add("month-cell");
+        monthCell.classList.add("month-cell", "unselectable", "timeline-element");
         monthCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span 1`;
+        monthCell.style.gridColumn = `1 / span 1`;
         timelineElement.appendChild(monthCell);
 
         const monthElement = document.createElement("span");
@@ -358,8 +348,9 @@ function createTimelineBar(start, end=new Date()) {
 
         if (isFirst || currentMonth === 11) {
             const yearCell = document.createElement("div");
-            yearCell.classList.add("year-cell");
+            yearCell.classList.add("year-cell", "unselectable", "timeline-element");
             yearCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span ${currentMonth === 11 ? 12 : (currentMonth + 1)}`;
+            yearCell.style.gridColumn = `1 / span 1`;
             if (currentYear === startYear){
                 yearCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span ${clampedGridRowSpan(currentYear, currentMonth)}`;
             }
@@ -373,8 +364,9 @@ function createTimelineBar(start, end=new Date()) {
 
         if (isFirst || (currentYear + 1) % 10 === 0) {
             const decadeCell = document.createElement("div");
-            decadeCell.classList.add("decade-cell");
+            decadeCell.classList.add("decade-cell", "unselectable", "timeline-element");
             decadeCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span ${(currentYear + 1) % 10 === 0 ? 120 : (currentYear % 10) * 12 + currentMonth}`;
+            decadeCell.style.gridColumn = `1 / span 1`;
             if (currentYear - 10 <= startYear){
                 decadeCell.style.gridRow = `${gridRowStart(currentYear, currentMonth)} / span ${clampedGridRowSpan(currentYear, currentMonth)}`;
             }
