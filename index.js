@@ -254,9 +254,19 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
         let prevProjectEnd = end;
 
         timelines[i].forEach(project => {
+            const totalRows = project.time.reduce((acc, timeRange) => {
+                const start = timeRange[0];
+                const end = timeRange[1] || start;
+                const monthCount = ((end.getFullYear() * 12 + end.getMonth()) - (start.getFullYear() * 12 + start.getMonth())) + 1;
+                return acc + monthCount;
+            }, 0);
+
             project.time.forEach(timeRange => {
                 const projectStart = timeRange[0];
                 const projectEnd = timeRange[1] || projectStart;
+
+                const currRowCount = ((projectEnd.getFullYear() * 12 + projectEnd.getMonth()) - (projectStart.getFullYear() * 12 + projectStart.getMonth())) + 1;
+
                 const projectElement = document.createElement("div");
                 projectElement.classList.add("project");
                 projectElement.innerHTML = `
@@ -273,6 +283,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 projectElement.style.gridColumn = `${i + 2} / span 1`;
                 timelineElement.appendChild(projectElement);
 
+                projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 20px)`);
                 projectElement.addEventListener("mouseover", () => {
                     root.style.setProperty('--project-opacity', '0.5');
                 });
