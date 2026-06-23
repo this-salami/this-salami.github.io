@@ -265,6 +265,33 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 return acc + monthCount;
             }, 0);
 
+            let projectStart = project.earlierstTime;
+            let projectEnd = project.latestTime;
+
+            // TODO: improve/standardize timeline overlap logic, kinda spaghetti rn
+            let projectSpan = 1;
+            for (let j = i + 1; j < timelines.length; j++) {
+                const nextTimeline = timelines[j];
+                let overlaps = false;
+
+                for (let k = 0; k < nextTimeline.length; k++) {
+                    const nextProject = nextTimeline[k];
+
+                    for (let l = 0; l < nextProject.time.length; l++) {
+                        const nextStart = nextProject.time[l][0];
+                        const nextEnd = nextProject.time[l][1] || nextStart;
+
+                        if ((projectStart <= nextEnd) && (projectEnd >= nextStart)) {
+                            overlaps = true;
+                            break;
+                        }
+                    }
+                    if (overlaps) break;
+                }
+                if (overlaps) break;
+                projectSpan++;
+            }
+
             project.time.forEach(timeRange => {
                 const projectStart = timeRange[0];
                 const projectEnd = timeRange[1] || projectStart;
@@ -273,7 +300,14 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 const projectElement = document.createElement("div");
                 projectElement.classList.add("project");
-                projectElement.style.display = `var(--timeline-${i}-display, block)`;
+
+                let colDisplayLogic = '';
+                for (let j = 0; j < projectSpan; j++) {
+                    colDisplayLogic += `var(--timeline-${i + j}-display, `;
+                }
+                colDisplayLogic += 'none' + ')'.repeat(projectSpan);
+
+                projectElement.style.display = colDisplayLogic;
 
                 projectElement.innerHTML = `
                     <h3>${project.name}</h3>
@@ -286,7 +320,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 1;
                 //projectTimelineElement.appendChild(projectElement);
-                projectElement.style.gridColumn = `${i + 2} / span 1`;
+                projectElement.style.gridColumn = `${i + 2} / span ${projectSpan}`;
                 timelineElement.appendChild(projectElement);
 
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 20px)`);
