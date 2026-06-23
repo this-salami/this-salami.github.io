@@ -328,6 +328,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 const closeFocus = () => {
                     window.removeEventListener("scroll", scrollHandler);
 
+                    root.style.setProperty('--project-opacity', '1');
                     projectElement.classList.remove("project-focused");
 
                     //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;

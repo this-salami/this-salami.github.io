@@ -1,7 +1,7 @@
 :root {
     --project-opacity: 1;
     --secondary-color: #2b7192; /* #8d8d8d */
-    --background-color: #f0f0f0;
+    --background-color: #d5e6ff; /* #f0f0f0 */
 }
 
 body, html {
@@ -202,6 +202,8 @@ body, html {
 
     interpolate-size: allow-keywords;
     transition: grid-template-columns 0.2s ease;
+
+    overflow: hidden;
 }
 
 #timeline > .timeline-element {
@@ -267,7 +269,7 @@ body, html {
 }
 #timeline > div.timeline-element > span.static {
     position: relative;
-    opacity: 0.5;
+    opacity: 0.7;
     bottom: 1lh;
 }
 #timeline > div.timeline-element > span.year {
@@ -302,7 +304,7 @@ body, html {
 
 .project {
     /*background-color: #ffffff;*/
-    background: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), #ffffff, #f3f3f3);
+    background: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), #ffffff, #fafafa);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: calc(100% - 20px);
@@ -320,7 +322,7 @@ body, html {
     transform: translateX(-100px);
 
     interpolate-size: allow-keywords;
-    transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, height 0.3s ease;
+    transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, height 0.1s linear, width 0.1s linear, justify-self 0.1s linear;
 }
 
 .project.in-view {
@@ -347,7 +349,11 @@ body, html {
     */
 }
 .project.in-view.project-focused {
+    opacity: 1;
     height: var(--project-max-height, auto);
+    width: 70vw;
+    min-width: 600px;
+    justify-self: center;
 }
 
 #buffer {
