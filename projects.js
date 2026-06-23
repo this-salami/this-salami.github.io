@@ -31,7 +31,7 @@ const projects = [
         name: "Isometric Map Test",
         description: "Isometric map test inspired by classic isometric games, showcasing tile-based rendering and movement.", // TODO: add data
         link: "https://github.com/this-salami/Isometric-Map-Test-2025",
-        time: [[new Date("2023-09-01"), new Date("2023-11-01")]], // TODO: Find out exact dates
+        time: [[new Date("2024-09-01"), new Date("2024-11-01")]], // TODO: Find out exact dates
         tags: ["js", "open-source", "video-demo"] // TODO: add demo
     },
     {
@@ -66,14 +66,14 @@ const projects = [
         name: "Web Based Command Line",
         description: "Very basic web-based command line interface for executing commands in a simulated environment, has no functionality, just design for now.", // TODO: add data
         link: "https://github.com/this-salami/cmd-line-2025",
-        time: [[new Date("2024-02-01"), new Date("2024-04-01")]], // TODO: Find out exact dates
+        time: [[new Date("2023-08-01"), new Date("2023-09-01")]], // TODO: Find out exact dates
         tags: ["js", "css", "open-source", "interactive-demo"] // TODO: add demo
     },
     {
         name: "A* Pathfinding Demo",
         description: "A demonstration of the A* pathfinding algorithm, showcasing its ability to find the shortest path in a grid-based environment.", // TODO: add data
         link: "https://github.com/this-salami/A-star-pathfinding-2025-demo",
-        time: [[new Date("2024-04-01"), new Date("2024-06-01")]], // TODO: Find out exact dates
+        time: [[new Date("2023-10-01")]], // TODO: Find out exact dates
         tags: ["js", "css", "open-source", "interactive-demo"] // TODO: add demo
     },
     {
@@ -159,5 +159,40 @@ const projects = [
         link: "",
         time: [], // bro you aint even finishing ts
         tags: ["js", "html", "css", "ui", "front-end"]
+    },
+    {
+        name: "Pong",
+        description: "A simple Pong game implemented in JavaScript, showcasing basic game mechanics and user interaction.",
+        link: "https://github.com/this-salami/pong-2023",
+        time: [[new Date("2023-05-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
+    },
+    {
+        name: "Image Scroller",
+        description: "A small project that allows users to scroll through a collection of images using JavaScript and CSS.",
+        link: "https://github.com/this-salami/image-scroller-2023",
+        time: [[new Date("2022-12-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
+    },
+    {
+        name: "Birthday Info",
+        description: "A small project that displays birthday information.",
+        link: "https://github.com/this-salami/birthdayinfo-2023",
+        time: [[new Date("2023-01-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
+    },
+    {
+        name: "CSS Loading Animations",
+        description: "A collection of CSS loading animations.",
+        link: "https://github.com/this-salami/css-animations-2022",
+        time: [[new Date("2022-07-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
+    },
+    {
+        name: "Graphing Demo",
+        description: "A demo graphing calculator implemented in JavaScript.",
+        link: "https://github.com/this-salami/graphing-demo-2023/tree/main",
+        time: [[new Date("2023-02-01"), new Date("2023-03-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
     }
 ];

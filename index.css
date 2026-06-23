@@ -192,17 +192,43 @@ body, html {
     grid-template-columns: 100%;
     grid-template-rows: auto;
 
+    margin-left: 10px;
+    margin-right: 10px;
     height: 100%;
+    min-height: 100vh;
     position: relative;
-
     padding-top: 20px;
+    column-gap: 20px;
 
+    interpolate-size: allow-keywords;
+    transition: grid-template-columns 0.2s ease;
+}
+
+#timeline > .timeline-element {
     font-size: 1em;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
 }
 
-#timeline .month-bar {
+#timeline > div.timeline-element {
+    grid-column: 1;
+    display: grid;
+    align-items: last baseline;
+    justify-content: center;
+    padding-left: 3px;
+
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+}
+
+#timeline > div.timeline-element > span {
+    position: sticky;
+    /*align-content: bottom;*/
+
+    bottom: 0px;
+}
+
+#timeline > div.month-bar {
     position: absolute;
     grid-column: 1;
 
@@ -212,13 +238,13 @@ body, html {
     background-color: var(--secondary-color);
     height: calc(100% - 10px);
     padding-left: 0;
-    border-radius: 5px;
+    border-radius: 6px;
 
     bottom: 0.2lh;
     left: 3px;
 }
 
-#timeline .month-bar::after {
+#timeline > div.month-bar::after {
     content: "";
     position: sticky;
     width: 100%;
@@ -233,36 +259,21 @@ body, html {
     justify-self: center;
 }
 
-#timeline > div {
-    grid-column: 1;
-    display: grid;
-    align-items: last baseline;
-    justify-content: center;
-    padding-left: 3px;
-
-    grid-template-columns: 100%;
-    grid-template-rows: 100%;
+#timeline > .month-cell {
+    min-height: 50px;
 }
-
-#timeline > div > span {
-    position: sticky;
-    align-content: bottom;
-
-    bottom: 0px;
-}
-
-#timeline > div > span.month, #timeline > div > span.static {
+#timeline > div.timeline-element > span.month, #timeline > div.timeline-element > span.static {
     transform: translate(2ch);
 }
-#timeline > div > span.static {
+#timeline > div.timeline-element > span.static {
     position: relative;
     opacity: 0.5;
     bottom: 1lh;
 }
-#timeline > div > span.year {
+#timeline > div.timeline-element > span.year {
     transform: translateX(9ch);
 }
-#timeline > div > span.decade {
+#timeline > div.timeline-element > span.decade {
     transform: translateX(6ch);
 }
 
@@ -307,7 +318,8 @@ body, html {
 
     transform: translateX(-100px);
 
-    transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    interpolate-size: allow-keywords;
+    transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, height 0.3s ease;
 }
 
 .project.in-view {
@@ -325,9 +337,37 @@ body, html {
     color: #151515;
 }
 
-.project:hover {
+.project.in-view:hover {
+    cursor: pointer;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    /*
     opacity: 1;
+    height: var(--project-max-height, auto);
+    */
+}
+.project.in-view.project-focused {
+    height: var(--project-max-height, auto);
+}
+
+#buffer {
+    position: relative;
+    height: 0px;
+
+    animation-duration: 0.3s;
+    animation-timing-function: ease;
+}
+#buffer.buffer-active {
+    height: 100vh;
+    animation-name: bufferAnimation;
+}
+
+@keyframes bufferAnimation {
+    0% {
+        height: 100vh;
+    }
+    100% {
+        height: 0px;
+    }
 }
 
 .tags > span.ignore, #key.tags > span.ignore {
