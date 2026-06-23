@@ -31,7 +31,7 @@ const projects = [
         name: "Isometric Map Test",
         description: "Isometric map test inspired by classic isometric games, showcasing tile-based rendering and movement.", // TODO: add data
         link: "https://github.com/this-salami/Isometric-Map-Test-2025",
-        time: [[new Date("2023-09-01"), new Date("2023-11-01")]], // TODO: Find out exact dates
+        time: [[new Date("2024-09-01"), new Date("2024-11-01")]], // TODO: Find out exact dates
         tags: ["js", "open-source", "video-demo"] // TODO: add demo
     },
     {
@@ -66,14 +66,14 @@ const projects = [
         name: "Web Based Command Line",
         description: "Very basic web-based command line interface for executing commands in a simulated environment, has no functionality, just design for now.", // TODO: add data
         link: "https://github.com/this-salami/cmd-line-2025",
-        time: [[new Date("2024-02-01"), new Date("2024-04-01")]], // TODO: Find out exact dates
+        time: [[new Date("2023-08-01"), new Date("2023-09-01")]], // TODO: Find out exact dates
         tags: ["js", "css", "open-source", "interactive-demo"] // TODO: add demo
     },
     {
         name: "A* Pathfinding Demo",
         description: "A demonstration of the A* pathfinding algorithm, showcasing its ability to find the shortest path in a grid-based environment.", // TODO: add data
         link: "https://github.com/this-salami/A-star-pathfinding-2025-demo",
-        time: [[new Date("2024-04-01"), new Date("2024-06-01")]], // TODO: Find out exact dates
+        time: [[new Date("2023-10-01")]], // TODO: Find out exact dates
         tags: ["js", "css", "open-source", "interactive-demo"] // TODO: add demo
     },
     {
