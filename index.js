@@ -324,26 +324,30 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 timelineElement.appendChild(projectElement);
 
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
+                
+                const closeFocus = () => {
+                    window.removeEventListener("scroll", scrollHandler);
+
+                    projectElement.classList.remove("project-focused");
+
+                    //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;
+                    timelineElement.style.gridTemplateColumns = `6em ${'1fr '.repeat(timelines.length)}`;
+
+                    for (let j = 0; j < timelines.length; j++) {
+                        setTimeout(() => {
+                            root.style.setProperty(`--timeline-${j}-display`, `block`);
+                        }, 20);
+                    }
+                }
+                const scrollHandler = () => {
+                    if (projectElement.classList.contains("project-focused")) {
+                        closeFocus();
+                    }
+                }
                 projectElement.addEventListener("click", () => {
                     //root.style.setProperty('--project-opacity', '0.5');
                     if (projectElement.classList.contains("project-focused")) {
-                        projectElement.classList.remove("project-focused");
-
-                        //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;
-                        timelineElement.style.gridTemplateColumns = `6em ${'1fr '.repeat(timelines.length)}`;
-
-                        for (let j = 0; j < timelines.length; j++) {
-                            setTimeout(() => {
-                                root.style.setProperty(`--timeline-${j}-display`, `block`);
-                            }, 20);
-                        }
-
-                        /*
-                        window.scrollTo({
-                            top: projectElement.getBoundingClientRect().top + window.scrollY,
-                            behavior: 'smooth'
-                        });*/
-
+                        closeFocus();
                         return;
                     }
                     projectElement.classList.add("project-focused");
@@ -368,12 +372,19 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     }, 300);
 
                     setTimeout(() => {
-                    window.scrollTo({
-                        top: projectElement.getBoundingClientRect().top + window.scrollY - 30,
-                        behavior: 'smooth'
-                    });
+                        window.scrollTo({
+                            top: projectElement.getBoundingClientRect().top + window.scrollY - 30,
+                            behavior: 'smooth'
+                        });
                     }, 50);
+                    setTimeout(() => {
+                        window.addEventListener("scroll", scrollHandler);
+                        if (!projectElement.classList.contains("project-focused")) {
+                            window.removeEventListener("scroll", scrollHandler);
+                        }
+                    }, 800);
                 });
+
                 projectElement.addEventListener("mouseout", () => {
                     //root.style.setProperty('--project-opacity', '1');
                     /*
