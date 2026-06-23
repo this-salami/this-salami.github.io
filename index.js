@@ -350,14 +350,15 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
 
                     for (let j = 0; j < timelines.length; j++) {
-                        if (j === i) { continue; }
+                        if (j >= i && j < i + projectSpan) { continue; }
                         root.style.setProperty(`--timeline-${j}-display`, ``);
                     }
 
                     let repeat1 = '0fr '.repeat(i);
-                    let repeat2 = '0fr '.repeat(timelines.length - i - 1);
+                    let thisCol = '1fr '.repeat(projectSpan);
+                    let repeat2 = '0fr '.repeat(timelines.length - i - projectSpan);
                     setTimeout(() => {
-                        timelineElement.style.gridTemplateColumns = `6em ${repeat1} 1fr ${repeat2}`;
+                        timelineElement.style.gridTemplateColumns = `6em ${repeat1} ${thisCol} ${repeat2}`;
                     }, 20);
 
 
