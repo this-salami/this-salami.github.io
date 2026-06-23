@@ -223,6 +223,7 @@ function createTimeline() {
 function createProjectTimelines(timelines, start, end = new Date(), whitespaceTimeline) {
     const MonthCount = (end.getMonth() + end.getFullYear() * 12) - (start.getMonth() + start.getFullYear() * 12);
     for (let i = 0; i < timelines.length; i++) {
+        root.style.setProperty(`--timeline-${i}-display`, `block`);
         /*
         const projectTimelineElement = document.createElement("div");
         projectTimelineElement.classList.add("project-timeline");
@@ -251,7 +252,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
             //return `repeat(${monthCount}, ${MONTH_HEIGHT}px)`;
             return `repeat(${monthCount}, auto)`;
         }).join(' ');
-        timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, auto)`;
+        //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;
+        timelineElement.style.gridTemplateColumns = `6em ${'1fr '.repeat(timelines.length)}`;
 
         let prevProjectEnd = end;
 
@@ -271,6 +273,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 const projectElement = document.createElement("div");
                 projectElement.classList.add("project");
+                projectElement.style.display = `var(--timeline-${i}-display, block)`;
+
                 projectElement.innerHTML = `
                     <h3>${project.name}</h3>
                     <div class="tags">
@@ -290,10 +294,34 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     //root.style.setProperty('--project-opacity', '0.5');
                     if (projectElement.classList.contains("project-focused")) {
                         projectElement.classList.remove("project-focused");
+
+                        //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;
+                        timelineElement.style.gridTemplateColumns = `6em ${'1fr '.repeat(timelines.length)}`;
+
+                        for (let j = 0; j < timelines.length; j++) {
+                            root.style.setProperty(`--timeline-${j}-display`, `block`);
+                        }
+
+                        /*
+                        window.scrollTo({
+                            top: projectElement.getBoundingClientRect().top + window.scrollY,
+                            behavior: 'smooth'
+                        });*/
+
                         return;
                     }
                     projectElement.classList.add("project-focused");
-                    
+
+
+                    let repeat1 = '0fr '.repeat(i);
+                    let repeat2 = '0fr '.repeat(timelines.length - i - 1);
+                    timelineElement.style.gridTemplateColumns = `6em ${repeat1} 1fr ${repeat2}`;
+
+                    for (let j = 0; j < timelines.length; j++) {
+                        if (j === i) { continue; }
+                        root.style.setProperty(`--timeline-${j}-display`, `none`);
+                    }
+
                     bufferElement.classList.add("buffer-active");
                     setTimeout(() => {
                         bufferElement.classList.remove("buffer-active");
