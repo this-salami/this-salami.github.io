@@ -7,6 +7,8 @@ const timelineElement = document.getElementById("timeline");
 const filterContainer = document.getElementById("filter-container");
 const filterCheckboxContainer = document.getElementById("filters");
 
+const bufferElement = document.getElementById("buffer");
+
 const MONTH_HEIGHT = timelineElement.getAttribute("data-month-height");
 const COLLAPSED_MONTH_HEIGHT = timelineElement.getAttribute("data-collapsed-month-height");
 
@@ -291,6 +293,12 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         return;
                     }
                     projectElement.classList.add("project-focused");
+                    
+                    bufferElement.classList.add("buffer-active");
+                    setTimeout(() => {
+                        bufferElement.classList.remove("buffer-active");
+                    }, 300);
+
                     window.scrollTo({
                         top: projectElement.getBoundingClientRect().top + window.scrollY,
                         behavior: 'smooth'
