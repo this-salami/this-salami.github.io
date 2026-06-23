@@ -323,7 +323,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 projectElement.style.gridColumn = `${i + 2} / span ${projectSpan}`;
                 timelineElement.appendChild(projectElement);
 
-                projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 20px)`);
+                projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
                 projectElement.addEventListener("click", () => {
                     //root.style.setProperty('--project-opacity', '0.5');
                     if (projectElement.classList.contains("project-focused")) {
@@ -333,7 +333,9 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         timelineElement.style.gridTemplateColumns = `6em ${'1fr '.repeat(timelines.length)}`;
 
                         for (let j = 0; j < timelines.length; j++) {
-                            root.style.setProperty(`--timeline-${j}-display`, `block`);
+                            setTimeout(() => {
+                                root.style.setProperty(`--timeline-${j}-display`, `block`);
+                            }, 20);
                         }
 
                         /*
@@ -347,24 +349,29 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     projectElement.classList.add("project-focused");
 
 
-                    let repeat1 = '0fr '.repeat(i);
-                    let repeat2 = '0fr '.repeat(timelines.length - i - 1);
-                    timelineElement.style.gridTemplateColumns = `6em ${repeat1} 1fr ${repeat2}`;
-
                     for (let j = 0; j < timelines.length; j++) {
                         if (j === i) { continue; }
-                        root.style.setProperty(`--timeline-${j}-display`, `none`);
+                        root.style.setProperty(`--timeline-${j}-display`, ``);
                     }
+
+                    let repeat1 = '0fr '.repeat(i);
+                    let repeat2 = '0fr '.repeat(timelines.length - i - 1);
+                    setTimeout(() => {
+                        timelineElement.style.gridTemplateColumns = `6em ${repeat1} 1fr ${repeat2}`;
+                    }, 20);
+
 
                     bufferElement.classList.add("buffer-active");
                     setTimeout(() => {
                         bufferElement.classList.remove("buffer-active");
                     }, 300);
 
+                    setTimeout(() => {
                     window.scrollTo({
-                        top: projectElement.getBoundingClientRect().top + window.scrollY,
+                        top: projectElement.getBoundingClientRect().top + window.scrollY - 30,
                         behavior: 'smooth'
                     });
+                    }, 50);
                 });
                 projectElement.addEventListener("mouseout", () => {
                     //root.style.setProperty('--project-opacity', '1');
