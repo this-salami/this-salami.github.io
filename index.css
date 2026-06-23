@@ -319,7 +319,7 @@ body, html {
     transform: translateX(-100px);
 
     interpolate-size: allow-keywords;
-    transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, height 0.3s ease, width 0.3s ease;
+    transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, height 0.3s ease;
 }
 
 .project.in-view {
