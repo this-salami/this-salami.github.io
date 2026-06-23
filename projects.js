@@ -159,5 +159,40 @@ const projects = [
         link: "",
         time: [], // bro you aint even finishing ts
         tags: ["js", "html", "css", "ui", "front-end"]
+    },
+    {
+        name: "Pong",
+        description: "A simple Pong game implemented in JavaScript, showcasing basic game mechanics and user interaction.",
+        link: "https://github.com/this-salami/pong-2023",
+        time: [[new Date("2023-05-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
+    },
+    {
+        name: "Image Scroller",
+        description: "A small project that allows users to scroll through a collection of images using JavaScript and CSS.",
+        link: "https://github.com/this-salami/image-scroller-2023",
+        time: [[new Date("2022-12-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
+    },
+    {
+        name: "Birthday Info",
+        description: "A small project that displays birthday information.",
+        link: "https://github.com/this-salami/birthdayinfo-2023",
+        time: [[new Date("2023-01-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
+    },
+    {
+        name: "CSS Loading Animations",
+        description: "A collection of CSS loading animations.",
+        link: "https://github.com/this-salami/css-animations-2022",
+        time: [[new Date("2022-07-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
+    },
+    {
+        name: "Graphing Demo",
+        description: "A demo graphing calculator implemented in JavaScript.",
+        link: "https://github.com/this-salami/graphing-demo-2023/tree/main",
+        time: [[new Date("2023-02-01"), new Date("2023-03-01")]],
+        tags: ["html", "js", "css", "open-source", "interactive-demo"]
     }
 ];
