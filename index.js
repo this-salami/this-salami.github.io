@@ -385,6 +385,17 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     }, 800);
                 });
 
+                const updateMousePosition = (event) => {
+                    const rect = projectElement.getBoundingClientRect();
+                    const relativeX = event.clientX - rect.left;
+                    const relativeY = event.clientY - rect.top;
+
+                    projectElement.style.setProperty('--mouse-x', `${relativeX}px`);
+                    projectElement.style.setProperty('--mouse-y', `${relativeY}px`);
+                }
+                window.addEventListener("mousemove", updateMousePosition);
+                projectElement.addEventListener("mouseover", updateMousePosition);
+
                 projectElement.addEventListener("mouseout", () => {
                     //root.style.setProperty('--project-opacity', '1');
                     /*

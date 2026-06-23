@@ -301,7 +301,8 @@ body, html {
 }
 
 .project {
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
+    background: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), #ffffff, #f3f3f3);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: calc(100% - 20px);
