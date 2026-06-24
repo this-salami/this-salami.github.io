@@ -1,10 +1,16 @@
 :root {
     --project-opacity: 1;
     --project-cursor: pointer;
-    --secondary-color: #2b7192; /* #8d8d8d */
     --background-color: #d5e6ff; /* #f0f0f0 */
+    
+    --secondary-color: #2b7192; /* #8d8d8d */ /* timeline bars */
+    --timeline-font-color: #000000; /* #8d8d8d */
 
     --project-color: #fafafa;
+    --project-font-color: #151515;
+    --project-shadow-color: rgba(0, 0, 0, 0.1);
+    --project-shadow-color-hover: rgba(0, 0, 0, 0.2);
+    --project-shadow-color-active: rgba(0, 0, 0, 0.1);
 }
 
 html {
@@ -215,6 +221,7 @@ body, html {
 #timeline > .timeline-element {
     font-size: 1em;
     font-family: 'Courier New', Courier, monospace;
+    color: var(--timeline-font-color);
     font-weight: bold;
 }
 
@@ -312,7 +319,7 @@ body, html {
     /*background-color: #ffffff;*/
     background: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), #ffffff, var(--project-color));
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px var(--project-shadow-color);
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
@@ -347,19 +354,19 @@ body, html {
 .project > p {
     margin: 10px 20px;
     font-size: 14px;
-    color: #151515;
+    color: var(--project-font-color);
 }
 
 .project.in-view:hover {
     cursor: var(--project-cursor, pointer);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px var(--project-shadow-color-hover);
     /*
     opacity: 1;
     height: var(--project-max-height, auto);
     */
 }
 .project.in-view:active {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--project-shadow-color-active);
 }
 .project.in-view.project-focused {
     cursor: pointer;
