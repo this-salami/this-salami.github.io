@@ -393,6 +393,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     window.removeEventListener("click", closeFocus);
                     // TODO: mobile support
                     //window.removeEventListener("touchmove", scrollHandler, { passive: true });
+                    window.removeEventListener("keydown", escapeHandler);
 
                     root.style.setProperty('--project-opacity', '1');
                     root.style.setProperty('--project-cursor', 'pointer');
@@ -416,6 +417,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         closeFocus();
                     }
                 }
+                const escapeHandler = (event) => {
+                    if (event.key === "Escape") {
+                        closeFocus();
+                    }
+                };
                 projectElement.addEventListener("click", () => {
                     //root.style.setProperty('--project-opacity', '0.5');
                     if (projectElement.classList.contains("project-focused")) {
@@ -461,6 +467,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     // TODO: mobile support
                     //window.addEventListener("touchmove", scrollHandler, { passive: true });
                     window.addEventListener("click", closeFocus);
+                    window.addEventListener("keydown", escapeHandler);
                 });
 
                 const updateGradient = () => {
