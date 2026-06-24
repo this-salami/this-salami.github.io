@@ -444,7 +444,9 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         let top = projectElement.getBoundingClientRect().top + window.scrollY - 30;
                         lockScroll(top);
 
-                        window.addEventListener("wheel", scrollHandler, { passive: true });
+                        setTimeout(() => {
+                            window.addEventListener("wheel", scrollHandler, { passive: true });
+                        }, 20);
                     }, 50);
                 });
 
