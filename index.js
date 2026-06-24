@@ -370,11 +370,13 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 projectElement.innerHTML = `
                     <h3>${project.name}</h3>
-                    <div class="tags">
-                        ${project.tags.map(tag => `<span class="${tag} unselectable">${tag}</span>`).join('')}
+                    <div class="project-content">
+                        <div class="tags">
+                            ${project.tags.map(tag => `<span class="${tag} unselectable">${tag}</span>`).join('')}
+                        </div>
+                        <p>${project.description}</p>
+                        <a href="${project.link}">Learn more</a>
                     </div>
-                    <p>${project.description}</p>
-                    <a href="${project.link}">Learn more</a>
                 `;
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 1;
