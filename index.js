@@ -98,6 +98,11 @@ for (let i = 0; i < projects.length; i++) {
 function clearTimeline() {
     timelineElement.innerHTML = "";
     //projectContainer.innerHTML = "";
+
+    for (const key in scrollCallbacks) {
+        if (!scrollCallbacks.hasOwnProperty(key)) continue;
+        delete scrollCallbacks[key];
+    }
 }
 
 // creates entire timeline
@@ -220,6 +225,7 @@ function createTimeline() {
 }
 
 const scrollAnimTime = 500; // in ms
+const scrollCallbacks = {};
 function lockScroll(pos = window.scrollY) {
     let currScroll = window.scrollY;
     /*
@@ -248,6 +254,11 @@ function lockScroll(pos = window.scrollY) {
         } else {
             document.body.style.top = `-${pos}px`;
         }
+
+        for (const key in scrollCallbacks) {
+            if (!scrollCallbacks.hasOwnProperty(key)) continue;
+            scrollCallbacks[key](newScroll);
+        }
     }
 
     window.requestAnimationFrame(step);
@@ -259,6 +270,13 @@ function unlockScroll() {
     document.body.style.width = '';
     window.scrollTo(0, currScroll);
 }
+
+let mouseX = 0;
+let mouseY = 0;
+window.addEventListener("mousemove", (event) => {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+});
 
 // creates project elements and timeline elements
 function createProjectTimelines(timelines, start, end = new Date(), whitespaceTimeline) {
@@ -430,16 +448,6 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     }, 50);
                 });
 
-                // TODO: could make global
-                let mouseX = 0;
-                let mouseY = 0;
-
-                const updateMousePosition = (event) => {
-                    mouseX = event.clientX;
-                    mouseY = event.clientY;
-
-                    updateGradient();
-                }
                 const updateGradient = () => {
                     const rect = projectElement.getBoundingClientRect();
 
@@ -449,8 +457,10 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     projectElement.style.setProperty('--mouse-x', `${relativeMouseX}px`);
                     projectElement.style.setProperty('--mouse-y', `${relativeMouseY}px`);
                 }
-                window.addEventListener("mousemove", updateMousePosition);
-                projectElement.addEventListener("mouseover", updateMousePosition);
+                window.addEventListener("mousemove", updateGradient);
+                projectElement.addEventListener("mouseover", updateGradient);
+                scrollCallbacks[`project-${project.dataIndex}`] = updateGradient;
+                window.addEventListener("scroll", updateGradient);
 
                 projectElement.addEventListener("mouseout", () => {
                     //root.style.setProperty('--project-opacity', '1');
