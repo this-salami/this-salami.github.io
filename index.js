@@ -329,18 +329,21 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     window.removeEventListener("scroll", scrollHandler);
 
                     root.style.setProperty('--project-opacity', '1');
+                    root.style.setProperty('--project-cursor', 'pointer');
                     projectElement.classList.remove("project-focused");
 
                     //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;
                     timelineElement.style.gridTemplateColumns = `6em ${'1fr '.repeat(timelines.length)}`;
+                    timelineElement.style.gridGap = "";
 
                     for (let j = 0; j < timelines.length; j++) {
                         setTimeout(() => {
                             root.style.setProperty(`--timeline-${j}-display`, `block`);
-                        }, 20);
+                        }, 30);
                     }
                 }
                 const scrollHandler = () => {
+                    updateGradient();
                     if (projectElement.classList.contains("project-focused")) {
                         closeFocus();
                     }
@@ -351,6 +354,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         closeFocus();
                         return;
                     }
+                    if (root.style.getPropertyValue('--project-opacity') == '0'){ return }
                     projectElement.classList.add("project-focused");
 
 
@@ -364,8 +368,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     let repeat2 = '0fr '.repeat(timelines.length - i - projectSpan);
                     setTimeout(() => {
                         timelineElement.style.gridTemplateColumns = `6em ${repeat1} ${thisCol} ${repeat2}`;
+                        timelineElement.style.gridGap = `0px`;
                     }, 20);
 
+                    root.style.setProperty('--project-opacity', '0');
+                    root.style.setProperty('--project-cursor', 'default');
 
                     bufferElement.classList.add("buffer-active");
                     setTimeout(() => {
@@ -386,13 +393,24 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     }, 800);
                 });
 
-                const updateMousePosition = (event) => {
-                    const rect = projectElement.getBoundingClientRect();
-                    const relativeX = event.clientX - rect.left;
-                    const relativeY = event.clientY - rect.top;
+                // TODO: could make global
+                let mouseX = 0;
+                let mouseY = 0;
 
-                    projectElement.style.setProperty('--mouse-x', `${relativeX}px`);
-                    projectElement.style.setProperty('--mouse-y', `${relativeY}px`);
+                const updateMousePosition = (event) => {
+                    mouseX = event.clientX;
+                    mouseY = event.clientY;
+
+                    updateGradient();
+                }
+                const updateGradient = () => {
+                    const rect = projectElement.getBoundingClientRect();
+
+                    const relativeMouseX = mouseX - rect.left;
+                    const relativeMouseY = mouseY - rect.top;
+
+                    projectElement.style.setProperty('--mouse-x', `${relativeMouseX}px`);
+                    projectElement.style.setProperty('--mouse-y', `${relativeMouseY}px`);
                 }
                 window.addEventListener("mousemove", updateMousePosition);
                 projectElement.addEventListener("mouseover", updateMousePosition);
