@@ -140,8 +140,8 @@ body, html {
 
     row-gap: 5px;
 
-    width: 40%;
-    min-width: 300px;
+    width: max(40%, 300px);
+    max-width: calc(100vw - 20px);
     margin: 0;
 
     overflow: hidden;
