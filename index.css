@@ -7,6 +7,7 @@
     --timeline-font-color: #000000; /* #8d8d8d */
 
     --project-color: #fafafa;
+    --project-color-hover: #f0f0f0;
     --project-font-color: #151515;
     --project-shadow-color: rgba(0, 0, 0, 0.1);
     --project-shadow-color-hover: rgba(0, 0, 0, 0.2);
@@ -317,7 +318,8 @@ body, html {
 
 .project {
     /*background-color: #ffffff;*/
-    background: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), #ffffff, var(--project-color));
+    background-color: var(--project-color);
+    background-image: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1) 80%, rgba(255, 255, 255, 0) 100%);
     border-radius: 8px;
     box-shadow: 0 4px 8px var(--project-shadow-color);
     width: calc(100% - 20px);
@@ -338,7 +340,8 @@ body, html {
     interpolate-size: allow-keywords;
     /* NOTE: when editing also check in .project.in-view.project-focused; these set to center */
     transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, 
-    height 0.3s ease, width 0.3s ease -0.1s, left 0.3s linear -0.3s;
+    height 0.3s ease, width 0.3s ease -0.1s, left 0.3s linear -0.3s, 
+    background-color 0.3s ease;
 }
 
 .project.in-view {
@@ -365,6 +368,9 @@ body, html {
     height: var(--project-max-height, auto);
     */
 }
+.project.in-view:hover:not(.project-focused) {
+    background-color: var(--project-color-hover);
+}
 .project.in-view:active {
     box-shadow: 0 2px 4px var(--project-shadow-color-active);
 }
@@ -377,7 +383,8 @@ body, html {
     left: -3em;
     /* NOTE: when editing also check in .project; these set back to normal */
     transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, 
-    height 0.3s ease, width 0.1s ease 0.1s, left 0.2s linear 0.1s;
+    height 0.3s ease, width 0.1s ease 0.1s, left 0.2s linear 0.1s,
+    background-color 0.3s ease;
 }
 
 #buffer {
