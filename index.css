@@ -378,7 +378,9 @@ body, html {
 }
 
 .project > .project-content {
-    width: calc(min(100%, 70vw) - 20px);
+    /* second argument from .project-focused width */
+    width: calc(min(100%, calc(max(70vw, 600px) - 3em - 20px)));
+    
     /*
     display: flex;
     flex-direction: column;
