@@ -219,6 +219,47 @@ function createTimeline() {
     createProjectTimelines(timelines, earlierstTime, latestTime, whitespaceTimeline);
 }
 
+const scrollAnimTime = 500; // in ms
+function lockScroll(pos = window.scrollY) {
+    let currScroll = window.scrollY;
+    /*
+    window.scrollTo({
+        top: pos,
+        behavior: 'smooth'
+    });
+    */ 
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${currScroll}px`;
+    document.body.style.width = '100%';
+
+    let startTime = null;
+    const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / scrollAnimTime, 1);
+        
+        const easedProgress = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        const newScroll = currScroll + (pos - currScroll) * easedProgress;
+        
+        document.body.style.top = `-${newScroll}px`;
+
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        } else {
+            document.body.style.top = `-${pos}px`;
+        }
+    }
+
+    window.requestAnimationFrame(step);
+}
+function unlockScroll() {
+    const currScroll = -parseInt(document.body.style.top || '0', 10);
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, currScroll);
+}
+
 // creates project elements and timeline elements
 function createProjectTimelines(timelines, start, end = new Date(), whitespaceTimeline) {
     const MonthCount = (end.getMonth() + end.getFullYear() * 12) - (start.getMonth() + start.getFullYear() * 12);
@@ -341,6 +382,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                             root.style.setProperty(`--timeline-${j}-display`, `block`);
                         }, 30);
                     }
+
+                    unlockScroll();
                 }
                 const scrollHandler = () => {
                     updateGradient();
@@ -380,17 +423,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     }, 300);
 
                     setTimeout(() => {
-                        window.scrollTo({
-                            top: projectElement.getBoundingClientRect().top + window.scrollY - 30,
-                            behavior: 'smooth'
-                        });
+                        let top = projectElement.getBoundingClientRect().top + window.scrollY - 30;
+                        lockScroll(top);
+
+                        window.addEventListener("wheel", scrollHandler, { passive: true });
                     }, 50);
-                    setTimeout(() => {
-                        window.addEventListener("scroll", scrollHandler);
-                        if (!projectElement.classList.contains("project-focused")) {
-                            window.removeEventListener("scroll", scrollHandler);
-                        }
-                    }, 800);
                 });
 
                 // TODO: could make global
@@ -430,6 +467,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     const isInView = rect.top < window.innerHeight && rect.bottom > 0;
                     if (isInView) {
                         projectElement.classList.add("in-view");
+                        window.removeEventListener("scroll", inViewHandler);
                     }
                 }
 
