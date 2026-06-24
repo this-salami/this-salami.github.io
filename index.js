@@ -384,8 +384,12 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
                 
+                let canCloseFocus = false;
                 const closeFocus = () => {
-                    window.removeEventListener("scroll", scrollHandler);
+                    if (canCloseFocus === false) { return; }
+                    canCloseFocus = false;
+
+                    window.removeEventListener("wheel", scrollHandler, { passive: true });
 
                     root.style.setProperty('--project-opacity', '1');
                     root.style.setProperty('--project-cursor', 'pointer');
@@ -445,9 +449,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         lockScroll(top);
 
                         setTimeout(() => {
-                            window.addEventListener("wheel", scrollHandler, { passive: true });
-                        }, 20);
+                            canCloseFocus = true;
+                        }, 50);
                     }, 50);
+
+                    window.addEventListener("wheel", scrollHandler, { passive: true });
                 });
 
                 const updateGradient = () => {
