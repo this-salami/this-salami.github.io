@@ -3,6 +3,8 @@
     --project-cursor: pointer;
     --secondary-color: #2b7192; /* #8d8d8d */
     --background-color: #d5e6ff; /* #f0f0f0 */
+
+    --project-color: #fafafa;
 }
 
 html {
@@ -87,6 +89,7 @@ body, html {
 
 .selectBox > svg > circle {
     transition: cx 0.3s ease;
+    fill: var(--background-color);
 }
 
 .selectBox:hover {
@@ -307,7 +310,7 @@ body, html {
 
 .project {
     /*background-color: #ffffff;*/
-    background: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), #ffffff, #fafafa);
+    background: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), #ffffff, var(--project-color));
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: calc(100% - 20px);
