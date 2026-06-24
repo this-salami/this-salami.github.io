@@ -4,6 +4,10 @@
     --background-color: #d5e6ff; /* #f0f0f0 */
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -202,8 +206,6 @@ body, html {
 
     interpolate-size: allow-keywords;
     transition: grid-template-columns 0.2s ease;
-
-    overflow: hidden;
 }
 
 #timeline > .timeline-element {
