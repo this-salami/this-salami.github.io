@@ -390,6 +390,9 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     canCloseFocus = false;
 
                     window.removeEventListener("wheel", scrollHandler, { passive: true });
+                    window.removeEventListener("click", closeFocus);
+                    // TODO: mobile support
+                    //window.removeEventListener("touchmove", scrollHandler, { passive: true });
 
                     root.style.setProperty('--project-opacity', '1');
                     root.style.setProperty('--project-cursor', 'pointer');
@@ -416,6 +419,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 projectElement.addEventListener("click", () => {
                     //root.style.setProperty('--project-opacity', '0.5');
                     if (projectElement.classList.contains("project-focused")) {
+                        // TODO: maybe add alternatives instead of clicking again to close
                         closeFocus();
                         return;
                     }
@@ -454,6 +458,9 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     }, 50);
 
                     window.addEventListener("wheel", scrollHandler, { passive: true });
+                    // TODO: mobile support
+                    //window.addEventListener("touchmove", scrollHandler, { passive: true });
+                    window.addEventListener("click", closeFocus);
                 });
 
                 const updateGradient = () => {
