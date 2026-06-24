@@ -368,20 +368,49 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 projectElement.style.display = colDisplayLogic;
 
+                let demo = "";
+                if (project.demoLink) {
+                    demo = `
+                    <h3>Demo</h3>
+                    <div class="project-demo-container">
+                        <div id="demo-btn">
+                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 14 11 L 20 5 M 14 5 L 20 5 L 20 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M 11 14 L 5 20 M 5 14 L 5 20 L 11 20" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                        
+                        </svg>
+                        </div>
+                        <iframe
+                            src="${project.demoLink}"
+                            title="${project.name} Demo"
+                            class="project-demo"
+                            sandbox="allow-scripts allow-same-origin allow-popups"
+                            width="100%" height="100%" frameborder="0" allowfullscreen>
+                        </iframe>
+                    </div>`;
+                }
+
                 projectElement.innerHTML = `
-                    <h3>${project.name}</h3>
                     <div class="project-content">
+                        <h2>${project.name}</h3>
                         <div class="tags">
                             ${project.tags.map(tag => `<span class="${tag} unselectable">${tag}</span>`).join('')}
                         </div>
-                        <p>${project.description}</p>
+                        <p>${project.descriptionTeaser}</p>
                         <a href="${project.link ? project.link : '#'}" ${project.link ? 'target="_blank"' : ''}>Learn more</a>
+                        <div class="project-info">
+                            <div class="project-info-content">
+                                <p>${project.description ? project.description : ''}</p>
+                                ${demo}
+                            </div>
+                        </div>
                     </div>
                 `;
                 if (project.link === "") {
                     const linkElement = projectElement.querySelector("a");
                     linkElement.setAttribute("tabindex", "-1");
                     linkElement.setAttribute("aria-disabled", "true");
+                    // TODO: maybe make only clickable after focus (and fix losing focus after click)
                     linkElement.addEventListener("click", (event) => {
                         event.preventDefault();
                     });
@@ -521,8 +550,6 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
         //projectContainer.appendChild(projectTimelineElement);
     }
 }
-
-// note: hover, lower visibility of other elements, maybe zoom entire project into view (TODO)
 
 // creates timeline bar on the left, with month and year markings
 function createTimelineBar(start, end=new Date()) {
