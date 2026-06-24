@@ -12,6 +12,11 @@
     --project-shadow-color: rgba(0, 0, 0, 0.1);
     --project-shadow-color-hover: rgba(0, 0, 0, 0.2);
     --project-shadow-color-active: rgba(0, 0, 0, 0.1);
+
+    --link-color: #0000ee;
+    --link-hover-color: #00aeee;
+    --link-visited-color: #551a8b;
+    --link-broken-color: #64646e;
 }
 
 html {
@@ -34,7 +39,6 @@ body, html {
 }
 
 .external-link {
-    font-weight: bold;
     font-style: italic;
     display: inline-flex;
     align-items: center;
@@ -55,6 +59,27 @@ body, html {
 }
 .external-link.linkedin::after {
     background: url("./icons/LinkedIn_icon.svg") no-repeat center / contain;
+}
+
+a {
+    color: var(--link-color);
+    font-weight: bold;
+}
+a:hover:not([href="#"]) {
+    color: var(--link-hover-color);
+}
+a:visited:not([href="#"]) {
+    color: var(--link-visited-color);
+}
+a:visited:hover:not([href="#"]) {
+    color: var(--link-hover-color);
+}
+a[href="#"] {
+    color: var(--link-broken-color);
+    text-decoration: underline dashed;
+    font-style: italic;
+    font-weight: normal;
+    cursor: not-allowed;
 }
 
 #headerSection {

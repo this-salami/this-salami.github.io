@@ -375,9 +375,17 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                             ${project.tags.map(tag => `<span class="${tag} unselectable">${tag}</span>`).join('')}
                         </div>
                         <p>${project.description}</p>
-                        <a href="${project.link}">Learn more</a>
+                        <a href="${project.link ? project.link : '#'}" ${project.link ? 'target="_blank"' : ''}>Learn more</a>
                     </div>
                 `;
+                if (project.link === "") {
+                    const linkElement = projectElement.querySelector("a");
+                    linkElement.setAttribute("tabindex", "-1");
+                    linkElement.setAttribute("aria-disabled", "true");
+                    linkElement.addEventListener("click", (event) => {
+                        event.preventDefault();
+                    });
+                }
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 1;
                 //projectTimelineElement.appendChild(projectElement);
