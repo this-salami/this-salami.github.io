@@ -407,6 +407,8 @@ a[href="#"] {
 .project > .project-content {
     /* second argument from .project-focused width */
     width: calc(min(100%, calc(max(70vw, 600px) - 3em - 20px)));
+    /* ensure no weird wrapping on collapse */
+    min-width: calc(var(--projects-1fr) - 20px); /* acount for padding */
     height: 100%;
     justify-items: center;
     overflow: hidden;

@@ -103,6 +103,8 @@ function clearTimeline() {
         if (!scrollCallbacks.hasOwnProperty(key)) continue;
         delete scrollCallbacks[key];
     }
+
+    window.removeEventListener("resize", projects1frCallback);
 }
 
 // creates entire timeline
@@ -226,7 +228,28 @@ function createTimeline() {
 
 const scrollAnimTime = 500; // in ms
 const scrollCallbacks = {};
-function lockScroll(pos = window.scrollY) {
+/**
+ * @param {number|HTMLElement} pos - The position to lock the scroll to, or an element to lock the scroll to.
+ * @param {Object} options - scroll options
+ * @param {number?} options.offset - scroll offset
+ * @param {number?} options.time - scroll animation time (in ms)
+ * @param {boolean?} options.instant - if true, scrolls instantly, and locks for animation time
+*/
+function lockScroll(pos = window.scrollY, options = {offset: 0, time: scrollAnimTime, instant: false}) {
+    let elem = null;
+    let animTime = options.time || scrollAnimTime;
+
+    const updatePos = () => {
+        if (elem === null) { return; }
+        const rect = elem.getBoundingClientRect();
+        let scrollY = window.scrollY;
+        if (document.body.style.position === 'fixed') { scrollY = -parseInt(document.body.style.top || '0', 10); }
+        pos = rect.top + scrollY + options.offset;
+    }
+    if (pos instanceof HTMLElement) {
+        elem = pos;
+        updatePos();
+    }
     let currScroll = window.scrollY;
     /*
     window.scrollTo({
@@ -242,9 +265,10 @@ function lockScroll(pos = window.scrollY) {
     const step = (timestamp) => {
         if (!startTime) startTime = timestamp;
         const elapsed = timestamp - startTime;
-        const progress = Math.min(elapsed / scrollAnimTime, 1);
+        const progress = Math.min(elapsed / animTime, 1);
         
-        const easedProgress = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        const easedProgress = options.instant ? 1 : 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        updatePos();
         const newScroll = currScroll + (pos - currScroll) * easedProgress;
         
         document.body.style.top = `-${newScroll}px`;
@@ -252,6 +276,7 @@ function lockScroll(pos = window.scrollY) {
         if (progress < 1) {
             window.requestAnimationFrame(step);
         } else {
+            updatePos();
             document.body.style.top = `-${pos}px`;
         }
 
@@ -278,9 +303,27 @@ window.addEventListener("mousemove", (event) => {
     mouseY = event.clientY;
 });
 
+// TODO: feel like could be implemented better
+function updateProject1fr(timelineCount) {
+    const totalWidth = timelineElement.getBoundingClientRect().width;
+    const timelineBarWidth = "6em";
+
+    const project1fr = `calc((${totalWidth}px - ${timelineBarWidth}) / ${timelineCount})`;
+    root.style.setProperty('--projects-1fr', project1fr);
+}
+let projects1frCallback = null;
+
 // creates project elements and timeline elements
 function createProjectTimelines(timelines, start, end = new Date(), whitespaceTimeline) {
     const MonthCount = (end.getMonth() + end.getFullYear() * 12) - (start.getMonth() + start.getFullYear() * 12);
+
+    // TODO: feel like could be implemented better
+    projects1frCallback = () => {
+        updateProject1fr(timelines.length);
+    };
+    updateProject1fr(timelines.length);
+    window.addEventListener("resize", projects1frCallback);
+
     for (let i = 0; i < timelines.length; i++) {
         root.style.setProperty(`--timeline-${i}-display`, `block`);
         /*
@@ -360,6 +403,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 const projectElement = document.createElement("div");
                 projectElement.classList.add("project");
 
+                // Unnecessary with 1fr min-width solution, leaving here just in-case (TODO: del later)
+                /*
                 let colDisplayLogic = '';
                 for (let j = 0; j < projectSpan; j++) {
                     colDisplayLogic += `var(--timeline-${i + j}-display, `;
@@ -367,6 +412,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 colDisplayLogic += 'none' + ')'.repeat(projectSpan);
 
                 projectElement.style.display = colDisplayLogic;
+                */
 
                 let demo = "";
                 if (project.demoLink) {
@@ -392,7 +438,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 projectElement.innerHTML = `
                     <div class="project-content">
-                        <h2>${project.name}</h3>
+                        <h2>${project.name}</h2>
                         <div class="tags">
                             ${project.tags.map(tag => `<span class="${tag} unselectable">${tag}</span>`).join('')}
                         </div>
@@ -448,7 +494,14 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         }, 30);
                     }
 
-                    unlockScroll();
+
+                    // thought the 1fr min-width solution could've replaced this, 
+                    // no idea why the scroll position is off after closing focus
+                    // current (bandaid?) solution:
+                    setTimeout(() => {
+                        unlockScroll();
+                    }, 100);
+                    lockScroll(projectElement, {offset: -30, time: 100, instant: true});
                 }
                 const scrollHandler = () => {
                     updateGradient();
@@ -472,10 +525,13 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     projectElement.classList.add("project-focused");
 
 
+                    // unnecessary with 1fr min-width solution, leaving here just in-case (TODO: del later)
+                    /* 
                     for (let j = 0; j < timelines.length; j++) {
                         if (j >= i && j < i + projectSpan) { continue; }
                         root.style.setProperty(`--timeline-${j}-display`, ``);
                     }
+                    */
 
                     let repeat1 = '0fr '.repeat(i);
                     let thisCol = '1fr '.repeat(projectSpan);
@@ -495,7 +551,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                     setTimeout(() => {
                         let top = projectElement.getBoundingClientRect().top + window.scrollY - 30;
-                        lockScroll(top);
+                        // 1fr min-width solution mitigated most issues
+                        // may have inadvertently caused issues with other ones
+                        // specifically full col projects, can leave this implmentation here
+                        // as a (bandaid?) solution
+                        lockScroll(projectElement, {offset: -30});
 
                         setTimeout(() => {
                             canCloseFocus = true;
