@@ -470,14 +470,14 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
                 
                 let canCloseFocus = false;
-                const closeFocus = () => {
+                const closeFocus = (deltaScroll = 0) => {
                     if (canCloseFocus === false) { return; }
                     canCloseFocus = false;
 
                     window.removeEventListener("wheel", scrollHandler, { passive: true });
+                    window.removeEventListener("touchmove", scrollHandler, { passive: true });
+                    
                     window.removeEventListener("click", closeFocus);
-                    // TODO: mobile support
-                    //window.removeEventListener("touchmove", scrollHandler, { passive: true });
                     window.removeEventListener("keydown", escapeHandler);
 
                     root.style.setProperty('--project-opacity', '1');
@@ -501,12 +501,26 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     setTimeout(() => {
                         unlockScroll();
                     }, 100);
-                    lockScroll(projectElement, {offset: -30, time: 100, instant: true});
+                    lockScroll(projectElement, {offset: -30 + deltaScroll, time: 100, instant: true});
                 }
-                const scrollHandler = () => {
+                const scrollHandler = (event) => {
+                    let delta = 0;
+                    /* // WIP: maybe unnecessary, idk if the scroll is too choppy w/o
+                    if (event && event.type === "wheel") {
+                        delta = event.deltaY;
+                    } else if (event && event.type === "touchmove") {
+                        const touch = event.touches[0];
+                        
+                        console.log(event);
+
+                        delta = touch.clientY// - touch.startY;
+                        delta = 0
+                    }
+                    console.log(delta);
+                    */
                     updateGradient();
                     if (projectElement.classList.contains("project-focused")) {
-                        closeFocus();
+                        closeFocus(delta);
                     }
                 }
                 const escapeHandler = (event) => {
@@ -563,8 +577,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     }, 50);
 
                     window.addEventListener("wheel", scrollHandler, { passive: true });
-                    // TODO: mobile support
-                    //window.addEventListener("touchmove", scrollHandler, { passive: true });
+                    window.addEventListener("touchmove", scrollHandler, { passive: true });
+                    
                     window.addEventListener("click", closeFocus);
                     window.addEventListener("keydown", escapeHandler);
                 });
