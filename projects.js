@@ -197,5 +197,12 @@ const projects = [
         link: "https://github.com/this-salami/graphing-demo-2023/tree/main",
         time: [[new Date("2023-02-01"), new Date("2023-03-01")]],
         tags: ["html", "js", "css", "open-source", "interactive-demo"]
+    },
+    {
+        name: "IBM DS Certification Data Visualization Project",
+        descriptionTeaser: "A data visualization project for the IBM Data Science Professional Certificate, showcasing data analysis and visualization skills.",
+        link: "https://github.com/this-salami/data-visualization-project-IBMDS",
+        time: [[new Date("2026-06-01")]],
+        tags: ["python", "data-science", "open-source", "jupyter-notebook", "certification"]
     }
 ];
