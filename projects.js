@@ -9,14 +9,14 @@ const projects = [
     { // TODO: find more of my python macros
         name: "Python Autoclicker",
         descriptionTeaser: "A simple Python script that automates mouse clicks.",
-        link: "https://github.com/this-salami/python-macros/blob/main/AutoClick.py",
+        link: "https://github.com/this-salami/python-macros/tree/main/Autoclicker",
         time: [[new Date("2022-06-01")]],
         tags: ["python", "open-source", "video-demo"] // TODO: add demo
     },
     {
         name: "Python Piano Tiles Bot",
         descriptionTeaser: "A bot that plays the popular Piano Tiles game automatically using Python.",
-        link: "https://github.com/this-salami/python-macros/blob/main/MusicalTiles.py",
+        link: "https://github.com/this-salami/python-macros/tree/main/MusicalTiles",
         time: [[new Date("2023-02-01")]],
         tags: ["python", "open-source", "video-demo"] // TODO: add demo
     },
