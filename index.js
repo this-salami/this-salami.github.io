@@ -250,16 +250,18 @@ function lockScroll(pos = window.scrollY, options = {offset: 0, time: scrollAnim
         elem = pos;
         updatePos();
     }
-    let currScroll = window.scrollY;
+    let currScroll = document.body.style.position === 'fixed' ? -parseInt(document.body.style.top || '0', 10) : window.scrollY;
     /*
     window.scrollTo({
         top: pos,
         behavior: 'smooth'
     });
     */ 
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${currScroll}px`;
-    document.body.style.width = '100%';
+    if (document.body.style.position !== 'fixed') {
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${currScroll}px`;
+        document.body.style.width = '100%';
+    }
 
     let startTime = null;
     const step = (timestamp) => {
@@ -501,11 +503,12 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     setTimeout(() => {
                         unlockScroll();
                     }, 100);
-                    lockScroll(projectElement, {offset: -30 + deltaScroll, time: 100, instant: true});
+                    // TODO: I think the answer going to be a dyanmic pos scroll (or just a custom scroll system overall)
+                    deltaScroll = 0;
+                    lockScroll(projectElement, {offset: -30 + deltaScroll, time: 100, instant: deltaScroll === 0});
                 }
                 const scrollHandler = (event) => {
                     let delta = 0;
-                    /* // WIP: maybe unnecessary, idk if the scroll is too choppy w/o
                     if (event && event.type === "wheel") {
                         delta = event.deltaY;
                     } else if (event && event.type === "touchmove") {
@@ -517,7 +520,6 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         delta = 0
                     }
                     console.log(delta);
-                    */
                     updateGradient();
                     if (projectElement.classList.contains("project-focused")) {
                         closeFocus(delta);
