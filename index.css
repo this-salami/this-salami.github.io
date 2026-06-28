@@ -574,19 +574,55 @@ a[href="#"] {
     height: min(calc(100% - 8px), 70%);
 }
 
+.project-demo-container.fullscreen > .demo-btn {
+    width: auto;
+    /* height: calc(max(100vh - 100vw * 9/16, 2.5em) - 4px); */
+    height: calc(2.5em - 4px);
+}
+
+.project-demo-container.fullscreen > .demo-btn#fullscreen-btn .max {
+    visibility: hidden;
+}
+.project-demo-container:not(.fullscreen) > .demo-btn#fullscreen-btn .min {
+    visibility: hidden;
+}
+
+.project-demo-container.fullscreen > .demo-btn#fullscreen-btn {
+    top: 2px;
+    left: 2px;
+}
+
 .demo-btn#newtab-btn {
     top: 8px;
     transform: translate(0, 100%);
 }
 
+.project-demo-container.fullscreen > .demo-btn#newtab-btn {
+    top: 2px;
+    left: 8px;
+    transform: translate(100%, 0);
+}
+
 .project-demo-container > .project-demo {
-    /* TODO: 50vh arbitrary, fix */
+    /* TODO: 50vh arbitrary, fix, I think this is working */
     width: min(calc(100% - 5em), 90%); /*min(calc(100% - 5em), 90%, calc(50vh * 16/9)); */
     aspect-ratio: 16/9;
 
     transition: width 0.3s ease;
     background-color: white;
     overflow: hidden;
+}
+
+.project-demo-container.fullscreen > .project-demo {
+    position: fixed;
+    width: 100vw;
+    /* probs just scale it to screen, not aspect ratio */
+    /* height: min(calc(100vh - 2.5em), 100vw * 9/16); */
+    height: calc(100vh - 2.5em);
+    bottom: 0;
+    left: 0;
+
+    transition: none;
 }
 
 #buffer {

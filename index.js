@@ -309,6 +309,18 @@ window.addEventListener("mouseup", () => {
     root.classList.remove("background-active");
 });
 
+let currFullscreenElement = null;
+document.addEventListener("fullscreenchange", (event) => {
+    if (document.fullscreenElement) {
+        currFullscreenElement = document.fullscreenElement;
+        return;
+    }
+    if (currFullscreenElement) {
+        currFullscreenElement.classList.remove("fullscreen");
+        currFullscreenElement = null;
+    }
+});
+
 
 let mouseX = 0;
 let mouseY = 0;
@@ -440,8 +452,10 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     <div class="project-demo-container" onclick="event.stopPropagation();">
                         <div class="demo-btn" id="fullscreen-btn">
                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 14 11 L 20 5 M 14 5 L 20 5 L 20 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M 11 14 L 5 20 M 5 14 L 5 20 L 11 20" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path class="max" d="M 14 11 L 20 5 M 14 5 L 20 5 L 20 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path class="max" d="M 11 14 L 5 20 M 5 14 L 5 20 L 11 20" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path class="min" d="M 15 10 L 21 4 M 15 4 L 15 10 L 21 10" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path class="min" d="M 10 15 L 4 21 M 4 15 L 10 15 L 10 21" stroke="black" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                         </div>
                         <div class="demo-btn" id="newtab-btn" onclick="window.open('${project.demoLink}', '_blank'); event.stopPropagation();">
@@ -455,7 +469,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                             title="${project.name} Demo"
                             class="project-demo"
                             sandbox="allow-scripts allow-same-origin allow-popups"
-                            width="100%" height="100%" frameborder="0" allowfullscreen>
+                            width="100%" height="100%" frameborder="0" allow="fullscreen">
                         </iframe>
                     </div>`;
                 }
@@ -493,6 +507,38 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
                 
+                const fullscreenBtn = projectElement.querySelector("#fullscreen-btn");
+                let isFullscreen = false;
+                const fullscreenHandler = () => {
+                    const elem = projectElement.querySelector(".project-demo-container");
+                    if (isFullscreen) {
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.webkitExitFullscreen) { /* Safari */
+                            document.webkitExitFullscreen();
+                        } else if (document.msExitFullscreen) { /* IE11 */
+                            document.msExitFullscreen();
+                        }
+                    }
+
+                    let promise = null;
+                    if (elem.requestFullscreen) {
+                        promise = elem.requestFullscreen();
+                    } else if (elem.webkitRequestFullscreen) { /* Safari */
+                        promise = elem.webkitRequestFullscreen();
+                    } else if (elem.msRequestFullscreen) { /* IE11 */
+                        promise = elem.msRequestFullscreen();
+                    }
+                    if (!promise) { return; }
+                    promise.then(() => {
+                        elem.classList.add("fullscreen");
+                        isFullscreen = true;
+                    });
+                }
+                if (fullscreenBtn) {
+                    fullscreenBtn.addEventListener("click", fullscreenHandler);
+                }
+
                 let canCloseFocus = false;
                 const closeFocus = (deltaScroll = 0) => {
                     if (canCloseFocus === false) { return; }
