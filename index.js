@@ -243,14 +243,14 @@ function lockScroll(pos = window.scrollY, options = {offset: 0, time: scrollAnim
         if (elem === null) { return; }
         const rect = elem.getBoundingClientRect();
         let scrollY = window.scrollY;
-        if (document.body.style.position === 'fixed') { scrollY = -parseInt(document.body.style.top || '0', 10); }
+        if (document.body.style.position === 'fixed') { scrollY = -parseFloat(document.body.style.top || '0'); }
         pos = rect.top + scrollY + options.offset;
     }
     if (pos instanceof HTMLElement) {
         elem = pos;
         updatePos();
     }
-    let currScroll = document.body.style.position === 'fixed' ? -parseInt(document.body.style.top || '0', 10) : window.scrollY;
+    let currScroll = document.body.style.position === 'fixed' ? -parseFloat(document.body.style.top || '0') : window.scrollY;
     /*
     window.scrollTo({
         top: pos,
@@ -266,12 +266,13 @@ function lockScroll(pos = window.scrollY, options = {offset: 0, time: scrollAnim
     let startTime = null;
     const step = (timestamp) => {
         if (!startTime) startTime = timestamp;
+        if (document.body.style.position !== 'fixed') { return; } // if scroll unlocked during animation, stop animating
         const elapsed = timestamp - startTime;
         const progress = Math.min(elapsed / animTime, 1);
         
         const easedProgress = options.instant ? 1 : 1 - Math.pow(1 - progress, 3); // ease-out cubic
         updatePos();
-        const newScroll = currScroll + (pos - currScroll) * easedProgress;
+        let newScroll = currScroll + (pos - currScroll) * easedProgress;
         
         document.body.style.top = `-${newScroll}px`;
 
@@ -279,6 +280,7 @@ function lockScroll(pos = window.scrollY, options = {offset: 0, time: scrollAnim
             window.requestAnimationFrame(step);
         } else {
             updatePos();
+            newScroll = pos;
             document.body.style.top = `-${pos}px`;
         }
 
@@ -291,7 +293,7 @@ function lockScroll(pos = window.scrollY, options = {offset: 0, time: scrollAnim
     window.requestAnimationFrame(step);
 }
 function unlockScroll() {
-    const currScroll = -parseInt(document.body.style.top || '0', 10);
+    const currScroll = -parseFloat(document.body.style.top || '0');
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
@@ -525,7 +527,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         delta = touch.clientY// - touch.startY;
                         delta = 0
                     }
-                    console.log(delta);
+                    
                     updateGradient();
                     if (projectElement.classList.contains("project-focused")) {
                         closeFocus(delta);
