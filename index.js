@@ -419,13 +419,19 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 let demo = "";
                 if (project.demoLink) {
                     demo = `
-                    <h3>Demo</h3>
-                    <div class="project-demo-container">
-                        <div id="demo-btn">
+                    <h3 style="margin-bottom: 0;">Demo</h3>
+                    <sub style="margin-bottom: 10px; display: block;"><i>Note: Some demos may not work properly in minimized mode, try full screen or going to the <a onclick="event.stopPropagation();" href="${project.demoLink}" target="_blank">link</a></i></sub>
+                    <div class="project-demo-container" onclick="event.stopPropagation();">
+                        <div class="demo-btn" id="fullscreen-btn">
                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M 14 11 L 20 5 M 14 5 L 20 5 L 20 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
                             <path d="M 11 14 L 5 20 M 5 14 L 5 20 L 11 20" stroke="black" stroke-width="2" stroke-linecap="round"/>
-                        
+                        </svg>
+                        </div>
+                        <div class="demo-btn" id="newtab-btn" onclick="window.open('${project.demoLink}', '_blank'); event.stopPropagation();">
+                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 14 11 L 21 4 M 16 4 L 21 4 L 21 9" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M 14 7 L 5 7 L 5 20 L 18 20 L 18 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                         </div>
                         <iframe
@@ -442,10 +448,10 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     <div class="project-content">
                         <h2>${project.name}</h2>
                         <div class="tags">
-                            ${project.tags.map(tag => `<span class="${tag} unselectable">${tag}</span>`).join('')}
+                            ${project.tags.map(tag => `<span class="${tag} unselectable" onclick="event.stopPropagation();">${tag}</span>`).join('')}
                         </div>
                         <p>${project.descriptionTeaser}</p>
-                        <a href="${project.link ? project.link : '#'}" ${project.link ? 'target="_blank"' : ''}>Learn more</a>
+                        <a onclick="event.stopPropagation();" href="${project.link ? project.link : '#'}" ${project.link ? 'target="_blank"' : ''}>Learn more</a>
                         <div class="project-info">
                             <div class="project-info-content">
                                 <p>${project.description ? project.description : ''}</p>
