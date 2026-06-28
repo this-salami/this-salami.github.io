@@ -146,7 +146,7 @@ function createTimeline() {
                     const projectStart = project.time[k][0];
                     const projectEnd = project.time[k][1] || projectStart;
 
-                    if (projectStart.valueOf() < occupiedEnd.valueOf() && projectEnd.valueOf() > occupiedStart.valueOf()) {
+                    if (projectStart.valueOf() <= occupiedEnd.valueOf() && projectEnd.valueOf() >= occupiedStart.valueOf()) {
                         overlaps = true;
                         break;
                     }
@@ -404,6 +404,10 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 const currRowCount = ((projectEnd.getFullYear() * 12 + projectEnd.getMonth()) - (projectStart.getFullYear() * 12 + projectStart.getMonth())) + 1;
 
+                if (project.name === "CS 100 Final Project: Bank App UI") {
+                    console.log(currRowCount, totalRows, projectStart, projectEnd);
+                }
+
                 const projectElement = document.createElement("div");
                 projectElement.classList.add("project");
 
@@ -472,7 +476,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     });
                 }
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
-                projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 1;
+                projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 2;
                 //projectTimelineElement.appendChild(projectElement);
                 projectElement.style.gridColumn = `${i + 2} / span ${projectSpan}`;
                 timelineElement.appendChild(projectElement);
