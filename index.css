@@ -1,7 +1,12 @@
 :root {
     --project-opacity: 1;
     --project-cursor: zoom-in;
-    --background-color: #d5e6ff; /* #f0f0f0 */
+    
+    --background-color: var(--background-default-color); /* #f0f0f0 */
+    --background-default-color: #d5e6ff; /* #f0f0f0 */
+    --background-color-project-focus: #9fb3d1;
+    --background-color-hover: #c0d4f0;
+    --background-color-active: #d5e5ff;
     
     --secondary-color: #2b7192; /* #8d8d8d */ /* timeline bars */
     --timeline-font-color: #000000; /* #8d8d8d */
@@ -19,6 +24,16 @@
     --link-broken-color: #64646e;
 }
 
+:root.project-focused {
+    --background-color: var(--background-color-project-focus);
+}
+:root.project-focused.background-hover {
+    --background-color: var(--background-color-hover);
+}
+:root.project-focused.background-active.background-hover {
+    --background-color: var(--background-color-active);
+}
+
 html {
     overflow-x: hidden;
 }
@@ -28,8 +43,37 @@ body, html {
     padding: 0;
     font-family: 'Arial', sans-serif;
 
-    background: var(--background-color);
+    background-color: var(--background-color);
+
+    transition: background-color 0.3s ease;
 }
+
+#background {
+    display: none;
+    /*
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: var(--background-color);
+    transition: background-color 0.3s ease;
+    */
+}
+body.project-focused {
+    cursor: zoom-out;
+}
+body.project-focused > #background {
+    background-color: var(--background-color-project-focus);
+}
+body.project-focused > #background.background-hover {
+    background-color: var(--background-color-hover);
+}
+body.project-focused > #background.background-active {
+    background-color: var(--background-color-active);
+}
+
 
 .unselectable {
     user-select: none;
@@ -123,7 +167,7 @@ a[href="#"] {
 }
 
 .selectBox > svg > circle {
-    transition: cx 0.3s ease;
+    transition: cx 0.3s ease, fill 0.3s ease;
     fill: var(--background-color);
 }
 
@@ -298,6 +342,8 @@ a[href="#"] {
     margin-bottom: -0.25em;
 
     justify-self: center;
+
+    transition: background-color 0.3s ease;
 }
 
 #timeline > .month-cell {
@@ -377,7 +423,7 @@ a[href="#"] {
     left: 0;
 }
 
-.project.in-view:hover {
+.project.in-view:hover:not(.project-focused) {
     cursor: var(--project-cursor, zoom-in);
     box-shadow: 0 6px 12px var(--project-shadow-color-hover);
     /*
@@ -388,11 +434,11 @@ a[href="#"] {
 .project.in-view:hover:not(.project-focused) {
     background-color: var(--project-color-hover);
 }
-.project.in-view:active {
+.project.in-view:active:not(.project-focused) {
     box-shadow: 0 2px 4px var(--project-shadow-color-active);
 }
 .project.in-view.project-focused {
-    cursor: zoom-out;
+    cursor: default;
     opacity: 1;
     height: var(--project-max-height, auto);
     width: calc(max(70vw, 600px) - 3em - 20px);
@@ -475,10 +521,11 @@ a[href="#"] {
     position: relative;
     justify-items: center;
 
-    background-color: black;
+    background-color: var(--secondary-color); /*black;*/
     border-radius: 5px;
 
-    max-height: 50vh;
+    /* max-height: 50vh; */
+    height: calc(100% - 10px);
 
     cursor: default;
 }
@@ -539,6 +586,7 @@ a[href="#"] {
 
     transition: width 0.3s ease;
     background-color: white;
+    overflow: hidden;
 }
 
 #buffer {

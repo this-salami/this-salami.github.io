@@ -300,6 +300,16 @@ function unlockScroll() {
     window.scrollTo(0, currScroll);
 }
 
+window.addEventListener("mousedown", () => {
+    if (document.body.classList.contains("project-focused")) {
+        root.classList.add("background-active");
+    }
+});
+window.addEventListener("mouseup", () => {
+    root.classList.remove("background-active");
+});
+
+
 let mouseX = 0;
 let mouseY = 0;
 window.addEventListener("mousemove", (event) => {
@@ -498,6 +508,10 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     root.style.setProperty('--project-cursor', 'zoom-in');
                     projectElement.classList.remove("project-focused");
 
+                    //document.body.style.cursor = "default";
+                    document.body.classList.remove("project-focused");
+                    root.classList.remove("project-focused");
+
                     //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;
                     timelineElement.style.gridTemplateColumns = `6em ${'1fr '.repeat(timelines.length)}`;
                     timelineElement.style.gridGap = "";
@@ -537,21 +551,32 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         closeFocus(delta);
                     }
                 }
+                const scrollBubblingOff = (event) => {
+                    updateGradient();
+                    event.stopPropagation();
+                }
                 const escapeHandler = (event) => {
                     if (event.key === "Escape") {
                         closeFocus();
                     }
                 };
+                const backgroundHoverHandler = (event) => {
+                    root.classList.remove("background-hover");
+                }
+                const backgroundLeaveHandler = (event) => {
+                    root.classList.add("background-hover");
+                }
                 projectElement.addEventListener("click", () => {
                     //root.style.setProperty('--project-opacity', '0.5');
                     if (projectElement.classList.contains("project-focused")) {
                         // TODO: maybe add alternatives instead of clicking again to close
-                        closeFocus();
+                        //closeFocus();
+                        event.stopPropagation();
                         return;
                     }
                     if (root.style.getPropertyValue('--project-opacity') == '0'){ return }
                     projectElement.classList.add("project-focused");
-
+                    root.classList.add("project-focused");
 
                     // unnecessary with 1fr min-width solution, leaving here just in-case (TODO: del later)
                     /* 
@@ -571,6 +596,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                     root.style.setProperty('--project-opacity', '0');
                     root.style.setProperty('--project-cursor', 'default');
+                    //document.body.style.cursor = "zoom-out";
+                    document.body.classList.add("project-focused");
 
                     bufferElement.classList.add("buffer-active");
                     setTimeout(() => {
@@ -593,6 +620,12 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     window.addEventListener("wheel", scrollHandler, { passive: true });
                     window.addEventListener("touchmove", scrollHandler, { passive: true });
                     
+                    projectElement.addEventListener("wheel", scrollBubblingOff, { passive: true });
+                    projectElement.addEventListener("touchmove", scrollBubblingOff, { passive: true });
+                    
+                    projectElement.addEventListener("mouseover", backgroundHoverHandler);
+                    projectElement.addEventListener("mouseleave", backgroundLeaveHandler);
+
                     window.addEventListener("click", closeFocus);
                     window.addEventListener("keydown", escapeHandler);
                 });
