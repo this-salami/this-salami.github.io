@@ -489,7 +489,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     window.removeEventListener("keydown", escapeHandler);
 
                     root.style.setProperty('--project-opacity', '1');
-                    root.style.setProperty('--project-cursor', 'pointer');
+                    root.style.setProperty('--project-cursor', 'zoom-in');
                     projectElement.classList.remove("project-focused");
 
                     //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;

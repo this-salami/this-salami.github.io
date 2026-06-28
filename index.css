@@ -1,6 +1,6 @@
 :root {
     --project-opacity: 1;
-    --project-cursor: pointer;
+    --project-cursor: zoom-in;
     --background-color: #d5e6ff; /* #f0f0f0 */
     
     --secondary-color: #2b7192; /* #8d8d8d */ /* timeline bars */
@@ -378,7 +378,7 @@ a[href="#"] {
 }
 
 .project.in-view:hover {
-    cursor: var(--project-cursor, pointer);
+    cursor: var(--project-cursor, zoom-in);
     box-shadow: 0 6px 12px var(--project-shadow-color-hover);
     /*
     opacity: 1;
@@ -392,7 +392,7 @@ a[href="#"] {
     box-shadow: 0 2px 4px var(--project-shadow-color-active);
 }
 .project.in-view.project-focused {
-    cursor: pointer;
+    cursor: zoom-out;
     opacity: 1;
     height: var(--project-max-height, auto);
     width: calc(max(70vw, 600px) - 3em - 20px);
