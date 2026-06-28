@@ -503,6 +503,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     
                     window.removeEventListener("click", closeFocus);
                     window.removeEventListener("keydown", escapeHandler);
+                    window.removeEventListener("resize", resizeHandler);
 
                     root.style.setProperty('--project-opacity', '1');
                     root.style.setProperty('--project-cursor', 'zoom-in');
@@ -550,6 +551,10 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     if (projectElement.classList.contains("project-focused")) {
                         closeFocus(delta);
                     }
+                }
+                const resizeHandler = () => {
+                    lockScroll(projectElement, {offset: -30, instant: true, time: 0});
+                    updateGradient();
                 }
                 const scrollBubblingOff = (event) => {
                     updateGradient();
@@ -628,6 +633,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                     window.addEventListener("click", closeFocus);
                     window.addEventListener("keydown", escapeHandler);
+                    window.addEventListener("resize", resizeHandler);
                 });
 
                 const updateGradient = () => {

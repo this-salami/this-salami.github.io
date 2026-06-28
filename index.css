@@ -534,7 +534,7 @@ a[href="#"] {
     position: absolute;
     top: 5px;
     right: 5px;
-    width: calc(max(5%, 25px) - 8px);
+    width: calc(max(5%, 2.5em) - 8px);
     aspect-ratio: 1;
 
     background-color: rgb(255, 255, 255);
@@ -581,7 +581,7 @@ a[href="#"] {
 
 .project-demo-container > .project-demo {
     /* TODO: 50vh arbitrary, fix */
-    width: min(calc(100% - 50px), 90%, calc(50vh * 16/9)); 
+    width: min(calc(100% - 5em), 90%); /*min(calc(100% - 5em), 90%, calc(50vh * 16/9)); */
     aspect-ratio: 16/9;
 
     transition: width 0.3s ease;
