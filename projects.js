@@ -212,6 +212,16 @@ const projects = [
         time: [[new Date("2023-02-01"), new Date("2023-03-01")]],
         tags: ["html", "js", "css", "open-source", "interactive-demo"]
     },
+    { // TODO: add pages
+        name: "CS 100 Final Project: Bank App UI",
+        descriptionTeaser: "A final project for a CS 100 class, implementing a simple bank application user interface with React.",
+        description: `
+        A final project for a CS 100 class, implementing a simple bank application user interface using React. 
+        It allows users to view their account balance, transaction history, and perform basic banking operations.`,
+        link: "https://github.com/this-salami/Goal-Wise",
+        time: [[new Date("2025-10-01"), new Date("2025-11-01")]],
+        tags: ["react", "js", "css", "open-source", "ui", "front-end", "interactive-demo"]
+    },
     {
         name: "IBM DS Certification Data Visualization Project",
         descriptionTeaser: "A data visualization project for the IBM Data Science Professional Certificate, showcasing data analysis and visualization skills.",
