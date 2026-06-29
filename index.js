@@ -348,6 +348,8 @@ function parseProjectLinks(links){
         
         if (link.indexOf("github.com") === 0) {
             external = "external-link github";
+        } else if (link.indexOf("roblox.com") === 0) {
+            external = "external-link roblox";
         }
 
         return `<a href="${url}" class="${external}" target="_blank">${text}</a>`;

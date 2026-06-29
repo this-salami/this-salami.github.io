@@ -104,6 +104,12 @@ body.project-focused > #background.background-active {
 .external-link.linkedin::after {
     background: url("./icons/LinkedIn_icon.svg") no-repeat center / contain;
 }
+.external-link.roblox::after {
+    background: url("./icons/Roblox_Logo.svg") no-repeat center / contain;
+
+    filter: brightness(0);
+    -webkit-filter: brightness(0);
+}
 
 a {
     color: var(--link-color);
