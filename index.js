@@ -51,8 +51,8 @@ function getPinnedProjects() {
 
     // sort so that latest is first
     res.sort((projectA, projectB) => {
-        let earliestA = projectA.earlierstTime;
-        let earliestB = projectB.earlierstTime;
+        let earliestA = projectA.earliestTime;
+        let earliestB = projectB.earliestTime;
         return earliestB - earliestA;
     });
 
@@ -92,15 +92,15 @@ let absoluteStart = new Date();
 // simply gets the absolute endpoints of a project
 for (let i = 0; i < projects.length; i++) {
     const project = projects[i];
-    let earlierstTime = new Date();
+    let earliestTime = new Date();
     let latestTime = null;
 
     project.time.forEach(timeRange => {
         const start = timeRange[0];
         const end = timeRange[1] || start;
 
-        if (start.valueOf() < earlierstTime.valueOf()) {
-            earlierstTime = start;
+        if (start.valueOf() < earliestTime.valueOf()) {
+            earliestTime = start;
             
             if (start.valueOf() < absoluteStart.valueOf()) {
                 absoluteStart = start;
@@ -111,7 +111,7 @@ for (let i = 0; i < projects.length; i++) {
         }
     });
 
-    project.earlierstTime = earlierstTime;
+    project.earliestTime = earliestTime;
     project.latestTime = latestTime;
     project.dataIndex = i;
 }
@@ -132,18 +132,18 @@ function clearTimeline() {
 function createTimeline() {
     clearTimeline();
 
-    const projectsByLength = getFilteredProjects().sort((a, b) => (b.latestTime - b.earlierstTime) - (a.latestTime - a.earlierstTime));
+    const projectsByLength = getFilteredProjects().sort((a, b) => (b.latestTime - b.earliestTime) - (a.latestTime - a.earliestTime));
 
     const timelines = [];
 
-    let earlierstTime = new Date();
+    let earliestTime = new Date();
     let latestTime = absoluteStart;
 
     for (let i = 0; i < projectsByLength.length; i++) {
         const project = projectsByLength[i];
         
-        if (project.earlierstTime.valueOf() < earlierstTime.valueOf()) {
-            earlierstTime = project.earlierstTime;
+        if (project.earliestTime.valueOf() < earliestTime.valueOf()) {
+            earliestTime = project.earliestTime;
         }
         if (project.latestTime && project.latestTime.valueOf() > latestTime.valueOf()) {
             latestTime = project.latestTime;
@@ -190,7 +190,7 @@ function createTimeline() {
     }
 
     let whitespaceTimeline = new Array(
-        latestTime.getFullYear() * 12 +  latestTime.getMonth() - (earlierstTime.getFullYear() * 12 + earlierstTime.getMonth()) + 1
+        latestTime.getFullYear() * 12 +  latestTime.getMonth() - (earliestTime.getFullYear() * 12 + earliestTime.getMonth()) + 1
     ).fill(3); // 3 = 11 (last bit = whitespace, rest = count)
 
     for (let i = 0; i < timelines[0].length; i++) {
@@ -200,8 +200,8 @@ function createTimeline() {
             const start = timeRange[0];
             const end = timeRange[1] || start;
             
-            //const startIndex = (start.getFullYear() * 12 + start.getMonth()) - (earlierstTime.getFullYear() * 12 + earlierstTime.getMonth());
-            //const endIndex = (end.getFullYear() * 12 + end.getMonth()) - (earlierstTime.getFullYear() * 12 + earlierstTime.getMonth());
+            //const startIndex = (start.getFullYear() * 12 + start.getMonth()) - (earliestTime.getFullYear() * 12 + earliestTime.getMonth());
+            //const endIndex = (end.getFullYear() * 12 + end.getMonth()) - (earliestTime.getFullYear() * 12 + earliestTime.getMonth());
             const startIndex = (latestTime.getFullYear() * 12 + latestTime.getMonth()) - (start.getFullYear() * 12 + start.getMonth());
             const endIndex = (latestTime.getFullYear() * 12 + latestTime.getMonth()) - (end.getFullYear() * 12 + end.getMonth());
 
@@ -232,19 +232,19 @@ function createTimeline() {
     console.log(timelines.length);
     
     /*
-    if (earlierstTime.valueOf() > latestTime.valueOf()) {
-        earlierstTime = absoluteStart;
+    if (earliestTime.valueOf() > latestTime.valueOf()) {
+        earliestTime = absoluteStart;
     }
 
-    if (latestTime.valueOf() < earlierstTime.valueOf()) {
+    if (latestTime.valueOf() < earliestTime.valueOf()) {
         latestTime = new Date();
     }
     */
 
-    console.log(earlierstTime, latestTime);
+    console.log(earliestTime, latestTime);
 
-    createTimelineBar(earlierstTime, latestTime);
-    createProjectTimelines(timelines, earlierstTime, latestTime, whitespaceTimeline);
+    createTimelineBar(earliestTime, latestTime);
+    createProjectTimelines(timelines, earliestTime, latestTime, whitespaceTimeline);
 }
 
 const scrollAnimTime = 500; // in ms
@@ -734,7 +734,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 return acc + monthCount;
             }, 0);
 
-            let projectStart = project.earlierstTime;
+            let projectStart = project.earliestTime;
             let projectEnd = project.latestTime;
 
             // TODO: improve/standardize timeline overlap logic, kinda spaghetti rn
