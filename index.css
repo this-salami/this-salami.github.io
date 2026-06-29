@@ -701,7 +701,8 @@ a[href="#"] {
 }
 
 .tags > .exclusive {
-    font-weight: 700;
+    /*font-weight: 700;*/
+    text-shadow: 0.5px 0px 0px white, -0.5px 0px 0px white;
     text-decoration: underline;
     text-decoration-thickness: 4px;
 }
@@ -732,6 +733,7 @@ a[href="#"] {
     padding: 5px 10px;
     border-radius: 4px;
     font-size: 12px;
+    letter-spacing: 0.5px;
 
     margin: 1px;
 }
