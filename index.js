@@ -356,7 +356,7 @@ function parseProjectLinks(links){
     }).join('');
 }
 
-function createProjectElement(project, parentElement) {
+function createProjectElement(project, parentElement, closeFocusCallback, clickCallback) {
     if (!project || !parentElement) { return; }
     const projectElement = document.createElement("div");
     projectElement.classList.add("project");
@@ -436,6 +436,177 @@ function createProjectElement(project, parentElement) {
     }
     */
     parentElement.appendChild(projectElement);
+
+    const learnMoreBtn = projectElement.querySelector("#learn-more");
+    const learnMoreText = learnMoreBtn.querySelector("#learn-more-text");
+
+    const fullscreenBtn = projectElement.querySelector("#fullscreen-btn");
+    let isFullscreen = false;
+    const fullscreenHandler = () => {
+        const elem = projectElement.querySelector(".project-demo-container");
+        if (isFullscreen) {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) { /* Safari */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE11 */
+                document.msExitFullscreen();
+            }
+        }
+
+        let promise = null;
+        if (elem.requestFullscreen) {
+            promise = elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            promise = elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            promise = elem.msRequestFullscreen();
+        }
+        if (!promise) { return; }
+        promise.then(() => {
+            elem.classList.add("fullscreen");
+            isFullscreen = true;
+        });
+    }
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener("click", fullscreenHandler);
+    }
+
+    let canCloseFocus = false;
+    const closeFocus = (deltaScroll = 0) => {
+        if (canCloseFocus === false) { return; }
+        canCloseFocus = false;
+
+        window.removeEventListener("wheel", scrollHandler, { passive: true });
+        window.removeEventListener("touchmove", scrollHandler, { passive: true });
+        
+        window.removeEventListener("click", closeFocus);
+        window.removeEventListener("keydown", escapeHandler);
+        window.removeEventListener("resize", resizeHandler);
+
+        root.style.setProperty('--project-opacity', '1');
+        root.style.setProperty('--project-cursor', 'zoom-in');
+        projectElement.classList.remove("project-focused");
+
+        //document.body.style.cursor = "default";
+        document.body.classList.remove("project-focused");
+        root.classList.remove("project-focused");
+
+        learnMoreText.innerText = "Learn more";
+
+
+        if (closeFocusCallback) { closeFocusCallback(projectElement, deltaScroll); }
+
+
+        // thought the 1fr min-width solution could've replaced this, 
+        // no idea why the scroll position is off after closing focus
+        // current (bandaid?) solution:
+        setTimeout(() => {
+            unlockScroll();
+        }, 100);
+        // TODO: I think the answer going to be a dyanmic pos scroll (or just a custom scroll system overall)
+        deltaScroll = 0;
+        lockScroll(projectElement, {offset: -30 + deltaScroll, time: 100, instant: deltaScroll === 0});
+    }
+    const scrollHandler = (event) => {
+        let delta = 0;
+        if (event && event.type === "wheel") {
+            delta = event.deltaY;
+        } else if (event && event.type === "touchmove") {
+            const touch = event.touches[0];
+            
+            //console.log(event);
+
+            delta = touch.clientY// - touch.startY;
+            delta = 0
+        }
+        
+        updateGradient();
+        if (projectElement.classList.contains("project-focused")) {
+            closeFocus(delta);
+        }
+    }
+    const resizeHandler = () => {
+        lockScroll(projectElement, {offset: -30, instant: true, time: 0});
+        updateGradient();
+    }
+    const scrollBubblingOff = (event) => {
+        updateGradient();
+        event.stopPropagation();
+    }
+    const escapeHandler = (event) => {
+        if (event.key === "Escape") {
+            closeFocus();
+        }
+    };
+    const backgroundHoverHandler = (event) => {
+        root.classList.remove("background-hover");
+    }
+    const backgroundLeaveHandler = (event) => {
+        root.classList.add("background-hover");
+    }
+    projectElement.addEventListener("click", () => {
+        //root.style.setProperty('--project-opacity', '0.5');
+        if (projectElement.classList.contains("project-focused")) {
+            // TODO: maybe add alternatives instead of clicking again to close
+            //closeFocus();
+            event.stopPropagation();
+            return;
+        }
+        if (root.style.getPropertyValue('--project-opacity') == '0'){ return }
+        projectElement.classList.add("project-focused");
+        root.classList.add("project-focused");
+
+
+        if (clickCallback) { clickCallback(projectElement); }
+
+
+        root.style.setProperty('--project-opacity', '0');
+        root.style.setProperty('--project-cursor', 'default');
+        //document.body.style.cursor = "zoom-out";
+        document.body.classList.add("project-focused");
+
+        bufferElement.classList.add("buffer-active");
+        setTimeout(() => {
+            bufferElement.classList.remove("buffer-active");
+        }, 300);
+
+        learnMoreText.innerText = "Close (Esc)";
+
+        setTimeout(() => {
+            let top = projectElement.getBoundingClientRect().top + window.scrollY - 30;
+            // 1fr min-width solution mitigated most issues
+            // may have inadvertently caused issues with other ones
+            // specifically full col projects, can leave this implmentation here
+            // as a (bandaid?) solution
+            lockScroll(projectElement, {offset: -30});
+
+            setTimeout(() => {
+                canCloseFocus = true;
+            }, 50);
+        }, 50);
+
+        
+        window.addEventListener("wheel", scrollHandler, { passive: true });
+        window.addEventListener("touchmove", scrollHandler, { passive: true });
+        
+        projectElement.addEventListener("wheel", scrollBubblingOff, { passive: true });
+        projectElement.addEventListener("touchmove", scrollBubblingOff, { passive: true });
+        
+        projectElement.addEventListener("mouseover", backgroundHoverHandler);
+        projectElement.addEventListener("mouseleave", backgroundLeaveHandler);
+
+        window.addEventListener("click", closeFocus);
+        window.addEventListener("keydown", escapeHandler);
+        window.addEventListener("resize", resizeHandler);
+    });
+
+    learnMoreBtn.addEventListener("click", (event) => {
+        if (canCloseFocus === false) { return; }
+        event.stopPropagation();
+        closeFocus();
+    });
+
 
     const isInViewFunc = (rect) => {
         return rect.top < window.innerHeight && rect.bottom > 0;
@@ -575,71 +746,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 const currRowCount = ((projectEnd.getFullYear() * 12 + projectEnd.getMonth()) - (projectStart.getFullYear() * 12 + projectStart.getMonth())) + 1;
 
-                const projectElement = createProjectElement(project, timelineElement);
-                projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
-                projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 2;
-                //projectTimelineElement.appendChild(projectElement);
-                projectElement.style.gridColumn = `${i + 2} / span ${projectSpan}`;
 
-                projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
-                
-                const learnMoreBtn = projectElement.querySelector("#learn-more");
-                const learnMoreText = learnMoreBtn.querySelector("#learn-more-text");
-
-                const fullscreenBtn = projectElement.querySelector("#fullscreen-btn");
-                let isFullscreen = false;
-                const fullscreenHandler = () => {
-                    const elem = projectElement.querySelector(".project-demo-container");
-                    if (isFullscreen) {
-                        if (document.exitFullscreen) {
-                            document.exitFullscreen();
-                        } else if (document.webkitExitFullscreen) { /* Safari */
-                            document.webkitExitFullscreen();
-                        } else if (document.msExitFullscreen) { /* IE11 */
-                            document.msExitFullscreen();
-                        }
-                    }
-
-                    let promise = null;
-                    if (elem.requestFullscreen) {
-                        promise = elem.requestFullscreen();
-                    } else if (elem.webkitRequestFullscreen) { /* Safari */
-                        promise = elem.webkitRequestFullscreen();
-                    } else if (elem.msRequestFullscreen) { /* IE11 */
-                        promise = elem.msRequestFullscreen();
-                    }
-                    if (!promise) { return; }
-                    promise.then(() => {
-                        elem.classList.add("fullscreen");
-                        isFullscreen = true;
-                    });
-                }
-                if (fullscreenBtn) {
-                    fullscreenBtn.addEventListener("click", fullscreenHandler);
-                }
-
-                let canCloseFocus = false;
-                const closeFocus = (deltaScroll = 0) => {
-                    if (canCloseFocus === false) { return; }
-                    canCloseFocus = false;
-
-                    window.removeEventListener("wheel", scrollHandler, { passive: true });
-                    window.removeEventListener("touchmove", scrollHandler, { passive: true });
-                    
-                    window.removeEventListener("click", closeFocus);
-                    window.removeEventListener("keydown", escapeHandler);
-                    window.removeEventListener("resize", resizeHandler);
-
-                    root.style.setProperty('--project-opacity', '1');
-                    root.style.setProperty('--project-cursor', 'zoom-in');
-                    projectElement.classList.remove("project-focused");
-
-                    //document.body.style.cursor = "default";
-                    document.body.classList.remove("project-focused");
-                    root.classList.remove("project-focused");
-
-                    learnMoreText.innerText = "Learn more";
-
+                const closeFocusCallback = (deltaScroll = 0) => {
                     //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;
                     timelineElement.style.gridTemplateColumns = `6em ${'1fr '.repeat(timelines.length)}`;
                     timelineElement.style.gridGap = "";
@@ -649,67 +757,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                             root.style.setProperty(`--timeline-${j}-display`, `block`);
                         }, 30);
                     }
-
-
-                    // thought the 1fr min-width solution could've replaced this, 
-                    // no idea why the scroll position is off after closing focus
-                    // current (bandaid?) solution:
-                    setTimeout(() => {
-                        unlockScroll();
-                    }, 100);
-                    // TODO: I think the answer going to be a dyanmic pos scroll (or just a custom scroll system overall)
-                    deltaScroll = 0;
-                    lockScroll(projectElement, {offset: -30 + deltaScroll, time: 100, instant: deltaScroll === 0});
                 }
-                const scrollHandler = (event) => {
-                    let delta = 0;
-                    if (event && event.type === "wheel") {
-                        delta = event.deltaY;
-                    } else if (event && event.type === "touchmove") {
-                        const touch = event.touches[0];
-                        
-                        //console.log(event);
-
-                        delta = touch.clientY// - touch.startY;
-                        delta = 0
-                    }
-                    
-                    updateGradient();
-                    if (projectElement.classList.contains("project-focused")) {
-                        closeFocus(delta);
-                    }
-                }
-                const resizeHandler = () => {
-                    lockScroll(projectElement, {offset: -30, instant: true, time: 0});
-                    updateGradient();
-                }
-                const scrollBubblingOff = (event) => {
-                    updateGradient();
-                    event.stopPropagation();
-                }
-                const escapeHandler = (event) => {
-                    if (event.key === "Escape") {
-                        closeFocus();
-                    }
-                };
-                const backgroundHoverHandler = (event) => {
-                    root.classList.remove("background-hover");
-                }
-                const backgroundLeaveHandler = (event) => {
-                    root.classList.add("background-hover");
-                }
-                projectElement.addEventListener("click", () => {
-                    //root.style.setProperty('--project-opacity', '0.5');
-                    if (projectElement.classList.contains("project-focused")) {
-                        // TODO: maybe add alternatives instead of clicking again to close
-                        //closeFocus();
-                        event.stopPropagation();
-                        return;
-                    }
-                    if (root.style.getPropertyValue('--project-opacity') == '0'){ return }
-                    projectElement.classList.add("project-focused");
-                    root.classList.add("project-focused");
-
+                const clickCallback = () => {
                     // unnecessary with 1fr min-width solution, leaving here just in-case (TODO: del later)
                     /* 
                     for (let j = 0; j < timelines.length; j++) {
@@ -725,50 +774,15 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         timelineElement.style.gridTemplateColumns = `6em ${repeat1} ${thisCol} ${repeat2}`;
                         timelineElement.style.gridGap = `0px`;
                     }, 20);
+                };
+                
+                const projectElement = createProjectElement(project, timelineElement, closeFocusCallback, clickCallback);
+                projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
+                projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 2;
+                //projectTimelineElement.appendChild(projectElement);
+                projectElement.style.gridColumn = `${i + 2} / span ${projectSpan}`;
 
-                    root.style.setProperty('--project-opacity', '0');
-                    root.style.setProperty('--project-cursor', 'default');
-                    //document.body.style.cursor = "zoom-out";
-                    document.body.classList.add("project-focused");
-
-                    bufferElement.classList.add("buffer-active");
-                    setTimeout(() => {
-                        bufferElement.classList.remove("buffer-active");
-                    }, 300);
-
-                    learnMoreText.innerText = "Close (Esc)";
-
-                    setTimeout(() => {
-                        let top = projectElement.getBoundingClientRect().top + window.scrollY - 30;
-                        // 1fr min-width solution mitigated most issues
-                        // may have inadvertently caused issues with other ones
-                        // specifically full col projects, can leave this implmentation here
-                        // as a (bandaid?) solution
-                        lockScroll(projectElement, {offset: -30});
-
-                        setTimeout(() => {
-                            canCloseFocus = true;
-                        }, 50);
-                    }, 50);
-
-                    window.addEventListener("wheel", scrollHandler, { passive: true });
-                    window.addEventListener("touchmove", scrollHandler, { passive: true });
-                    
-                    projectElement.addEventListener("wheel", scrollBubblingOff, { passive: true });
-                    projectElement.addEventListener("touchmove", scrollBubblingOff, { passive: true });
-                    
-                    projectElement.addEventListener("mouseover", backgroundHoverHandler);
-                    projectElement.addEventListener("mouseleave", backgroundLeaveHandler);
-
-                    window.addEventListener("click", closeFocus);
-                    window.addEventListener("keydown", escapeHandler);
-                    window.addEventListener("resize", resizeHandler);
-                });
-                learnMoreBtn.addEventListener("click", (event) => {
-                    if (canCloseFocus === false) { return; }
-                    event.stopPropagation();
-                    closeFocus();
-                });
+                projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
             });
         });
 
