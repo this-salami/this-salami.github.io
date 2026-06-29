@@ -356,7 +356,8 @@ function parseProjectLinks(links){
     }).join('');
 }
 
-function createProjectElement(project) {
+function createProjectElement(project, parentElement) {
+    if (!project || !parentElement) { return; }
     const projectElement = document.createElement("div");
     projectElement.classList.add("project");
 
@@ -434,6 +435,56 @@ function createProjectElement(project) {
         });
     }
     */
+    parentElement.appendChild(projectElement);
+
+    const isInViewFunc = (rect) => {
+        return rect.top < window.innerHeight && rect.bottom > 0;
+    }
+
+    const updateGradient = () => {
+        if (projectElement.parentElement === null) { 
+            window.removeEventListener("mousemove", updateGradient);
+            window.removeEventListener("scroll", updateGradient);
+            return;
+        }
+        const rect = projectElement.getBoundingClientRect();
+        
+        if (!isInViewFunc(rect)) { return; }
+
+        const relativeMouseX = mouseX - rect.left;
+        const relativeMouseY = mouseY - rect.top;
+
+        projectElement.style.setProperty('--mouse-x', `${relativeMouseX}px`);
+        projectElement.style.setProperty('--mouse-y', `${relativeMouseY}px`);
+    }
+    window.addEventListener("mousemove", updateGradient);
+    projectElement.addEventListener("mouseover", updateGradient);
+    scrollCallbacks[`project-${project.dataIndex}`] = updateGradient;
+    window.addEventListener("scroll", updateGradient);
+
+    /*
+    projectElement.addEventListener("mouseout", () => {
+        //root.style.setProperty('--project-opacity', '1');
+        /*
+        window.scrollTo({
+            top: projectElement.getBoundingClientRect().top + window.scrollY,
+            behavior: 'smooth'
+        });
+        * /
+    });
+    */
+
+    const inViewHandler = () => {
+        const rect = projectElement.getBoundingClientRect();
+        if (!isInViewFunc(rect)) { return; }
+        
+        projectElement.classList.add("in-view");
+        window.removeEventListener("scroll", inViewHandler);
+    }
+
+    window.addEventListener("scroll", inViewHandler);
+    setTimeout(inViewHandler, 100); // Check if in view on load
+
     return projectElement;
 }
 
@@ -524,12 +575,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 const currRowCount = ((projectEnd.getFullYear() * 12 + projectEnd.getMonth()) - (projectStart.getFullYear() * 12 + projectStart.getMonth())) + 1;
 
-                const projectElement = createProjectElement(project);
+                const projectElement = createProjectElement(project, timelineElement);
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 2;
                 //projectTimelineElement.appendChild(projectElement);
                 projectElement.style.gridColumn = `${i + 2} / span ${projectSpan}`;
-                timelineElement.appendChild(projectElement);
 
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
                 
@@ -719,49 +769,6 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     event.stopPropagation();
                     closeFocus();
                 });
-
-                const updateGradient = () => {
-                    if (projectElement.parentElement === null) { 
-                        window.removeEventListener("mousemove", updateGradient);
-                        window.removeEventListener("scroll", updateGradient);
-                        return;
-                     }
-                    const rect = projectElement.getBoundingClientRect();
-
-                    const relativeMouseX = mouseX - rect.left;
-                    const relativeMouseY = mouseY - rect.top;
-
-                    projectElement.style.setProperty('--mouse-x', `${relativeMouseX}px`);
-                    projectElement.style.setProperty('--mouse-y', `${relativeMouseY}px`);
-                }
-                window.addEventListener("mousemove", updateGradient);
-                projectElement.addEventListener("mouseover", updateGradient);
-                scrollCallbacks[`project-${project.dataIndex}`] = updateGradient;
-                window.addEventListener("scroll", updateGradient);
-
-                /*
-                projectElement.addEventListener("mouseout", () => {
-                    //root.style.setProperty('--project-opacity', '1');
-                    /*
-                    window.scrollTo({
-                        top: projectElement.getBoundingClientRect().top + window.scrollY,
-                        behavior: 'smooth'
-                    });
-                    * /
-                });
-                */
-
-                const inViewHandler = () => {
-                    const rect = projectElement.getBoundingClientRect();
-                    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
-                    if (isInView) {
-                        projectElement.classList.add("in-view");
-                        window.removeEventListener("scroll", inViewHandler);
-                    }
-                }
-
-                window.addEventListener("scroll", inViewHandler);
-                setTimeout(inViewHandler, 100); // Check if in view on load
             });
         });
 
