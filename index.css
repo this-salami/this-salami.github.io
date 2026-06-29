@@ -691,12 +691,6 @@ a[href="#"] {
 .tags > span.ignore, #key.tags > span.ignore {
     text-decoration: line-through;
     
-    /*
-    filter: gray;
-    -webkit-filter: grayscale(1);
-    filter: grayscale(1);
-    */
-    color: white;
     background-color: gray;
     background: gray;
     animation: none;
@@ -744,76 +738,57 @@ a[href="#"] {
 
 .tags > .js {
     background-color: #aa8200; /* ffde25 */
-    color: white;
 }
 .tags > .python {
     background-color: #306998;
-    color: white;
 }
 .tags > .react {
     background-color: #418e9f; /* 58c4dc */
-    color: white;
 }
 .tags > .html {
     background-color: #e33926;
-    color: white;
 }
 .tags > .css {
     background-color: #264de4;
-    color: white;
 }
 .tags > .php {
     background-color: #777bb4;
-    color: white;
 }
 .tags > .lua {
     background-color: #000080;
-    color: white;
 }
-
 .tags > .game-design {
     background-color: #ff6347;
-    color: white;
 }
 .tags > .ui {
     background-color: #20b2aa;
-    color: white;
 }
 .tags > .front-end {
     background-color: #ff69b4;
-    color: white;
 }
 .tags > .open-source {
     background-color: #228b22;
-    color: white;
 }
 .tags > .interactive-demo {
     background-color: #8a2be2;
-    color: white;
 }
 .tags > .video-demo {
     background-color: #ff4500;
-    color: white;
 }
 .tags > .data-science {
     background-color: #2f00ff;
-    color: white;
 }
 .tags > .machine-learning {
     background-color: #ff1493;
-    color: white;
 }
 .tags > .ai {
     background-color: #00ced1;
-    color: white;
 }
 .tags > .jupyter-notebook {
     background-color: #cd6625;
-    color: white;
 }
 .tags > .certification {
     background-color: #000000;
-    color: white;
 }
 
 .tags > span:hover {
