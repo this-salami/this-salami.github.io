@@ -466,6 +466,48 @@ a[href="#"] {
     gap: 0px;
 }
 
+.project #learn-more {
+    padding-top: 10px;
+
+    font-size: 16px;
+    font-style: italic;
+    font-weight: bold;
+    color: var(--project-font-color);
+    opacity: 0.8;
+
+    display: inline-flex;
+    align-items: center;
+}
+.project #learn-more > svg {
+    bottom: 0px;
+    transform: translate(4px);
+    stroke: var(--project-font-color);
+
+    transition: transform 0.3s ease;
+}
+
+.project:not(.project-focused):hover #learn-more > svg {
+    transform: translate(8px);
+}
+.project:not(.project-focused):active #learn-more > svg {
+    transform: translate(4px);
+}
+
+.project.project-focused #learn-more:hover {
+    cursor: pointer;
+}
+
+.project.project-focused #learn-more > svg {
+    transform: translate(4px) rotate(90deg);
+}
+.project.project-focused #learn-more:hover > svg {
+    transform: translate(4px, -2px) rotate(90deg);
+}
+.project.project-focused #learn-more:active > svg {
+    transform: translate(4px, 1px) rotate(90deg);
+}
+
+
 .project .tags {
     padding-bottom: 12px;
     width: 90%;

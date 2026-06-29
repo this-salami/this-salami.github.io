@@ -339,6 +339,21 @@ function updateProject1fr(timelineCount) {
 }
 let projects1frCallback = null;
 
+
+function parseProjectLinks(links){
+    return links.map(linkData => {
+        [url, text] = linkData;
+        link = url.replace(/^(https?:\/\/)?(www\.)?/, ''); // remove protocol and www
+        let external = "";
+        
+        if (link.indexOf("github.com") === 0) {
+            external = "external-link github";
+        }
+
+        return `<a href="${url}" class="${external}" target="_blank">${text}</a>`;
+    }).join('');
+}
+
 // creates project elements and timeline elements
 function createProjectTimelines(timelines, start, end = new Date(), whitespaceTimeline) {
     const MonthCount = (end.getMonth() + end.getFullYear() * 12) - (start.getMonth() + start.getFullYear() * 12);
@@ -452,16 +467,16 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     <div class="project-demo-container" onclick="event.stopPropagation();">
                         <div class="demo-btn" id="fullscreen-btn">
                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path class="max" d="M 14 11 L 20 5 M 14 5 L 20 5 L 20 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
-                            <path class="max" d="M 11 14 L 5 20 M 5 14 L 5 20 L 11 20" stroke="black" stroke-width="2" stroke-linecap="round"/>
-                            <path class="min" d="M 15 10 L 21 4 M 15 4 L 15 10 L 21 10" stroke="black" stroke-width="2" stroke-linecap="round"/>
-                            <path class="min" d="M 10 15 L 4 21 M 4 15 L 10 15 L 10 21" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path class="max" d="M 14 11 L 20 5 M 14 5 L 20 5 L 20 11" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="max" d="M 11 14 L 5 20 M 5 14 L 5 20 L 11 20" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="min" d="M 15 10 L 21 4 M 15 4 L 15 10 L 21 10" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="min" d="M 10 15 L 4 21 M 4 15 L 10 15 L 10 21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                         </div>
                         <div class="demo-btn" id="newtab-btn" onclick="window.open('${project.demoLink}', '_blank'); event.stopPropagation();">
                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 14 11 L 21 4 M 16 4 L 21 4 L 21 9" stroke="black" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M 14 7 L 5 7 L 5 20 L 18 20 L 18 11" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M 14 11 L 21 4 M 16 4 L 21 4 L 21 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M 14 7 L 5 7 L 5 20 L 18 20 L 18 11" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                         </div>
                         <iframe
@@ -481,10 +496,16 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                             ${project.tags.map(tag => `<span class="${tag} unselectable" onclick="event.stopPropagation();">${tag}</span>`).join('')}
                         </div>
                         <p>${project.descriptionTeaser}</p>
-                        <a onclick="event.stopPropagation();" href="${project.link ? project.link : '#'}" ${project.link ? 'target="_blank"' : ''}>Learn more</a>
+                        <span id="learn-more" class="unselectable">
+                        <span id="learn-more-text">Learn more</span>
+                        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 3 8 L 13 8 L 9 5 M 9 11 L 13 8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        </span>
                         <div class="project-info">
                             <div class="project-info-content">
                                 <p>${project.description ? project.description : ''}</p>
+                                ${parseProjectLinks(project.links)}
                                 ${demo}
                             </div>
                         </div>
@@ -507,6 +528,9 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
                 
+                const learnMoreBtn = projectElement.querySelector("#learn-more");
+                const learnMoreText = learnMoreBtn.querySelector("#learn-more-text");
+
                 const fullscreenBtn = projectElement.querySelector("#fullscreen-btn");
                 let isFullscreen = false;
                 const fullscreenHandler = () => {
@@ -558,6 +582,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     //document.body.style.cursor = "default";
                     document.body.classList.remove("project-focused");
                     root.classList.remove("project-focused");
+
+                    learnMoreText.innerText = "Learn more";
 
                     //timelineElement.style.gridTemplateColumns = `6em repeat(${timelines.length}, 1fr)`;
                     timelineElement.style.gridTemplateColumns = `6em ${'1fr '.repeat(timelines.length)}`;
@@ -655,6 +681,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         bufferElement.classList.remove("buffer-active");
                     }, 300);
 
+                    learnMoreText.innerText = "Close (Esc)";
+
                     setTimeout(() => {
                         let top = projectElement.getBoundingClientRect().top + window.scrollY - 30;
                         // 1fr min-width solution mitigated most issues
@@ -680,6 +708,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     window.addEventListener("click", closeFocus);
                     window.addEventListener("keydown", escapeHandler);
                     window.addEventListener("resize", resizeHandler);
+                });
+                learnMoreBtn.addEventListener("click", (event) => {
+                    if (canCloseFocus === false) { return; }
+                    event.stopPropagation();
+                    closeFocus();
                 });
 
                 const updateGradient = () => {
