@@ -126,7 +126,7 @@ function createTimeline() {
         }
         if (project.latestTime && project.latestTime.valueOf() > latestTime.valueOf()) {
             latestTime = project.latestTime;
-            console.log(project.name, project.latestTime);
+            //console.log(project.name, project.latestTime);
         }
     }
 
@@ -356,6 +356,87 @@ function parseProjectLinks(links){
     }).join('');
 }
 
+function createProjectElement(project) {
+    const projectElement = document.createElement("div");
+    projectElement.classList.add("project");
+
+    // Unnecessary with 1fr min-width solution, leaving here just in-case (TODO: del later)
+    /*
+    let colDisplayLogic = '';
+    for (let j = 0; j < projectSpan; j++) {
+        colDisplayLogic += `var(--timeline-${i + j}-display, `;
+    }
+    colDisplayLogic += 'none' + ')'.repeat(projectSpan);
+
+    projectElement.style.display = colDisplayLogic;
+    */
+
+    let demo = "";
+    if (project.demoLink) {
+        demo = `
+        <h3 style="margin-bottom: 0;">Demo</h3>
+        <sub style="margin-bottom: 10px; display: block;"><i>Note: Some demos may not work properly in minimized mode, try full screen or going to the <a onclick="event.stopPropagation();" href="${project.demoLink}" target="_blank">link</a></i></sub>
+        <div class="project-demo-container" onclick="event.stopPropagation();">
+            <div class="demo-btn" id="fullscreen-btn">
+            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="max" d="M 14 11 L 20 5 M 14 5 L 20 5 L 20 11" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="max" d="M 11 14 L 5 20 M 5 14 L 5 20 L 11 20" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="min" d="M 15 10 L 21 4 M 15 4 L 15 10 L 21 10" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="min" d="M 10 15 L 4 21 M 4 15 L 10 15 L 10 21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            </div>
+            <div class="demo-btn" id="newtab-btn" onclick="window.open('${project.demoLink}', '_blank'); event.stopPropagation();">
+            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 14 11 L 21 4 M 16 4 L 21 4 L 21 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 14 7 L 5 7 L 5 20 L 18 20 L 18 11" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            </div>
+            <iframe
+                src="${project.demoLink}"
+                title="${project.name} Demo"
+                class="project-demo"
+                sandbox="allow-scripts allow-same-origin allow-popups"
+                width="100%" height="100%" frameborder="0" allow="fullscreen">
+            </iframe>
+        </div>`;
+    }
+
+    projectElement.innerHTML = `
+        <div class="project-content">
+            <h2>${project.name}</h2>
+            <div class="tags">
+                ${project.tags.map(tag => `<span class="${tag} unselectable" onclick="event.stopPropagation();">${tag}</span>`).join('')}
+            </div>
+            <p>${project.descriptionTeaser}</p>
+            <span id="learn-more" class="unselectable">
+            <span id="learn-more-text">Learn more</span>
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 3 8 L 13 8 L 9 5 M 9 11 L 13 8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            </span>
+            <div class="project-info">
+                <div class="project-info-content">
+                    <p>${project.description ? project.description : ''}</p>
+                    ${parseProjectLinks(project.links)}
+                    ${demo}
+                </div>
+            </div>
+        </div>
+    `;
+    /* // TODO: can reuse broken link code
+    if (project.link === "") {
+        const linkElement = projectElement.querySelector("a");
+        linkElement.setAttribute("tabindex", "-1");
+        linkElement.setAttribute("aria-disabled", "true");
+        // TODO: maybe make only clickable after focus (and fix losing focus after click)
+        linkElement.addEventListener("click", (event) => {
+            event.preventDefault();
+        });
+    }
+    */
+    return projectElement;
+}
+
 // creates project elements and timeline elements
 function createProjectTimelines(timelines, start, end = new Date(), whitespaceTimeline) {
     const MonthCount = (end.getMonth() + end.getFullYear() * 12) - (start.getMonth() + start.getFullYear() * 12);
@@ -443,85 +524,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
 
                 const currRowCount = ((projectEnd.getFullYear() * 12 + projectEnd.getMonth()) - (projectStart.getFullYear() * 12 + projectStart.getMonth())) + 1;
 
-                if (project.name === "CS 100 Final Project: Bank App UI") {
-                    console.log(currRowCount, totalRows, projectStart, projectEnd);
-                }
-
-                const projectElement = document.createElement("div");
-                projectElement.classList.add("project");
-
-                // Unnecessary with 1fr min-width solution, leaving here just in-case (TODO: del later)
-                /*
-                let colDisplayLogic = '';
-                for (let j = 0; j < projectSpan; j++) {
-                    colDisplayLogic += `var(--timeline-${i + j}-display, `;
-                }
-                colDisplayLogic += 'none' + ')'.repeat(projectSpan);
-
-                projectElement.style.display = colDisplayLogic;
-                */
-
-                let demo = "";
-                if (project.demoLink) {
-                    demo = `
-                    <h3 style="margin-bottom: 0;">Demo</h3>
-                    <sub style="margin-bottom: 10px; display: block;"><i>Note: Some demos may not work properly in minimized mode, try full screen or going to the <a onclick="event.stopPropagation();" href="${project.demoLink}" target="_blank">link</a></i></sub>
-                    <div class="project-demo-container" onclick="event.stopPropagation();">
-                        <div class="demo-btn" id="fullscreen-btn">
-                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path class="max" d="M 14 11 L 20 5 M 14 5 L 20 5 L 20 11" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path class="max" d="M 11 14 L 5 20 M 5 14 L 5 20 L 11 20" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path class="min" d="M 15 10 L 21 4 M 15 4 L 15 10 L 21 10" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path class="min" d="M 10 15 L 4 21 M 4 15 L 10 15 L 10 21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        </div>
-                        <div class="demo-btn" id="newtab-btn" onclick="window.open('${project.demoLink}', '_blank'); event.stopPropagation();">
-                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 14 11 L 21 4 M 16 4 L 21 4 L 21 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M 14 7 L 5 7 L 5 20 L 18 20 L 18 11" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        </div>
-                        <iframe
-                            src="${project.demoLink}"
-                            title="${project.name} Demo"
-                            class="project-demo"
-                            sandbox="allow-scripts allow-same-origin allow-popups"
-                            width="100%" height="100%" frameborder="0" allow="fullscreen">
-                        </iframe>
-                    </div>`;
-                }
-
-                projectElement.innerHTML = `
-                    <div class="project-content">
-                        <h2>${project.name}</h2>
-                        <div class="tags">
-                            ${project.tags.map(tag => `<span class="${tag} unselectable" onclick="event.stopPropagation();">${tag}</span>`).join('')}
-                        </div>
-                        <p>${project.descriptionTeaser}</p>
-                        <span id="learn-more" class="unselectable">
-                        <span id="learn-more-text">Learn more</span>
-                        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 3 8 L 13 8 L 9 5 M 9 11 L 13 8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        </span>
-                        <div class="project-info">
-                            <div class="project-info-content">
-                                <p>${project.description ? project.description : ''}</p>
-                                ${parseProjectLinks(project.links)}
-                                ${demo}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                if (project.link === "") {
-                    const linkElement = projectElement.querySelector("a");
-                    linkElement.setAttribute("tabindex", "-1");
-                    linkElement.setAttribute("aria-disabled", "true");
-                    // TODO: maybe make only clickable after focus (and fix losing focus after click)
-                    linkElement.addEventListener("click", (event) => {
-                        event.preventDefault();
-                    });
-                }
+                const projectElement = createProjectElement(project);
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 2;
                 //projectTimelineElement.appendChild(projectElement);
@@ -615,7 +618,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     } else if (event && event.type === "touchmove") {
                         const touch = event.touches[0];
                         
-                        console.log(event);
+                        //console.log(event);
 
                         delta = touch.clientY// - touch.startY;
                         delta = 0
