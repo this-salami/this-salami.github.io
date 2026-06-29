@@ -734,6 +734,7 @@ a[href="#"] {
     border-radius: 4px;
     font-size: 12px;
     letter-spacing: 0.5px;
+    text-decoration-skip-ink: none;
 
     margin: 1px;
 }
