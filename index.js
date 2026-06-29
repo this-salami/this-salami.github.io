@@ -1,6 +1,9 @@
 const root = document.documentElement;
 
 const tags = new Set();
+
+const pinnedProjectsContainer = document.getElementById("pinned-projects");
+
 //const timelineContainer = document.getElementById("timeline-container");
 const timelineElement = document.getElementById("timeline");
 //const projectContainer = document.getElementById("project-container");
@@ -35,6 +38,24 @@ function getFilteredProjects() {
             res.push(project);
         }
     });
+    return res;
+}
+
+function getPinnedProjects() {
+    let res = [];
+
+    projects.forEach(project => {
+        if (!project.tags.includes("pinned")) { return; }
+        res.push(project);
+    });
+
+    // sort so that latest is first
+    res.sort((projectA, projectB) => {
+        let earliestA = projectA.earlierstTime;
+        let earliestB = projectB.earlierstTime;
+        return earliestB - earliestA;
+    });
+
     return res;
 }
 
@@ -891,4 +912,22 @@ function createTimelineBar(start, end=new Date()) {
     }
 }
 
+function createProjectsPinned() {
+    const pinnedProjects = getPinnedProjects();
+    pinnedProjects.forEach(project => {
+        const closeFocusCallback = () => {
+
+        }
+
+        const clickCallback = () => {
+
+        }
+
+        const projectElement = createProjectElement(project, pinnedProjectsContainer, closeFocusCallback, clickCallback);
+        projectElement.style.setProperty('--project-max-height', `calc(100vh - 60px)`);
+        
+    });
+}
+
 createTimeline();
+createProjectsPinned();

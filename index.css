@@ -219,7 +219,7 @@ a[href="#"] {
     row-gap: 5px;
 
     width: max(40%, 300px);
-    max-width: calc(100vw - 20px);
+    max-width: calc(100% - 20px);
     margin: 0;
 
     overflow: hidden;
@@ -267,6 +267,40 @@ a[href="#"] {
 #filter-box.hidden > p {
     transform: translate(0, -300px);
 }
+
+
+#pinned-projects {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 2px 10px;
+    align-items: center;
+    justify-content: center;
+
+    width: calc(100% - 20px);
+    margin: 10px;
+}
+
+/* TODO: make grid nice and dynamic */
+#pinned-projects > .project {
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 300px;
+}
+
+#pinned-projects > .project.project-focused {
+    aspect-ratio: auto;
+    max-width: none;
+    width: calc(max(80vw, 600px) - 3em - 20px);
+    left: 0;
+    margin: 0 10vw;
+}
+
+#pinned-projects > .project > .project-content {
+    min-width: 0;
+}
+
 
 #timeline-container {
     display: grid;
@@ -745,6 +779,9 @@ a[href="#"] {
     margin: 1px;
 }
 
+.tags > .pinned {
+    background-color: #1e1e1e;
+}
 .tags > .js {
     background-color: #aa8200; /* ffde25 */
 }

@@ -6,7 +6,7 @@ const projects = [
             ["https://www.roblox.com/games/6596879170/Fidget-Game-Beta#!/about", "Roblox Page"]
         ],
         time: [[new Date("2020-12-01"), new Date("2021-07-01")]],
-        tags: ["lua", "game-design", "ui", "video-demo"]
+        tags: ["lua", "game-design", "ui", "video-demo", "pinned"]
     },
     { // TODO: find more of my python macros & make video demo
         name: "Python Autoclicker",
@@ -63,7 +63,7 @@ const projects = [
         descriptionTeaser: "Assignment in Highschool coding class, the game of chess implemented in Python.",
         links: [], // TODO: add link
         time: [[new Date("2025-01-01"), new Date("2025-04-01")]], 
-        tags: ["python", "open-source", "video-demo", "ui"] // TODO: add demo
+        tags: ["python", "open-source", "video-demo", "ui", "pinned"] // TODO: add demo
     },
     { // TODO: add pages
         name: "Button Outline Demo",
@@ -148,7 +148,7 @@ const projects = [
             ["https://github.com/this-salami/class-selector", "GitHub Repo"]
         ],
         time: [[new Date("2026-01-01"), new Date("2026-04-01")]],
-        tags: ["js", "html", "css", "php", "react", "front-end", "open-source", "interactive-demo"]
+        tags: ["js", "html", "css", "php", "react", "front-end", "open-source", "interactive-demo", "pinned"]
     },
     { // TODO: find
         name: "db",
@@ -253,7 +253,7 @@ const projects = [
             ["https://github.com/this-salami/Goal-Wise", "GitHub Repo"],
         ],
         time: [[new Date("2025-10-01"), new Date("2025-11-01")]],
-        tags: ["react", "js", "css", "open-source", "ui", "front-end", "interactive-demo"]
+        tags: ["react", "js", "css", "open-source", "ui", "front-end", "interactive-demo", "pinned"]
     },
     {
         name: "IBM DS Certification Data Visualization Project",
@@ -262,6 +262,6 @@ const projects = [
             ["https://github.com/this-salami/data-visualization-project-IBMDS", "GitHub Repo"],
         ],
         time: [[new Date("2026-06-01")]],
-        tags: ["python", "data-science", "open-source", "jupyter-notebook", "certification"]
+        tags: ["python", "data-science", "open-source", "jupyter-notebook", "certification", "pinned"]
     }
 ];

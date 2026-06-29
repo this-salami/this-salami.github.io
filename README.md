@@ -28,9 +28,6 @@ filtering system with optional, ignored, and required tags
 
 
 <!-- TODO:
-main projects section
-
-
 get project data 
 placeholder text
 
