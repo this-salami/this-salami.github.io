@@ -721,6 +721,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 });
 
                 const updateGradient = () => {
+                    if (projectElement.parentElement === null) { 
+                        window.removeEventListener("mousemove", updateGradient);
+                        window.removeEventListener("scroll", updateGradient);
+                        return;
+                     }
                     const rect = projectElement.getBoundingClientRect();
 
                     const relativeMouseX = mouseX - rect.left;
@@ -734,6 +739,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 scrollCallbacks[`project-${project.dataIndex}`] = updateGradient;
                 window.addEventListener("scroll", updateGradient);
 
+                /*
                 projectElement.addEventListener("mouseout", () => {
                     //root.style.setProperty('--project-opacity', '1');
                     /*
@@ -741,8 +747,9 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                         top: projectElement.getBoundingClientRect().top + window.scrollY,
                         behavior: 'smooth'
                     });
-                    */
+                    * /
                 });
+                */
 
                 const inViewHandler = () => {
                     const rect = projectElement.getBoundingClientRect();
