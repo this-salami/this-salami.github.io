@@ -466,6 +466,12 @@ a[href="#"] {
     transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, 
     height 0.3s ease, width 0.3s ease -0.1s, left 0.3s linear -0.3s, 
     background-color 0.3s ease;
+
+    
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .project.in-view {
@@ -503,6 +509,11 @@ a[href="#"] {
     transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, 
     height 0.3s ease, width 0.2s ease, left 0.2s linear 0.1s,
     background-color 0.3s ease;
+
+    user-select: auto;
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
 }
 
 .project > .project-content {
