@@ -796,7 +796,9 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     let thisCol = '1fr '.repeat(projectSpan);
                     let repeat2 = '0fr '.repeat(timelines.length - i - projectSpan);
                     setTimeout(() => {
-                        timelineElement.style.gridTemplateColumns = `6em ${repeat1} ${thisCol} ${repeat2}`;
+                        let gridGap = getComputedStyle(timelineElement).getPropertyValue('column-gap') || "0px";
+                        if (gridGap === "normal") { gridGap = "0px"; }
+                        timelineElement.style.gridTemplateColumns = `calc(6em + ${gridGap}) ${repeat1} ${thisCol} ${repeat2}`;
                         timelineElement.style.gridGap = `0px`;
                     }, 20);
                 };

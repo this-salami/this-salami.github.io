@@ -336,7 +336,7 @@ a[href="#"] {
     column-gap: 20px;
 
     interpolate-size: allow-keywords;
-    transition: grid-template-columns 0.2s ease;
+    transition: grid-template-columns 0.3s ease -0.1s;
 }
 
 #timeline > .timeline-element {
@@ -462,7 +462,7 @@ a[href="#"] {
     transform: translateX(-100px);
 
     interpolate-size: allow-keywords;
-    /* NOTE: when editing also check in .project.in-view.project-focused; these set to center */
+    /* NOTE: when editing also check in .project.in-view.project-focused; these set to unfocused */
     transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, 
     height 0.3s ease, width 0.3s ease -0.1s, left 0.3s linear -0.3s, 
     background-color 0.3s ease;
@@ -496,8 +496,10 @@ a[href="#"] {
     height: var(--project-max-height, auto);
     width: calc(max(70vw, 600px) - 3em - 20px);
     max-width: calc(100vw - 12em - 20px);
+    /* So the issue of the left side projects snapping back is cuz they too small
+    so when growing (esp on smaller screens), so make delay on cols -0.1s (experiment) */
     left: -3em;
-    /* NOTE: when editing also check in .project; these set back to normal */
+    /* NOTE: when editing also check in .project;                these set to focus            */
     transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, 
     height 0.3s ease, width 0.2s ease, left 0.2s linear 0.1s,
     background-color 0.3s ease;

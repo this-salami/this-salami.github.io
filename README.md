@@ -21,9 +21,17 @@ dynamic project cards with hover effects and focus state
    - hides other projects when focused and increases own column width
  - mouse gradient effect
  - to change just edit projects.js
+ - project demos/videos and links can be added to project cards
+ - full screen demos
+ - pinned project ui and timeline ui
 filtering system with optional, ignored, and required tags
  - responsive filter layout
  - filter logic updates timeline and project visibility
+
+Notes: 
+  - left side projects snapping due to being too small, esp on smaller screens
+    made delay on cols -0.1s (gotta experiment)
+    (technically was also due to col gap, but still persisted after that fix too for laptop)
 -->
 
 
