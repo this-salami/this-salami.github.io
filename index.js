@@ -672,9 +672,11 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
         
         projectElement.classList.add("in-view");
         window.removeEventListener("scroll", inViewHandler);
+        window.removeEventListener("resize", inViewHandler);
     }
 
     window.addEventListener("scroll", inViewHandler);
+    window.addEventListener("resize", inViewHandler);
     setTimeout(inViewHandler, 100); // Check if in view on load
 
     return projectElement;
