@@ -1,6 +1,7 @@
 :root {
     --project-opacity: 1;
     --project-cursor: zoom-in;
+    --project-pointer-events: auto;
     
     --background-color: var(--background-default-color); /* #f0f0f0 */
     --background-default-color: #d5e6ff; /* #f0f0f0 */
@@ -470,6 +471,7 @@ a[href="#"] {
 .project.in-view {
     transform: translateX(0);
     opacity: var(--project-opacity, 1);
+    pointer-events: var(--project-pointer-events, auto);
     left: 0;
 }
 
@@ -489,6 +491,7 @@ a[href="#"] {
 }
 .project.in-view.project-focused {
     cursor: default;
+    pointer-events: auto;
     opacity: 1;
     height: var(--project-max-height, auto);
     width: calc(max(70vw, 600px) - 3em - 20px);

@@ -507,6 +507,7 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
 
         root.style.setProperty('--project-opacity', '1');
         root.style.setProperty('--project-cursor', 'zoom-in');
+        root.style.setProperty('--project-pointer-events', 'auto');
         projectElement.classList.remove("project-focused");
 
         //document.body.style.cursor = "default";
@@ -584,6 +585,7 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
 
         root.style.setProperty('--project-opacity', '0');
         root.style.setProperty('--project-cursor', 'default');
+        root.style.setProperty('--project-pointer-events', 'auto');
         //document.body.style.cursor = "zoom-out";
         document.body.classList.add("project-focused");
 
