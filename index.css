@@ -271,8 +271,8 @@ a[href="#"] {
 
 #pinned-projects {
     position: relative;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(var(--projects-per-row), auto);
 
     gap: 2px 10px;
     align-items: center;
@@ -280,21 +280,31 @@ a[href="#"] {
 
     width: calc(100% - 20px);
     margin: 10px;
+
+    --project-width: 300px;
+    --projects-per-row: 1;
 }
 
-/* TODO: make grid nice and dynamic */
+/* TODO: make grid nice and dynamic (Maybe it working now?) */
 #pinned-projects > .project {
-    aspect-ratio: 1;
-    width: 100%;
-    max-width: 300px;
+    width: var(--project-width);
+    height: var(--project-width);
+    grid-column-start: calc(var(--col) + 1);
+    grid-row-start: calc(var(--row) + 1);
+
+    --col: 0;
+    --row: 0;
 }
 
 #pinned-projects > .project.project-focused {
-    aspect-ratio: auto;
-    max-width: none;
     width: calc(max(80vw, 600px) - 3em - 20px);
+    height: var(--project-max-height, auto);
     left: 0;
     margin: 0 10vw;
+
+    transform: translate( /* centers on focus */
+        calc(-1 * (var(--col) - (var(--projects-per-row) - 1) / 2) * (var(--project-width) + 20px)), 0
+    );
 }
 
 #pinned-projects > .project > .project-content {
