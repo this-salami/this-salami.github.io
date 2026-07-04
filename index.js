@@ -121,6 +121,7 @@ for (let i = 0; i < projects.length; i++) {
     project.dataIndex = i;
 }
 
+const projectRemovingCallbacks = {};
 function clearTimeline() {
     timelineElement.innerHTML = "";
     //projectContainer.innerHTML = "";
@@ -129,8 +130,16 @@ function clearTimeline() {
         if (!scrollCallbacks.hasOwnProperty(key)) continue;
         delete scrollCallbacks[key];
     }
+    for (const key in projectRemovingCallbacks) {
+        if (!projectRemovingCallbacks.hasOwnProperty(key)) continue;
+        // TODO: I think this is working, crazy improvements (it was so cooked :sob:)
+        projectRemovingCallbacks[key]();
+        delete projectRemovingCallbacks[key];
+    }
 
-    window.removeEventListener("resize", projects1frCallback);
+    if (projects1frCallback) {
+        window.removeEventListener("resize", projects1frCallback);
+    }
 }
 
 // creates entire timeline
@@ -572,7 +581,7 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
     const backgroundLeaveHandler = (event) => {
         root.classList.add("background-hover");
     }
-    projectElement.addEventListener("click", () => {
+    const onClick = (event) => {
         //root.style.setProperty('--project-opacity', '0.5');
         if (projectElement.classList.contains("project-focused")) {
             // TODO: maybe add alternatives instead of clicking again to close
@@ -627,13 +636,15 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
         window.addEventListener("click", closeFocus);
         window.addEventListener("keydown", escapeHandler);
         window.addEventListener("resize", resizeHandler);
-    });
+    }
+    projectElement.addEventListener("click", onClick);
 
-    learnMoreBtn.addEventListener("click", (event) => {
+    const learnMoreBtnClick = (event) => {
         if (canCloseFocus === false) { return; }
         event.stopPropagation();
         closeFocus();
-    });
+    }
+    learnMoreBtn.addEventListener("click", learnMoreBtnClick);
 
 
     const isInViewFunc = (rect) => {
@@ -685,6 +696,23 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
     window.addEventListener("scroll", inViewHandler);
     window.addEventListener("resize", inViewHandler);
     setTimeout(inViewHandler, 100); // Check if in view on load
+
+
+    function removeListeners() {
+        if (fullscreenBtn) {
+            fullscreenBtn.removeEventListener("click", fullscreenHandler);
+        }
+
+        learnMoreBtn.removeEventListener("click", learnMoreBtnClick);
+        projectElement.removeEventListener("click", onClick);
+
+        window.removeEventListener("scroll", inViewHandler);
+        window.removeEventListener("resize", inViewHandler);
+
+        window.removeEventListener("mousemove", updateGradient);
+        window.removeEventListener("scroll", updateGradient);
+    }
+    projectRemovingCallbacks[`project-${project.dataIndex}`] = removeListeners;
 
     return projectElement;
 }
