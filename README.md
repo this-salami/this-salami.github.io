@@ -27,6 +27,10 @@ dynamic project cards with hover effects and focus state
 filtering system with optional, ignored, and required tags
  - responsive filter layout
  - filter logic updates timeline and project visibility
+pinned projects section with dynamic layout
+  - responsive layout (increases columns based on screen width)
+  - centers last row of projects (mostly mental math, some inspo came from https://css-irl.info/controlling-leftover-grid-items/)
+    - generalized the technique to work with any number of projects with JS
 
 Notes: 
   - left side projects snapping due to being too small, esp on smaller screens

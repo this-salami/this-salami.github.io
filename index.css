@@ -273,7 +273,7 @@ a[href="#"] {
 #pinned-projects {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(var(--projects-per-row), auto);
+    grid-template-columns: repeat(var(--real-col-count), auto);
 
     gap: 2px 10px;
     align-items: center;
@@ -284,16 +284,19 @@ a[href="#"] {
 
     --project-width: 300px;
     --projects-per-row: 1;
+    --real-col-count: 0;
 }
 
 /* TODO: make grid nice and dynamic (Maybe it working now?) */
 #pinned-projects > .project {
     width: var(--project-width);
     height: var(--project-width);
-    grid-column-start: calc(var(--col) + 1);
+    grid-column: calc(var(--real-col) + 1) / span var(--col-span);
     grid-row-start: calc(var(--row) + 1);
 
     --col: 0;
+    --col-span: 1;
+    --real-col: 0;
     --row: 0;
 }
 
