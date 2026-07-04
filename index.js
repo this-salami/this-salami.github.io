@@ -71,16 +71,21 @@ tags.forEach(tag => {
 
     filterItem.innerText = tag;
 
+    // TODO: make a better way to show what the filter does (maybe a tooltip or something)
+    filterItem.title = "Optional filter: tag isn't required, nor hidden";
     filterCheckboxContainer.appendChild(filterItem);
 
     filterItem.addEventListener("click", () => {
         if (filterItem.classList.contains("ignore")) {
             filterItem.classList.remove("ignore");
             filterItem.classList.add("exclusive");
+            filterItem.title = "Exclusive filter: Only show projects with this tag";
         } else if (filterItem.classList.contains("exclusive")) {
             filterItem.classList.remove("exclusive");
+            filterItem.title = "Optional filter: tag isn't required, nor hidden";
         } else {
             filterItem.classList.add("ignore");
+            filterItem.title = "Ignored filter: Hide projects with this tag";
         }
 
         createTimeline();
