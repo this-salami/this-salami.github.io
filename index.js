@@ -432,7 +432,8 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
                 title="${project.name} Demo"
                 class="project-demo"
                 sandbox="allow-scripts allow-same-origin allow-popups"
-                width="100%" height="100%" frameborder="0" allow="fullscreen">
+                width="100%" height="100%" frameborder="0" allow="fullscreen"
+                loading="lazy">
             </iframe>
         </div>`;
     }
@@ -543,6 +544,17 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
         // TODO: I think the answer going to be a dyanmic pos scroll (or just a custom scroll system overall)
         deltaScroll = 0;
         lockScroll(projectElement, {offset: -30 + deltaScroll, time: 100, instant: deltaScroll === 0});
+
+
+        // optimization: reset iframe
+        const iframe = projectElement.querySelector("iframe");
+        if (iframe) {
+            const src = iframe.src;
+            iframe.src = "";
+            setTimeout(() => {
+                iframe.src = src;
+            }, 200);
+        }
     }
     const scrollHandler = (event) => {
         let delta = 0;
