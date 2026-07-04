@@ -128,10 +128,12 @@ function clearTimeline() {
 
     for (const key in scrollCallbacks) {
         if (!scrollCallbacks.hasOwnProperty(key)) continue;
+        if (key.startsWith("pinned-project-")) continue; // pinned projects are not removed when clearing timeline
         delete scrollCallbacks[key];
     }
     for (const key in projectRemovingCallbacks) {
         if (!projectRemovingCallbacks.hasOwnProperty(key)) continue;
+        if (key.startsWith("pinned-project-")) continue; // pinned projects are not removed when clearing timeline
         // TODO: I think this is working, crazy improvements (it was so cooked :sob:)
         projectRemovingCallbacks[key]();
         delete projectRemovingCallbacks[key];
@@ -393,6 +395,9 @@ function parseProjectLinks(links){
 
 function createProjectElement(project, parentElement, closeFocusCallback, clickCallback) {
     if (!project || !parentElement) { return; }
+    const isPinnedElement = parentElement === pinnedProjectsContainer;
+    const projectIdentifier = isPinnedElement ? `pinned-project-${project.dataIndex}` : `timeline-project-${project.dataIndex}`;
+
     const projectElement = document.createElement("div");
     projectElement.classList.add("project");
 
@@ -681,7 +686,7 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
     }
     window.addEventListener("mousemove", updateGradient);
     projectElement.addEventListener("mouseover", updateGradient);
-    scrollCallbacks[`project-${project.dataIndex}`] = updateGradient;
+    scrollCallbacks[projectIdentifier] = updateGradient;
     window.addEventListener("scroll", updateGradient);
 
     /*
@@ -724,7 +729,7 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
         window.removeEventListener("mousemove", updateGradient);
         window.removeEventListener("scroll", updateGradient);
     }
-    projectRemovingCallbacks[`project-${project.dataIndex}`] = removeListeners;
+    projectRemovingCallbacks[projectIdentifier] = removeListeners;
 
     return projectElement;
 }
