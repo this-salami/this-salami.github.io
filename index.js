@@ -122,6 +122,8 @@ for (let i = 0; i < projects.length; i++) {
 }
 
 const projectRemovingCallbacks = {};
+const projectClickCallbacks = {};
+let focusedProjectIdentifier = null; // TODO: idk if this is needed
 function clearTimeline() {
     timelineElement.innerHTML = "";
     //projectContainer.innerHTML = "";
@@ -137,7 +139,10 @@ function clearTimeline() {
         // TODO: I think this is working, crazy improvements (it was so cooked :sob:)
         projectRemovingCallbacks[key]();
         delete projectRemovingCallbacks[key];
+        delete projectClickCallbacks[key];
     }
+
+    focusedProjectIdentifier = null;
 
     if (projects1frCallback) {
         window.removeEventListener("resize", projects1frCallback);
@@ -393,14 +398,14 @@ function parseProjectLinks(links){
     }).join('');
 }
 
-function createProjectElement(project, parentElement, closeFocusCallback, clickCallback) {
+function createProjectElement(project, parentElement, projectIdentifier, closeFocusCallback, clickCallback) {
     if (!project || !parentElement) { return; }
-    const isPinnedElement = parentElement === pinnedProjectsContainer;
-    const projectIdentifier = isPinnedElement ? `pinned-project-${project.dataIndex}` : `timeline-project-${project.dataIndex}`;
+    if (!projectIdentifier) { return; }
 
     const projectElement = document.createElement("div");
     projectElement.classList.add("project");
-
+    projectElement.id = projectIdentifier;
+    
     // Unnecessary with 1fr min-width solution, leaving here just in-case (TODO: del later)
     /*
     let colDisplayLogic = '';
@@ -560,6 +565,12 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
                 iframe.src = src;
             }, 200);
         }
+
+        focusedProjectIdentifier = null;
+
+        const url = new URL(window.location);
+        url.searchParams.delete('project');
+        window.history.pushState({}, '', url);
     }
     const scrollHandler = (event) => {
         let delta = 0;
@@ -653,6 +664,12 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
         window.addEventListener("click", closeFocus);
         window.addEventListener("keydown", escapeHandler);
         window.addEventListener("resize", resizeHandler);
+
+        focusedProjectIdentifier = projectIdentifier;
+
+        const url = new URL(window.location);
+        url.searchParams.set('project', projectIdentifier);
+        window.history.pushState({}, '', url);
     }
     projectElement.addEventListener("click", onClick);
 
@@ -686,7 +703,9 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
     }
     window.addEventListener("mousemove", updateGradient);
     projectElement.addEventListener("mouseover", updateGradient);
+    
     scrollCallbacks[projectIdentifier] = updateGradient;
+
     window.addEventListener("scroll", updateGradient);
 
     /*
@@ -729,7 +748,10 @@ function createProjectElement(project, parentElement, closeFocusCallback, clickC
         window.removeEventListener("mousemove", updateGradient);
         window.removeEventListener("scroll", updateGradient);
     }
+
     projectRemovingCallbacks[projectIdentifier] = removeListeners;
+
+    projectClickCallbacks[projectIdentifier] = [onClick, closeFocus];
 
     return projectElement;
 }
@@ -853,7 +875,7 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     }, 20);
                 };
                 
-                const projectElement = createProjectElement(project, timelineElement, closeFocusCallback, clickCallback);
+                const projectElement = createProjectElement(project, timelineElement, `timeline-project-${project.dataIndex}`, closeFocusCallback, clickCallback);
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 2;
                 //projectTimelineElement.appendChild(projectElement);
@@ -970,7 +992,7 @@ function createTimelineBar(start, end=new Date()) {
 
 function createProjectsPinned() {
     const pinnedProjects = getPinnedProjects();
-    pinnedProjects.forEach(project => {
+    pinnedProjects.forEach((project, index) => {
         const closeFocusCallback = () => {
 
         }
@@ -979,11 +1001,51 @@ function createProjectsPinned() {
 
         }
 
-        const projectElement = createProjectElement(project, pinnedProjectsContainer, closeFocusCallback, clickCallback);
+        const projectElement = createProjectElement(project, pinnedProjectsContainer, `pinned-project-${index}`, closeFocusCallback, clickCallback);
         projectElement.style.setProperty('--project-max-height', `calc(100vh - 60px)`);
         
     });
 }
 
+// TODO: not sure if this system should stay, might be nice for nav or sharing links, 
+// but could also be annoying
+function urlParamsLoad() {
+    const url = new URL(window.location);
+    const projectParam = url.searchParams.get('project');
+
+    console.log("projectParam", projectParam, "focusedProjectIdentifier", focusedProjectIdentifier);
+   
+    // if a project is already focused, and the url param is different/null, close the focused project
+    if (focusedProjectIdentifier && focusedProjectIdentifier !== projectParam &&
+        projectClickCallbacks[focusedProjectIdentifier] && 
+        projectClickCallbacks[focusedProjectIdentifier][1]
+    ) {
+        setTimeout(() => {
+            projectClickCallbacks[focusedProjectIdentifier][1]();
+        }, 20);
+    }
+
+    // if the url param is null, don't open any project
+    if (!projectParam) { 
+        return;
+    }
+
+    const projectElement = document.getElementById(projectParam);
+    // if the url param is valid, open the project
+    if (projectClickCallbacks[projectParam] && projectClickCallbacks[projectParam][0] && projectElement) { 
+        projectElement.classList.add("in-view");
+        setTimeout(() => {
+            projectClickCallbacks[projectParam][0]();
+        }, 20);
+    } else {
+        // if the url param is invalid, remove it from the url
+        url.searchParams.delete('project');
+        window.history.replaceState({}, '', url);
+    }
+}
+
 createTimeline();
 createProjectsPinned();
+
+window.addEventListener("popstate", urlParamsLoad);
+window.addEventListener("load", urlParamsLoad);
