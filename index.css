@@ -52,6 +52,7 @@ body, html {
     transition: background-color 0.3s ease;
 
     font-family: "Atkinson Hyperlegible Mono", sans-serif;
+    font-size: 14px;
 }
 
 #background {
@@ -481,6 +482,17 @@ a[href="#"] {
     -ms-user-select: none;
 }
 
+.project::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 26px;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.8) 40%, rgba(0, 0, 0, 1) 100%);
+    background-color: inherit;
+}
+
 .project.in-view {
     transform: translateX(0);
     opacity: var(--project-opacity, 1);
@@ -540,7 +552,8 @@ a[href="#"] {
 }
 
 .project #learn-more {
-    padding-top: 10px;
+    position: absolute;
+    padding-top: 4px;
 
     font-size: 16px;
     font-style: italic;
@@ -550,6 +563,9 @@ a[href="#"] {
 
     display: inline-flex;
     align-items: center;
+
+    z-index: 1;
+    bottom: 5px;
 }
 .project #learn-more > svg {
     bottom: 0px;
@@ -566,8 +582,15 @@ a[href="#"] {
     transform: translate(4px);
 }
 
+.project.project-focused #learn-more {
+    position: static;
+    bottom: auto;
+}
 .project.project-focused #learn-more:hover {
     cursor: pointer;
+}
+.project.project-focused::after {
+    visibility: hidden;
 }
 
 .project.project-focused #learn-more > svg {
