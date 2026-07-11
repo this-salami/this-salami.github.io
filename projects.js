@@ -61,9 +61,17 @@ const projects = [
     { // TODO: add pages & repo
         name: "Python Chess Game",
         descriptionTeaser: "Assignment in Highschool coding class, the game of chess implemented in Python.",
-        links: [], // TODO: add link
+        description: `
+        This project is a Python implementation of the classic game of chess. In addition to the original python files (tsapp)
+        from highschool, there is an updated python tkinter implementation for standard use (check repo). And a web-based demo so that
+        download is not necessary to try it. All versions have the same logic and functionality but differ in the implementation of UI.
+        `,
+        links: [
+            ["https://github.com/this-salami/chess-project", "GitHub Repo"]
+        ],
+        demoLink: "https://this-salami.github.io/chess-project/",
         time: [[new Date("2025-01-01"), new Date("2025-04-01")]], 
-        tags: ["python", "open-source", "video-demo", "ui", "pinned"] // TODO: add demo
+        tags: ["python", "open-source", "interactive-demo", "ui", "pinned"] // TODO: add demo
     },
     { // TODO: add pages
         name: "Button Outline Demo",
