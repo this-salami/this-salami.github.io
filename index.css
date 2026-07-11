@@ -551,6 +551,10 @@ a[href="#"] {
     gap: 0px;
 }
 
+.project.in-view.project-focused > .project-content {
+    min-width: 0;
+}
+
 .project #learn-more {
     position: absolute;
     padding-top: 4px;
@@ -891,6 +895,9 @@ a[href="#"] {
 }
 .tags > .certification {
     background-color: #000000;
+}
+.tags > .ci\/cd {
+    background-color: #ff8c00;
 }
 
 .tags > span:hover {

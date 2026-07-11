@@ -251,17 +251,21 @@ const projects = [
         time: [[new Date("2023-02-01"), new Date("2023-03-01")]],
         tags: ["html", "js", "css", "open-source", "interactive-demo"]
     },
-    { // TODO: add pages
-        name: "CS 100 Final Project: Bank App UI",
-        descriptionTeaser: "A final project for a CS 100 class, implementing a simple bank application user interface with React.",
+    {
+        name: "CS 100 Final Project: Bank App UI (Goal-Wise)",
+        descriptionTeaser: "My final project for my CS 100 class, implementing a simple bank application user interface with React.",
         description: `
-        A final project for a CS 100 class, implementing a simple bank application user interface using React. 
-        It allows users to view their account balance, transaction history, and perform basic banking operations.`,
+        My final project for the CS 100 class at Illinois Tech, implementing a simple bank application user interface using React 
+        and tailwindcss. It allows users to view an example account balance, transaction history, and perform basic banking operations.
+        This was one of my first projects using React and tailwindcss, providing me with valuable experience in building interactive web applications.
+        The demo utilizes CI/CD pipelines for automated deployment using GitHub Actions to GitHub Pages.
+        `,
         links: [
             ["https://github.com/this-salami/Goal-Wise", "GitHub Repo"],
         ],
+        demoLink: "https://this-salami.github.io/Goal-Wise/",
         time: [[new Date("2025-10-01"), new Date("2025-11-01")]],
-        tags: ["react", "js", "css", "open-source", "ui", "front-end", "interactive-demo", "pinned"]
+        tags: ["react", "js", "css", "ci/cd", "open-source", "ui", "front-end", "interactive-demo", "pinned"]
     },
     {
         name: "IBM DS Certification Data Visualization Project",
