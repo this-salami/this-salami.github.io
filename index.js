@@ -875,7 +875,8 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                     }, 20);
                 };
                 
-                const projectElement = createProjectElement(project, timelineElement, `timeline-project-${project.dataIndex}`, closeFocusCallback, clickCallback);
+                const projectId = `t-${project.id}`; // timeline (t)
+                const projectElement = createProjectElement(project, timelineElement, projectId, closeFocusCallback, clickCallback);
                 projectElement.style.gridRowStart = ((end.getMonth() + end.getFullYear() * 12) - (projectEnd.getMonth() + projectEnd.getFullYear() * 12)) + 1;
                 projectElement.style.gridRowEnd = ((end.getMonth() + end.getFullYear() * 12) - (projectStart.getMonth() + projectStart.getFullYear() * 12)) + 2;
                 //projectTimelineElement.appendChild(projectElement);
@@ -1001,7 +1002,8 @@ function createProjectsPinned() {
 
         }
 
-        const projectElement = createProjectElement(project, pinnedProjectsContainer, `pinned-project-${index}`, closeFocusCallback, clickCallback);
+        const projectId = `p-${project.id}`; // pinned (p)
+        const projectElement = createProjectElement(project, pinnedProjectsContainer, projectId, closeFocusCallback, clickCallback);
         projectElement.style.setProperty('--project-max-height', `calc(100vh - 60px)`);
         
     });
@@ -1013,7 +1015,7 @@ function urlParamsLoad() {
     const url = new URL(window.location);
     const projectParam = url.searchParams.get('project');
 
-    console.log("projectParam", projectParam, "focusedProjectIdentifier", focusedProjectIdentifier);
+    //console.log("projectParam", projectParam, "focusedProjectIdentifier", focusedProjectIdentifier);
    
     // if a project is already focused, and the url param is different/null, close the focused project
     if (focusedProjectIdentifier && focusedProjectIdentifier !== projectParam &&

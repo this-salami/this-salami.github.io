@@ -1,6 +1,7 @@
 const projects = [
     { // TODO: add video demo
         name: "Fidget Game",
+        id: "fidget-game",
         descriptionTeaser: "One of my first projects, a simple game which garnered 50,000 plays on Roblox.", // TODO: get data
         links: [
             ["https://www.roblox.com/games/6596879170/Fidget-Game-Beta#!/about", "Roblox Page"]
@@ -10,6 +11,7 @@ const projects = [
     },
     { // TODO: find more of my python macros & make video demo
         name: "Python Autoclicker",
+        id: "python-autoclicker",
         descriptionTeaser: "A simple Python script that automates mouse clicks.",
         links: [
             ["https://github.com/this-salami/python-macros/tree/main/Autoclicker", "GitHub Repo"]
@@ -19,6 +21,7 @@ const projects = [
     },
     { // TODO: add video demo
         name: "Python Piano Tiles Bot",
+        id: "python-piano-tiles-bot",
         descriptionTeaser: "A bot that plays the popular Piano Tiles game automatically using Python.",
         links: [
             ["https://github.com/this-salami/python-macros/tree/main/MusicalTiles", "GitHub Repo"]
@@ -28,6 +31,7 @@ const projects = [
     },
     { // TODO: add video demo & documentation
         name: "Minesweeper Bookmarklet",
+        id: "minesweeper-bookmarklet",
         descriptionTeaser: "A bookmarklet that allows you to solve minesweeper puzzles automatically.",
         links: [
             ["https://github.com/this-salami/minesweeper-bookmarklet", "GitHub Repo"]
@@ -37,6 +41,7 @@ const projects = [
     },
     { // TODO: add pages & repo
         name: "Isometric Map Test",
+        id: "isometric-map-test",
         descriptionTeaser: "Isometric map test inspired by classic isometric games, showcasing tile-based rendering and movement.", // TODO: add data
         links: [
             ["https://github.com/this-salami/Isometric-Map-Test-2025", "GitHub Repo"]
@@ -46,6 +51,7 @@ const projects = [
     },
     { // TODO: add pages & repo
         name: "Chess.com Python API",
+        id: "chesscom-python-api",
         descriptionTeaser: "Assignment in Highschool coding class, uses Chess.com API to fetch player data.",
         links: [], // TODO: add link
         time: [[new Date("2024-09-01")]], 
@@ -53,6 +59,7 @@ const projects = [
     },
     { // TODO: add pages & repo
         name: "Python Wordle Game",
+        id: "python-wordle-game",
         descriptionTeaser: "Assignment in Highschool coding class, where I implemented Wordle in Python.",
         links: [], // TODO: add link
         time: [[new Date("2024-09-01"), new Date("2024-11-01")]], 
@@ -60,6 +67,7 @@ const projects = [
     },
     { // TODO: add pages & repo
         name: "Python Chess Game",
+        id: "python-chess-game",
         descriptionTeaser: "Assignment in Highschool coding class, the game of chess implemented in Python.",
         description: `
         This project is a Python implementation of the classic game of chess. In addition to the original python files (tsapp)
@@ -75,6 +83,7 @@ const projects = [
     },
     { // TODO: add pages
         name: "Button Outline Demo",
+        id: "button-outline-demo",
         descriptionTeaser: "A small animation demo showcasing button outline effects using CSS and JavaScript, inspired by Scrimba button animation.", // TODO: add data
         links: [
             ["https://github.com/this-salami/button-outline-demo", "GitHub Repo"]
@@ -84,6 +93,7 @@ const projects = [
     },
     { // TODO: add pages
         name: "Web Based Command Line",
+        id: "web-based-command-line",
         descriptionTeaser: "Very basic web-based command line interface for executing commands in a simulated environment, has no functionality, just design for now.", // TODO: add data
         links: [
             ["https://github.com/this-salami/cmd-line-2025", "GitHub Repo"]
@@ -93,6 +103,7 @@ const projects = [
     },
     { // TODO: fix repo & make pages
         name: "A* Pathfinding Demo",
+        id: "a-star-pathfinding-demo",
         descriptionTeaser: "A demonstration of the A* pathfinding algorithm, showcasing its ability to find the shortest path in a grid-based environment.", // TODO: add data
         links: [
             ["https://github.com/this-salami/A-star-pathfinding-2025-demo", "GitHub Repo"]
@@ -102,6 +113,7 @@ const projects = [
     },
     { // TODO: make pages
         name: "3D Card Showcase",
+        id: "3d-card-showcase",
         descriptionTeaser: "A small project displaying a card as a 3-d element with JS and CSS.", // TODO: add data
         links: [
             ["https://github.com/this-salami/3d-card-showcase", "GitHub Repo"]
@@ -111,6 +123,7 @@ const projects = [
     },
     { // TODO: finish/find
         name: "dsa",
+        id: "dsa",
         descriptionTeaser: "",
         links: [],
         time: [],
@@ -118,6 +131,7 @@ const projects = [
     },
     { // TODO: find
         name: "es",
+        id: "es",
         descriptionTeaser: "",
         links: [],
         time: [],
@@ -125,6 +139,7 @@ const projects = [
     },
     { // TODO: finish/find
         name: "egep",
+        id: "egep",
         descriptionTeaser: "",
         links: [],
         time: [],
@@ -132,12 +147,14 @@ const projects = [
     },
     { // TODO: finish/find
         name: "lg",
+        id: "lg",
         links: [],
         time: [],
         tags: ["js", "html", "css", "ui", "front-end", "open-source"] // server TODO: figure out
     },
     {
         name: "Read Fast",
+        id: "read-fast",
         descriptionTeaser: "A short project I made to test out a speed reading method called Spritz. It was pretty fun to make, and my friends and I use it on occasion.", 
         description: `
         A small project that implements a speed reading method called Spritz. It allows users to read text at a faster pace by 
@@ -151,6 +168,7 @@ const projects = [
     },
     { // TODO: finish
         name: "Degree Planner (WIP)",
+        id: "degree-planner",
         descriptionTeaser: "A WIP project that I started to aid in class selection and degree matching. Uses a webscrape to check for class requirements and generates a schedule based on the classes you want to take.",
         links: [
             ["https://github.com/this-salami/class-selector", "GitHub Repo"]
@@ -160,6 +178,7 @@ const projects = [
     },
     { // TODO: find
         name: "db",
+        id: "db",
         descriptionTeaser: "",
         links: [],
         time: [], // maybe idk
@@ -167,6 +186,7 @@ const projects = [
     },
     { // TODO: finish/find
         name: "bnm",
+        id: "bnm",
         descriptionTeaser: "",
         links: [],
         time: [], // bro finish ts
@@ -174,6 +194,7 @@ const projects = [
     },
     { // TODO: finish/find
         name: "msmc",
+        id: "msmc",
         descriptionTeaser: "",
         links: [],
         time: [], // bro finish ts
@@ -181,6 +202,7 @@ const projects = [
     },
     { // TODO: finish/find
         name: "wds",
+        id: "wds",
         descriptionTeaser: "",
         links: [],
         time: [], // bro finish ts
@@ -188,6 +210,7 @@ const projects = [
     },
     { // TODO: finish/find
         name: "ts",
+        id: "ts",
         descriptionTeaser: "",
         links: [],
         time: [], // bro you aint even finishing ts
@@ -195,6 +218,7 @@ const projects = [
     },
     {
         name: "Pong",
+        id: "pong",
         descriptionTeaser: "A simple Pong game implemented in JavaScript, showcasing basic game mechanics and user interaction.",
         description: `
         A small project that demonstrates a simple Pong game implemented in JavaScript. 
@@ -209,6 +233,7 @@ const projects = [
     },
     { // TODO: fix the repo
         name: "Image Scroller",
+        id: "image-scroller",
         descriptionTeaser: "A small project that allows users to scroll through a collection of images using JavaScript and CSS.",
         links: [
             ["https://github.com/this-salami/image-scroller-2023", "GitHub Repo"]
@@ -218,6 +243,7 @@ const projects = [
     },
     {
         name: "Birthday Info",
+        id: "birthday-info",
         descriptionTeaser: "A small project that displays birthday information.",
         description: `
         One of the first proper web-based applications I've built. Displays birthday information, including different zodiac signs, 
@@ -231,6 +257,7 @@ const projects = [
     },
     { // TODO: fix the repo
         name: "CSS Loading Animations",
+        id: "css-loading-animations",
         descriptionTeaser: "A collection of CSS loading animations.",
         links: [
             ["https://github.com/this-salami/css-animations-2022", "GitHub Repo"]
@@ -240,6 +267,7 @@ const projects = [
     },
     {
         name: "Graphing Demo",
+        id: "graphing-demo",
         descriptionTeaser: "A demo graphing calculator implemented in JavaScript.",
         description: `
         A small project that demonstrates a graphing calculator implemented in JavaScript. 
@@ -253,6 +281,7 @@ const projects = [
     },
     {
         name: "CS 100 Final Project: Bank App UI (Goal-Wise)",
+        id: "cs100-final-project",
         descriptionTeaser: "My final project for my CS 100 class, implementing a simple bank application user interface with React.",
         description: `
         My final project for the CS 100 class at Illinois Tech, implementing a simple bank application user interface using React 
@@ -269,6 +298,7 @@ const projects = [
     },
     {
         name: "IBM DS Certification Data Visualization Project",
+        id: "data-visualization-project-ibmds",
         descriptionTeaser: "A data visualization project for the IBM Data Science Professional Certificate, showcasing data analysis and visualization skills.",
         links: [
             ["https://github.com/this-salami/data-visualization-project-IBMDS", "GitHub Repo"],
