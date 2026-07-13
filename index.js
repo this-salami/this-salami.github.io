@@ -437,16 +437,25 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
                 <path d="M 14 7 L 5 7 L 5 20 L 18 20 L 18 11" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             </div>
+            <div class="demo-btn" id="refresh-btn">
+            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- r = 8, center = (12.5, 12.5), a1 = -40deg, a2 = -10deg -->
+                <path d="M 18.6 17.6 A 8 8 0 1 1 20.4 13.9 L 22.4 11.9 M 20.4 13.9 L 18.4 11.9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            </div>
             <iframe
                 src="${project.demoLink}"
                 title="${project.name} Demo"
-                class="project-demo"
+                class="project-demo unselectable"
                 sandbox="allow-scripts allow-same-origin allow-popups"
                 width="100%" height="100%" frameborder="0" allow="fullscreen"
                 loading="lazy">
             </iframe>
         </div>`;
     }
+
+    project.description = project.description ? project.description : '';
+    project.description = project.description.replace(/<br>/g, '</p><br><p>');
 
     projectElement.innerHTML = `
         <div class="project-content">
@@ -516,6 +525,21 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
     }
     if (fullscreenBtn) {
         fullscreenBtn.addEventListener("click", fullscreenHandler);
+    }
+
+    const refreshBtn = projectElement.querySelector("#refresh-btn");
+    const refreshHandler = () => {
+        const iframe = projectElement.querySelector("iframe");
+        if (!iframe) { return; }
+        
+        const src = project.demoLink; // iframe.src;
+        iframe.src = "";
+        setTimeout(() => {
+            iframe.src = src;
+        }, 50);
+    }
+    if (refreshBtn) {
+        refreshBtn.addEventListener("click", refreshHandler);
     }
 
     let canCloseFocus = false;
@@ -738,7 +762,9 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
         if (fullscreenBtn) {
             fullscreenBtn.removeEventListener("click", fullscreenHandler);
         }
-
+        if (refreshBtn) {
+            refreshBtn.removeEventListener("click", refreshHandler);
+        }
         learnMoreBtn.removeEventListener("click", learnMoreBtnClick);
         projectElement.removeEventListener("click", onClick);
 

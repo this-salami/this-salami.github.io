@@ -745,6 +745,17 @@ a[href="#"] {
     transform: translate(100%, 0);
 }
 
+.demo-btn#refresh-btn {
+    top: 11px;
+    transform: translate(0, 200%);
+}
+
+.project-demo-container.fullscreen > .demo-btn#refresh-btn {
+    top: 2px;
+    left: 14px;
+    transform: translate(200%, 0);
+}
+
 .project-demo-container > .project-demo {
     /* TODO: 50vh arbitrary, fix, I think this is working */
     width: min(calc(100% - 5em), 90%); /*min(calc(100% - 5em), 90%, calc(50vh * 16/9)); */
