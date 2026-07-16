@@ -79,7 +79,7 @@ const projects = [
         ],
         demoLink: "https://this-salami.github.io/chess-project/",
         time: [[new Date("2025-01-01"), new Date("2025-04-01")]], 
-        tags: ["python", "open-source", "interactive-demo", "ui", "pinned"] // TODO: add demo
+        tags: ["python", "open-source", "interactive-demo", "ui", "pinned", "js"] // TODO: add demo
     },
     { // TODO: add pages
         name: "Button Outline Demo",
@@ -259,9 +259,20 @@ const projects = [
         name: "CSS Loading Animations",
         id: "css-loading-animations",
         descriptionTeaser: "A collection of CSS loading animations.",
+        description: `
+        A collection of CSS loading animations that can be used in web projects. 
+        Each animation is implemented using mostly just pure CSS, making them easy to integrate and customize.
+        <br>
+        The loading animations are designed to be visually appealing and easily integrated into web projects,
+        inspired by various modern web design trends and user interface patterns.
+        <br>
+        The experience animation is a play on game ui elements and incorporating that into 
+        web-based loading animations, for a unique visual flair.
+        `,
         links: [
             ["https://github.com/this-salami/css-animations-2022", "GitHub Repo"]
         ],
+        demoLink: "https://this-salami.github.io/css-animations-2022/",
         time: [[new Date("2022-07-01")]],
         tags: ["html", "js", "css", "open-source", "interactive-demo"]
     },
@@ -300,10 +311,19 @@ const projects = [
         name: "IBM DS Certification Data Visualization Project",
         id: "data-visualization-project-ibmds",
         descriptionTeaser: "A data visualization project for the IBM Data Science Professional Certificate, showcasing data analysis and visualization skills.",
+        description: `
+        A data visualization project completed as part of the IBM Data Science Professional Certificate.
+        The project involves analyzing real-world automobile sales data and creating visualizations to communicate insights effectively.
+        The project demonstrates proficiency in data analysis, visualization techniques, and the ability to derive meaningful insights from complex datasets.
+        <br>
+        In addition to data analysis through Python and Jupyter Notebook, the project also includes a web-based interactive visualization using Dash.
+        To host the project, I converted the Dash app into a marimo notebook. I then utilized CI/CD pipelines for automated deployment using GitHub Actions to GitHub Pages.
+        `,
         links: [
             ["https://github.com/this-salami/data-visualization-project-IBMDS", "GitHub Repo"],
         ],
+        demoLink: "https://this-salami.github.io/data-visualization-project-IBMDS/",
         time: [[new Date("2026-06-01")]],
-        tags: ["python", "data-science", "open-source", "jupyter-notebook", "certification", "pinned"]
+        tags: ["python", "data-science", "open-source", "jupyter-notebook", "certification", "pinned", "ci/cd", "marimo-notebook"]
     }
 ];

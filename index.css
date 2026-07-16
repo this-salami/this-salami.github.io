@@ -910,6 +910,9 @@ a[href="#"] {
 .tags > .ci\/cd {
     background-color: #ff8c00;
 }
+.tags > .marimo-notebook {
+    background-color: #0d9488;
+}
 
 .tags > span:hover {
     opacity: 0.8;
