@@ -331,6 +331,6 @@ const projects = [
             "imgs/ibmds/DashboardDemo.gif",
         ],
         time: [[new Date("2026-06-01")]],
-        tags: ["python", "data-science", "open-source", "jupyter-notebook", "certification", "pinned", "ci/cd", "marimo-notebook"]
+        tags: ["python", "data-science", "open-source", "jupyter-notebook", "certification", "pinned", "ci/cd", "marimo-notebook", "dash", "interactive-demo"]
     }
 ];

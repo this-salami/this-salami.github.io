@@ -1,6 +1,6 @@
 const root = document.documentElement;
 
-const tags = new Set();
+const tagCounts = {};
 
 const pinnedProjectsContainer = document.getElementById("pinned-projects");
 
@@ -63,10 +63,14 @@ function getPinnedProjects() {
 
 projects.forEach(project => {
     project.tags.forEach(tag => {
-        tags.add(tag);
+        if (tagCounts[tag] === undefined) {
+            tagCounts[tag] = 0;
+        }
+        tagCounts[tag]++;
     });
 });
 
+const tags = new Set(Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a])); // sort by count
 tags.forEach(tag => {
     const filterItem = document.createElement("span");
     filterItem.classList.add(tag);
