@@ -15,6 +15,8 @@ const bufferElement = document.getElementById("buffer");
 const MONTH_HEIGHT = timelineElement.getAttribute("data-month-height");
 const COLLAPSED_MONTH_HEIGHT = timelineElement.getAttribute("data-collapsed-month-height");
 
+const PINNED_PREFIX = "p-"; // p- (Pinned)
+
 function getFilteredProjects() {
     let res = [];
 
@@ -68,6 +70,7 @@ projects.forEach(project => {
 tags.forEach(tag => {
     const filterItem = document.createElement("span");
     filterItem.classList.add(tag);
+    filterItem.classList.add("tag");
 
     filterItem.innerText = tag;
 
@@ -130,12 +133,12 @@ function clearTimeline() {
 
     for (const key in scrollCallbacks) {
         if (!scrollCallbacks.hasOwnProperty(key)) continue;
-        if (key.startsWith("pinned-project-")) continue; // pinned projects are not removed when clearing timeline
+        if (key.startsWith(PINNED_PREFIX)) continue; // pinned projects are not removed when clearing timeline
         delete scrollCallbacks[key];
     }
     for (const key in projectRemovingCallbacks) {
         if (!projectRemovingCallbacks.hasOwnProperty(key)) continue;
-        if (key.startsWith("pinned-project-")) continue; // pinned projects are not removed when clearing timeline
+        if (key.startsWith(PINNED_PREFIX)) continue; // pinned projects are not removed when clearing timeline
         // TODO: I think this is working, crazy improvements (it was so cooked :sob:)
         projectRemovingCallbacks[key]();
         delete projectRemovingCallbacks[key];
@@ -496,7 +499,7 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
         <div class="project-content">
             <h2>${project.name}</h2>
             <div class="tags">
-                ${project.tags.map(tag => `<span class="${tag} unselectable" onclick="event.stopPropagation();">${tag}</span>`).join('')}
+                ${project.tags.map(tag => `<span class="tag ${tag} unselectable" onclick="event.stopPropagation();">${tag}</span>`).join('')}
             </div>
             <p>${project.descriptionTeaser}</p>
             <span id="learn-more" class="unselectable">
@@ -1099,7 +1102,7 @@ function createProjectsPinned() {
 
         }
 
-        const projectId = `p-${project.id}`; // pinned (p)
+        const projectId = `${PINNED_PREFIX}${project.id}`; // pinned (p)
         const projectElement = createProjectElement(project, pinnedProjectsContainer, projectId, closeFocusCallback, clickCallback);
         projectElement.style.setProperty('--project-max-height', `calc(100vh - 60px)`);
         
