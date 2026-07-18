@@ -464,8 +464,33 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
         `;
     }
 
-    project.description = project.description ? project.description : '';
-    project.description = project.description.replace(/<br>/g, '</p><br><p>');
+    let formattedDescription = project.formattedDescription ? project.formattedDescription : (project.description ? project.description : '');
+    formattedDescription = formattedDescription.replace(/<br>/g, '</p><br><p>');
+
+    project.tags.forEach(tag => {
+        if (project.formattedDescription) { return; } // if already formatted, don't reformat
+
+        const words = tag.split(/[- ]/g);
+        const regex = new RegExp(`(?:\\s|\\p{P})${words.join('[- ]')}(?:\\s|\\p{P})`, 'iu');
+        const whitespaceRegex = /\s/g;
+
+        let res = "";
+        let tempDescription = formattedDescription;
+        let index = tempDescription.search(regex);
+        while (index !== -1) {
+            const match = tempDescription.match(regex)[0];
+            res += tempDescription.slice(0, index);
+            const textStart = match[0];
+            const textEnd = match[match.length - 1];
+            const text = match.replace(/^(\s|\p{P})+|(\s|\p{P})+$/gu, "").replace(whitespaceRegex, "&nbsp;");
+            res += `${textStart}<span class="tag ${tag} unselectable" onclick="event.stopPropagation();">${text}</span>${textEnd}`;
+            tempDescription = tempDescription.slice(index + match.length);
+            index = tempDescription.search(regex);
+        }
+        formattedDescription = res + tempDescription;
+    });
+
+    project.formattedDescription = formattedDescription; // save for later loading of project info
 
     projectElement.innerHTML = `
         <div class="project-content">
@@ -482,7 +507,7 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
             </span>
             <div class="project-info">
                 <div class="project-info-content">
-                    <p>${project.description ? project.description : ''}</p>
+                    <p>${formattedDescription}</p>
                     ${parseProjectLinks(project.links)}
                     ${imgs}
                     ${demo}

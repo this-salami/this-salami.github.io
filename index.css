@@ -891,7 +891,7 @@ a[href="#"] {
     /*background-color: rgb(50, 50, 50);*/
 }
 
-.tags > span {
+.tags > span, .tag {
     background-color: darkgray;
     color: white;
     padding: 5px 10px;
@@ -903,78 +903,92 @@ a[href="#"] {
     margin: 1px;
 }
 
-.tags > .pinned {
-    background-color: #1e1e1e;
-}
-.tags > .js {
-    background-color: #aa8200; /* ffde25 */
-}
-.tags > .python {
-    background-color: #306998;
-}
-.tags > .react {
-    background-color: #418e9f; /* 58c4dc */
-}
-.tags > .html {
-    background-color: #e33926;
-}
-.tags > .css {
-    background-color: #264de4;
-}
-.tags > .php {
-    background-color: #777bb4;
-}
-.tags > .lua {
-    background-color: #000080;
-}
-.tags > .game-design {
-    background-color: #ff6347;
-}
-.tags > .ui {
-    background-color: #20b2aa;
-}
-.tags > .front-end {
-    background-color: #ff69b4;
-}
-.tags > .open-source {
-    background-color: #228b22;
-}
-.tags > .interactive-demo {
-    background-color: #8a2be2;
-}
-.tags > .video-demo {
-    background-color: #ff4500;
-}
-.tags > .data-science {
-    background-color: #2f00ff;
-}
-.tags > .machine-learning {
-    background-color: #ff1493;
-}
-.tags > .ai {
-    background-color: #00ced1;
-}
-.tags > .jupyter-notebook {
-    background-color: #cd6625;
-}
-.tags > .certification {
-    background-color: #000000;
-}
-.tags > .ci\/cd {
-    background-color: #ff8c00;
-}
-.tags > .marimo-notebook {
-    background-color: #0d9488;
+.tag {
+    padding: 1px 4px;
 }
 
-.tags > span:hover {
+.tag.pinned {
+    background-color: #1e1e1e;
+}
+.tag.js {
+    background-color: #aa8200; /* ffde25 */
+}
+.tag.python {
+    background-color: #306998;
+}
+.tag.react {
+    background-color: #418e9f; /* 58c4dc */
+}
+.tag.html {
+    background-color: #e33926;
+}
+.tag.css {
+    background-color: #264de4;
+}
+.tag.php {
+    background-color: #777bb4;
+}
+.tag.lua {
+    background-color: #000080;
+}
+.tag.game-design {
+    background-color: #ff6347;
+}
+.tag.ui {
+    background-color: #20b2aa;
+}
+.tag.front-end {
+    background-color: #ff69b4;
+}
+.tag.open-source {
+    background-color: #228b22;
+}
+.tag.interactive-demo {
+    background-color: #8a2be2;
+}
+.tag.video-demo {
+    background-color: #ff4500;
+}
+.tag.data-science {
+    background-color: #2f00ff;
+}
+.tag.machine-learning {
+    background-color: #ff1493;
+}
+.tag.ai {
+    background-color: #00ced1;
+}
+.tag.jupyter-notebook {
+    background-color: #cd6625;
+}
+.tag.certification {
+    background-color: #000000;
+}
+.tag.ci\/cd {
+    background-color: #ff8c00;
+}
+.tag.marimo-notebook {
+    background-color: #0d9488;
+}
+.tag.dash {
+    background-color: #0480ec;
+}
+
+.tags > span:hover, .tag:hover {
     opacity: 0.8;
     cursor: pointer;
 
     padding: 6px 11px;
     margin: 0px;
 }
+.tag:hover {
+    padding: 2px 5px;
+    margin: 0px;
+}
 
-.tags > span:active {
+.tags > span:active, .tag:active {
     padding: 5px 10px;
+}
+.tag:active {
+    padding: 1px 4px;
 }
