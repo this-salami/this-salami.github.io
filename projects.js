@@ -323,6 +323,13 @@ const projects = [
             ["https://github.com/this-salami/data-visualization-project-IBMDS", "GitHub Repo"],
         ],
         demoLink: "https://this-salami.github.io/data-visualization-project-IBMDS/",
+        imageLabel: "Dash Dashboard Images",
+        images: [
+            "imgs/ibmds/RecessionAdExpenditure.png",
+            "imgs/ibmds/RecessionSales.png",
+            "imgs/ibmds/YearlySales.png",
+            "imgs/ibmds/DashboardDemo.gif",
+        ],
         time: [[new Date("2026-06-01")]],
         tags: ["python", "data-science", "open-source", "jupyter-notebook", "certification", "pinned", "ci/cd", "marimo-notebook"]
     }

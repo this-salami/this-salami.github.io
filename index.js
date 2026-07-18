@@ -453,6 +453,16 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
             </iframe>
         </div>`;
     }
+    let imgs = "";
+    if (project.images && project.images.length > 0) {
+        label = project.imageLabel ? project.imageLabel : "Images";
+        imgs = `
+        <h3 style="margin-bottom: 0;">${label}</h3>
+        <div class="project-images">
+        ${project.images.map(img => `<img src="${img}" alt="${project.name} image">`).join('')}
+        </div>
+        `;
+    }
 
     project.description = project.description ? project.description : '';
     project.description = project.description.replace(/<br>/g, '</p><br><p>');
@@ -474,6 +484,7 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
                 <div class="project-info-content">
                     <p>${project.description ? project.description : ''}</p>
                     ${parseProjectLinks(project.links)}
+                    ${imgs}
                     ${demo}
                 </div>
             </div>
@@ -494,6 +505,41 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
 
     const learnMoreBtn = projectElement.querySelector("#learn-more");
     const learnMoreText = learnMoreBtn.querySelector("#learn-more-text");
+
+    const imgElements = projectElement.querySelectorAll(".project-images > img");
+
+    let focusedImage = null;
+    const imgClickHandler = (event) => {
+        event.stopPropagation();
+
+        const img = event.target;
+
+        if (focusedImage) {
+            focusedImage.remove();
+            focusedImage.removeEventListener("click", imgClickHandler);
+
+            focusedImage = null;
+            return;
+        }
+
+        const div = document.createElement("div");
+        div.classList.add("fullscreen-img-container");
+
+        const fullscreenImg = document.createElement("img");
+        fullscreenImg.src = img.src;
+        fullscreenImg.classList.add("fullscreen-img");
+        div.appendChild(fullscreenImg);
+
+
+        document.body.appendChild(div);
+
+        focusedImage = div;
+        div.addEventListener("click", imgClickHandler);
+    }
+
+    imgElements.forEach(img => {
+        img.addEventListener("click", imgClickHandler);
+    });
 
     const fullscreenBtn = projectElement.querySelector("#fullscreen-btn");
     let isFullscreen = false;
