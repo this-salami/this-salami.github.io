@@ -664,6 +664,22 @@ a[href="#"] {
     overflow-x: hidden;
 }
 
+.project-info-content .tag {
+    vertical-align: middle;
+}
+.project-info-content > p {
+    text-wrap: pretty;
+    text-align: left;
+    line-height: 1.5;
+}
+/* justify text on bigger screens */
+@media only screen and (min-width: 900px) {
+    .project-info-content > p {
+        text-align: justify;
+        line-height: 1.5;
+    }
+}
+
 .project-images {
     display: flex;
     flex-wrap: wrap;

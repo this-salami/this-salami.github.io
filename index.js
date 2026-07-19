@@ -472,7 +472,7 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
     }
 
     let formattedDescription = project.formattedDescription ? project.formattedDescription : (project.description ? project.description : '');
-    formattedDescription = formattedDescription.replace(/<br>/g, '</p><br><p>');
+    formattedDescription = formattedDescription.replace(/<br>/g, '<br/><br/>'); // add extra line break for spacing
 
     project.tags.forEach(tag => {
         if (project.formattedDescription) { return; } // if already formatted, don't reformat
