@@ -503,7 +503,10 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
         <div class="project-content">
             <h2>${project.name}</h2>
             <div class="tags">
-                ${project.tags.map(tag => `<span class="tag ${tag} unselectable" onclick="event.stopPropagation();">${tag}</span>`).join('')}
+                ${project.tags.map(tag => {
+                    if (projectIdentifier.startsWith(PINNED_PREFIX) && tag === "pinned") { return ""; } // hide pinned tag in pinned
+                    return `<span class="tag ${tag} unselectable" onclick="event.stopPropagation();">${tag}</span>`}).join('')
+                }
             </div>
             <p>${project.descriptionTeaser}</p>
             <span id="learn-more" class="unselectable">
@@ -539,6 +542,67 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
     const learnMoreText = learnMoreBtn.querySelector("#learn-more-text");
 
     const imgElements = projectElement.querySelectorAll(".project-images > img");
+
+    const tagContainer = projectElement.querySelector(".tags");
+    const tagElements = tagContainer.querySelectorAll(".tag");
+
+    let prevFrameTime = null;
+    const scrollTags = (timestamp) => {
+        if (!projectElement || !tagContainer || !tagElements || projectElement.parentElement === null) { return; }
+        if (!prevFrameTime) prevFrameTime = timestamp;
+        const deltaTime = (timestamp - prevFrameTime) / 1000;
+        prevFrameTime = timestamp;
+
+        if (!isInViewFunc(projectElement.getBoundingClientRect())) {
+            window.requestAnimationFrame(scrollTags);
+            return;
+        };
+
+        const start = tagElements[0].offsetTop;
+        const end = tagElements[tagElements.length - 1].offsetTop;
+        const lineCount = Math.round((end - start) / 32) + 1; // 26px height + 6px
+
+        for (let i = 0; i < tagElements.length; i++) {
+            const tag = tagElements[i];
+            const line = Math.round((tag.offsetTop - start) / 32);
+            tag.style.setProperty('--line', line);
+        }
+
+        tagContainer.style.setProperty('--line-count', lineCount);
+
+        if (lineCount <= 2 || projectElement.classList.contains("project-focused")) {
+            for (let i = 0; i < tagElements.length; i++) {
+                const tag = tagElements[i];
+                tag.style.setProperty('--offset', 0);
+                tag.style.setProperty('transform', `translateY(0)`);
+            }
+            window.requestAnimationFrame(scrollTags);
+            return; 
+        }
+
+        const scrollAmount = 32 * deltaTime / 1.5; // 32px/1.5second
+
+        for (let i = 0; i < tagElements.length; i++) {
+            const tag = tagElements[i];
+            const currOffset = parseFloat(tag.style.getPropertyValue('--offset') || 0);
+            const newOffset = currOffset - scrollAmount;
+            
+            const line = parseFloat(tag.style.getPropertyValue('--line') || 0);
+            if (-newOffset / 32 >= line + 1) {
+                let offset = newOffset + lineCount * 32;
+                tag.style.setProperty('--offset', offset);
+                tag.style.setProperty('transform', `translateY(${offset}px)`);
+                continue;
+            }
+            tag.style.setProperty('--offset', newOffset);
+            tag.style.setProperty('transform', `translateY(${newOffset}px)`);
+
+        }
+
+        window.requestAnimationFrame(scrollTags);
+    }
+
+    window.requestAnimationFrame(scrollTags);
 
     let focusedImage = null;
     const imgClickHandler = (event) => {

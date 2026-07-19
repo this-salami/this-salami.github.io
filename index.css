@@ -611,6 +611,11 @@ a[href="#"] {
 .project .tags {
     padding-bottom: 12px;
     width: 90%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.project:not(.project-focused) .tags {
+    max-height: 52px;
 }
 
 .project p {
@@ -905,6 +910,7 @@ a[href="#"] {
 
 .tag {
     padding: 1px 4px;
+    text-wrap: nowrap;
 }
 
 .tag.pinned {
