@@ -994,6 +994,7 @@ a[href="#"] {
 
 .tags > span:active, .tag:active {
     padding: 5px 10px;
+    margin: 1px;
 }
 .tag:active {
     padding: 1px 4px;
