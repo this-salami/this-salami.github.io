@@ -23,8 +23,10 @@
     --project-shadow-color-active: rgba(0, 0, 0, 0.1);
 
     --link-color: #0000ee;
+    --link-color-secondary: #8e9bff;
     --link-hover-color: #00aeee;
     --link-visited-color: #551a8b;
+    --link-visited-color-secondary: #c07cff;
     --link-broken-color: #64646e;
 }
 
@@ -102,11 +104,14 @@ body.project-focused > #background.background-active {
     margin-right: 0.1em;
     margin-left: 0.2em;
 }
-.external-link.github::after {
+.external-link.github:not(.light)::after {
     background: url("./icons/GitHub_Invertocat_White.svg") no-repeat center / contain;
 
     filter: brightness(0);
     -webkit-filter: brightness(0);
+}
+.external-link.github.light::after {
+    background: url("./icons/GitHub_Invertocat_White.svg") no-repeat center / contain;
 }
 .external-link.linkedin::after {
     background: url("./icons/LinkedIn_icon.svg") no-repeat center / contain;
@@ -139,10 +144,107 @@ a[href="#"] {
     cursor: not-allowed;
 }
 
+
+
 #headerSection {
-    text-align: justify;
+    background-color: var(--secondary-color);
+    color: white;
+    display: grid;
+
+    grid-template-columns: 2fr 1fr;
+    border-radius: 0px 0px 4px 4px;
+    
+}
+
+#headerSection > #title > h1 {
+    margin: 0;
+    font-size: 3em;
+}
+#headerSection > #title > sub {
+    font-style: italic;
+    font-size: 0.7em;
+    padding: 0;
+}
+
+#headerSection a {
+    color: var(--link-color-secondary);
+}
+#headerSection a:hover {
+    color: var(--link-hover-color);
+}
+#headerSection a:visited {
+    color: var(--link-visited-color-secondary);
+}
+
+#headerImage {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+    grid-column: 2;
+    grid-row: 1 / span 2;
+
+    grid-template-columns: 1fr;
+}
+
+#headerImage > img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+
+    justify-self: center;
+}
+
+#headerImage > p {
+    margin: 0;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+#headerDescription {
+    grid-column: 1 / span 2;
+}
+
+.infoSection {
+    text-align: left;
     padding: 20px;
 }
+
+#topBar {
+    background-color: var(--secondary-color);
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    position: sticky;
+    top: 0;
+
+    padding-bottom: 2px;
+}
+#topBar > div {
+    border: white 2px solid;
+    border-width: 2px 1px;
+    background-color: var(--secondary-color);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+
+    text-align: center;
+    padding: 5px 0;
+    font-size: 1.5em;
+    font-weight: bold;
+
+    transition: all 0.3s ease;
+}
+#topBar > div:hover {
+    cursor: pointer;
+    background-color: white;
+    color: var(--secondary-color);
+}
+
 
 
 #filter-container {

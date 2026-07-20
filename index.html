@@ -9,18 +9,58 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div id="headerSection">
-        <h1 id="header">This-Salami (WIP)</h1>
+    <div id="infoSection">
+        <div id="topBar">
+            <div id="home-btn" data-target="headerSection" data-offset="-15">This-Salami</div>
+            <div id="about-me-btn" data-target="aboutMeSection" data-offset="-5">About Me</div>
+            <div id="contact-btn" data-target="contactSection" data-offset="-5">Contact</div>
+            <div id="skills-btn" data-target="skillsSection" data-offset="-5">Skills</div>
+            <div id="projects-btn" data-target="pinned-projects" data-offset="-60">Projects</div>
+        </div>
 
-        <p>Hey, I'm 
-            <a class="external-link github" href="https://github.com/this-salami" target="_blank">this-salami</a> or
-            <a class="external-link linkedin" href="https://linkedin.com/in/salman--amir" target="_blank">Salman Amir</a>,
-            a passionate programmer and creator.
-        </p>
+        <div id="headerSection" class="infoSection">
+            <div id="title">
+                <h1>Hey, This-Salami</h1>
+                <sub>Get it? "this is this-Salami"</sub>
+            </div>
 
-        <p>Here is a collection of my projects and experiments. Explore my work in various programming languages and frameworks. Use the filters below to narrow down your search.</p>
+            <h3>Hey, I'm 
+                <a class="external-link github light" href="https://github.com/this-salami" target="_blank">this-salami</a> or
+                <a class="external-link linkedin" href="https://linkedin.com/in/salman--amir" target="_blank">Salman Amir</a>,
+                a passionate programmer and creator.
+            </h3>
+
+            <div id="headerImage">
+                <img src="favicon.ico" alt="This-Salami Logo">
+                <p>
+                    <a class="external-link github light" href="https://github.com/this-salami" target="_blank"></a>
+                    <a class="external-link linkedin" href="https://linkedin.com/in/salman--amir" target="_blank"></a>
+                </p>
+            </div>
+
+            <p id="headerDescription">Here is a collection of my projects and experiments. Explore my work in various programming languages and frameworks.</p>
+        </div>
+
+        <div id="aboutMeSection" class="infoSection">
+            <h2>About Me</h2>
+            <p>I'm a software developer with a passion for creating innovative solutions. I enjoy working on projects that challenge me and allow me to learn new skills.</p>
+            (TODO)
+        </div>
+        <div id="contactSection" class="infoSection">
+            <h2>Contact</h2>
+            <!--<p>You can reach me via email at <a href="mailto:email@example.com">email@example.com</a> or through my social media profiles.</p>-->
+            (TODO)
+        </div>
+        <div id="skillsSection" class="infoSection">
+            <h2>Skills</h2>
+            <!--<ul>
+                <li>Programming Languages: </li>
+                <li>Frameworks: </li>
+                <li>Tools: </li>
+            </ul>-->
+            (TODO)
+        </div>
     </div>
-    
     <h2 style="text-align: center;">Pinned Projects</h2>
     <div id="pinned-projects">
         <!-- pinned projects added w/ JS -->
@@ -67,5 +107,6 @@
     <script src="index.js"></script>
     <script src="filter.js"></script>
     <script src="pinned.js"></script>
+    <script src="topbar.js"></script>
 </body>
 </html>
