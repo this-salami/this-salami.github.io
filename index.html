@@ -9,17 +9,30 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <noscript>
+        <div id="no-js-warning">
+            <p>JavaScript is disabled in your browser. Please enable JavaScript to view this website properly.</p>
+        </div>
+    </noscript>
+
     <div id="infoSection">
-        <div id="topBar">
-            <div id="home-btn" data-target="headerSection" data-offset="-15">This-Salami</div>
-            <div id="about-me-btn" data-target="aboutMeSection" data-offset="-5">About Me</div>
-            <div id="contact-btn" data-target="contactSection" data-offset="-5">Contact</div>
-            <div id="skills-btn" data-target="skillsSection" data-offset="-5">Skills</div>
-            <div id="projects-btn" data-target="pinned-projects" data-offset="-60">Projects</div>
+        <div id="topBarContainer">
+            <noscript>
+                <div id="no-js-warning">
+                    <p>JavaScript is disabled in your browser. Please enable JavaScript to view this website properly.</p>
+                </div>
+            </noscript>
+            <div id="topBar" class="unselectable">
+                <div id="home-btn" data-target="headerSection" data-offset="-50"><p><img src="favicon.ico" alt="This-Salami Logo" draggable="false"> This-Salami</p></div>
+                <div id="about-me-btn" data-target="aboutMeSection" data-offset="-14">About Me</div>
+                <div id="contact-btn" data-target="contactSection" data-offset="-14">Contact</div>
+                <div id="skills-btn" data-target="skillsSection" data-offset="-14">Skills</div>
+                <div id="projects-btn" data-target="pinned-projects" data-offset="-60">Projects</div>
+            </div>
         </div>
 
-        <div id="headerSection" class="infoSection">
-            <div id="title">
+        <div id="headerSection">
+            <div id="title" class="unselectable">
                 <h1>Hey, This-Salami</h1>
                 <sub>Get it? "this is this-Salami"</sub>
             </div>
@@ -30,11 +43,12 @@
                 a passionate programmer and creator.
             </h3>
 
-            <div id="headerImage">
-                <img src="favicon.ico" alt="This-Salami Logo">
+            <div id="headerImage" class="unselectable">
+                <img src="favicon.ico" alt="This-Salami Logo" draggable="false">
                 <p>
                     <a class="external-link github light" href="https://github.com/this-salami" target="_blank"></a>
                     <a class="external-link linkedin" href="https://linkedin.com/in/salman--amir" target="_blank"></a>
+                    <a class="external-link email light" target="_blank"></a>
                 </p>
             </div>
 
@@ -42,32 +56,58 @@
         </div>
 
         <div id="aboutMeSection" class="infoSection">
-            <h2>About Me</h2>
+            <h2 class="unselectable">About Me</h2>
+            <div>
             <p>I'm a software developer with a passion for creating innovative solutions. I enjoy working on projects that challenge me and allow me to learn new skills.</p>
             (TODO)
+            </div>
         </div>
         <div id="contactSection" class="infoSection">
-            <h2>Contact</h2>
-            <!--<p>You can reach me via email at <a href="mailto:email@example.com">email@example.com</a> or through my social media profiles.</p>-->
-            (TODO)
+            <h2 class="unselectable">Contact</h2>
+            <div id="contactInfo">
+                <p>
+                    Send me a message if you have any questions, collaboration ideas, or just want to say hi!
+                    Connect or message me on <a class="external-link linkedin" href="https://linkedin.com/in/salman--amir" target="_blank">LinkedIn</a>
+                    or check out my work on <a class="external-link github" href="https://github.com/this-salami" target="_blank">GitHub</a>.
+                    You can also reach me via <a class="external-link email">email</a> 
+                </p>
+            </div>
+            <div id="contactFormContainer">
+                <form id="contactForm" action="https://api.web3forms.com/submit" method="post">
+                    <input type="hidden" name="access_key" value="6c441ba6-e27c-4a20-9dcc-0f7a59716180">
+
+                    <label class="unselectable" for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label class="unselectable" for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label class="unselectable" for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <button class="unselectable" type="submit">Send Message</button>
+                </form>
+            </div>
         </div>
         <div id="skillsSection" class="infoSection">
-            <h2>Skills</h2>
+            <h2 class="unselectable">Skills</h2>
+            <div>
             <!--<ul>
                 <li>Programming Languages: </li>
                 <li>Frameworks: </li>
                 <li>Tools: </li>
             </ul>-->
             (TODO)
+            </div>
         </div>
     </div>
-    <h2 style="text-align: center;">Pinned Projects</h2>
+    <h1 class="unselectable" style="text-align: center;">Pinned Projects</h1>
     <div id="pinned-projects">
         <!-- pinned projects added w/ JS -->
     </div>
 
     
-    <h2 style="text-align: center;">Timeline</h2>
+    <h1 class="unselectable" style="text-align: center;">Timeline</h1>
 
     <div id="filter-container" class="unselectable">
         <div class="multiselect">

@@ -1214,6 +1214,18 @@ function urlParamsLoad() {
     }
 }
 
+function decodeBase64(encoded) {
+    return decodeURIComponent(atob(encoded).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+}
+const encoded = "c2FtaXIxMDAxMDAzMDZAZ21haWwuY29t";
+const decoded = decodeBase64(encoded);
+document.querySelectorAll(".external-link.email").forEach(el => {
+    if (!decoded) return;
+    el.href = `mailto:${decoded}`;
+});
+
 createTimeline();
 createProjectsPinned();
 
