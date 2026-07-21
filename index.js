@@ -783,6 +783,7 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
             event.stopPropagation();
             return;
         }
+        if (document.body.style.position === 'fixed') { return; } // if scroll locked, don't allow focus
         if (root.style.getPropertyValue('--project-opacity') == '0'){ return }
         projectElement.classList.add("project-focused");
         root.classList.add("project-focused");

@@ -253,12 +253,14 @@ a[href="#"] {
     position: sticky;
     top: 0;
     z-index: 1000;
+
+    max-width: 100%;
 }
 
 #topBar {
     background-color: var(--secondary-color);
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 10px;
 
     width: 96%;
@@ -269,38 +271,41 @@ a[href="#"] {
     padding-top: 2px;
     border-bottom: 2px solid var(--background-color);
 }
-#topBar > div {
+#topBar > #homeBtn, #menuBtns > div {
     border: var(--background-color) 2px solid;
     border-width: 2px;
     border-radius: 4px;
 
     background-color: var(--secondary-color);
     color: white;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
 
     text-align: center;
     padding: 5px 0;
-    font-size: 1.5em;
+    font-size: 1.2em;
     font-weight: bold;
 
     transition: all 0.3s ease;
+
+    display: none;
 }
-#topBar > div:hover {
+#topBar > #homeBtn:hover, #menuBtns > div:hover {
     cursor: pointer;
     background-color: var(--background-color);
     color: var(--secondary-color);
+    scale: 1.1;
 }
-#topBar > div:active {
+#topBar > #homeBtn:active, #menuBtns > div:active {
     background-color: var(--secondary-color);
     color: var(--background-color);
+    scale: 0.97;
 }
 
-#topBar > div > p {
+#topBar > #homeBtn > p, #menuBtns > div > p {
     margin: 0;
-    padding: 0;
+    padding: 0 0.5em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -310,11 +315,128 @@ a[href="#"] {
     vertical-align: middle;
     width: 1.5em;
     height: 1.5em;
-    margin-right: 0.5em;
+    margin-right: 0;
 }
 
-#topBar > #home-btn {
+#topBar > #homeBtn {
     margin-right: 15%;
+    display: flex;
+    flex-grow: 0;
+}
+#topBar > #homeBtn span {
+    display: none;
+}
+
+#topBar > #menuBtns > #menuIcon {
+    height: 3em;
+    margin-right: 0.5em;
+    vertical-align: middle;
+
+    cursor: pointer;
+    --menu-icon-color: white;
+}
+#topBar > #menuBtns rect {
+    fill: var(--menu-icon-color, white);
+}
+#topBar > #menuBtns > #menuIcon:hover {
+    --menu-icon-color: var(--background-color);
+    scale: 1.2;
+}
+#topBar > #menuBtns > #menuIcon:active {
+    --menu-icon-color: white;
+    scale: 0.95;
+}
+
+#menuBtns::before {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: calc(100% - 222px);
+    height: 100vh;
+}
+
+#menuBtns.menuOpened {
+    position: fixed;
+    right: 0;
+    top: 0;
+
+    height: 100vh;
+    width: 200px;
+    background-color: var(--secondary-color);
+
+    flex-direction: column;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+
+    padding: 10px;
+    border-left: var(--background-color) 2px solid;
+
+    animation: menuSlideIn 0.1s ease;
+}
+#menuBtns.menuOpened::before {
+    display: block;
+}
+#menuBtns.menuOpened > div {
+    display: flex;
+    width: 100%;
+    height: 1.2em;
+
+    flex-grow: 0;
+}
+#menuBtns.menuOpened > div:hover {
+    scale: 1.05;
+}
+#menuBtns.menuOpened > div:active {
+    scale: 0.97;
+}
+@keyframes menuSlideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    #topBar > #homeBtn span {
+        display: inline-block;
+    }
+    #topBar > #homeBtn img {
+        margin-right: 0.5em;
+    }
+}
+@media only screen and (min-width: 650px) {
+    #topBar div {
+        display: flex;
+    }
+    #topBar > #homeBtn {
+        flex-grow: 1;
+    }
+    #topBar > #homeBtn > p {
+        padding: 0;
+    }
+
+    #topBar > #homeBtn:hover, #menuBtns > div:hover {
+        scale: 1.02;
+    }
+    #topBar > #homeBtn:active, #menuBtns > div:active {
+        scale: 0.97;
+    }
+
+    #topBar > #menuBtns {
+        flex-grow: 2;
+        gap: 5px;
+    }
+    #topBar > #menuBtns > #menuIcon {
+        display: none;
+    }
 }
 
 .infoSection {
