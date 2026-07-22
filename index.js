@@ -4,7 +4,7 @@ const tagCounts = {};
 
 const pinnedProjectsContainer = document.getElementById("pinned-projects");
 
-//const timelineContainer = document.getElementById("timeline-container");
+const timelineContainer = document.getElementById("timelineContainer");
 const timelineElement = document.getElementById("timeline");
 //const projectContainer = document.getElementById("project-container");
 const filterContainer = document.getElementById("filter-container");
@@ -378,13 +378,31 @@ window.addEventListener("mousemove", (event) => {
     mouseY = event.clientY;
 });
 
+
+function getEmInPixels(element) {
+    const fontSize = window.getComputedStyle(element || document.documentElement).fontSize;
+    return parseFloat(fontSize);
+}
+
 // TODO: feel like could be implemented better
 function updateProject1fr(timelineCount) {
     const totalWidth = timelineElement.getBoundingClientRect().width;
     const timelineBarWidth = "6em";
 
-    const project1fr = `calc((${totalWidth}px - ${timelineBarWidth}) / ${timelineCount})`;
+    const timelineWidth = `calc(${totalWidth}px - ${timelineBarWidth})`;
+    root.style.setProperty('--timeline-width', timelineWidth);
+
+    const project1fr = `calc(var(--timeline-width) / ${timelineCount})`;
     root.style.setProperty('--projects-1fr', project1fr);
+
+    const timelineColPadding = 20 * (timelineCount) - 10; // 20px padding per column
+    const barWidth = getEmInPixels(timelineElement) * 8; // 8em in pixels
+    const timelineScrollWidth = timelineCount * 320 + timelineColPadding - timelineElement.getBoundingClientRect().width + barWidth;
+    root.dataset.timelineScrollWidth = timelineScrollWidth;
+    timelineContainer.style.setProperty('--timeline-total-width', `${timelineScrollWidth + timelineElement.getBoundingClientRect().width}px`);
+    timelineContainer.style.setProperty('--timeline-scroll-width', `${timelineScrollWidth}px`);
+
+    timelineContainer.style.setProperty('--can-scroll', timelineScrollWidth > 0 ? '1' : '0');
 }
 let projects1frCallback = null;
 
@@ -547,6 +565,8 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
     const tagElements = tagContainer.querySelectorAll(".tag");
 
     let prevFrameTime = null;
+    let scrollAnimProgress = 0;
+    let timePerLine = 1.5; // seconds per line
     const scrollTags = (timestamp) => {
         if (!projectElement || !tagContainer || !tagElements || projectElement.parentElement === null) { return; }
         if (!prevFrameTime) prevFrameTime = timestamp;
@@ -570,7 +590,9 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
 
         tagContainer.style.setProperty('--line-count', lineCount);
 
-        if (lineCount <= 2 || projectElement.classList.contains("project-focused")) {
+        if (lineCount <= 2 || 
+            (projectElement.classList.contains("project-focused") && window.innerWidth >= 550)
+        ) {
             for (let i = 0; i < tagElements.length; i++) {
                 const tag = tagElements[i];
                 tag.style.setProperty('--offset', 0);
@@ -580,12 +602,17 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
             return; 
         }
 
-        const scrollAmount = 32 * deltaTime / 1.5; // 32px/1.5second
+        scrollAnimProgress += deltaTime / timePerLine;
+        if (scrollAnimProgress >= lineCount) {
+            scrollAnimProgress = 0;
+        }
+        //const scrollAmount = 32 * deltaTime / timePerLine; // 32px/1.5second
+        const scrollOffset = -32 * scrollAnimProgress;
 
         for (let i = 0; i < tagElements.length; i++) {
             const tag = tagElements[i];
-            const currOffset = parseFloat(tag.style.getPropertyValue('--offset') || 0);
-            const newOffset = currOffset - scrollAmount;
+            //const currOffset = parseFloat(tag.style.getPropertyValue('--offset') || 0);
+            const newOffset = scrollOffset; // currOffset - scrollAmount;
             
             const line = parseFloat(tag.style.getPropertyValue('--line') || 0);
             if (-newOffset / 32 >= line + 1) {
@@ -762,7 +789,9 @@ function createProjectElement(project, parentElement, projectIdentifier, closeFo
     }
     const scrollBubblingOff = (event) => {
         updateGradient();
-        event.stopPropagation();
+        if (projectElement.classList.contains("project-focused")) {
+            event.stopPropagation();
+        }
     }
     const escapeHandler = (event) => {
         if (event.key === "Escape") {
@@ -1051,6 +1080,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 //projectTimelineElement.appendChild(projectElement);
                 projectElement.style.gridColumn = `${i + 2} / span ${projectSpan}`;
 
+                if (projectSpan > 1) {
+                    projectElement.style.setProperty('--project-col-start', i);
+                } else {
+                    projectElement.style.setProperty('--project-col-start', timelines.length + 1);
+                }
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
             });
         });
@@ -1158,6 +1192,10 @@ function createTimelineBar(start, end=new Date()) {
             break;
         }
     }
+
+    const timelineBackground = document.createElement("div");
+    timelineBackground.classList.add("timelineBackground");
+    timelineElement.appendChild(timelineBackground);
 }
 
 function createProjectsPinned() {

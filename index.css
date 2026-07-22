@@ -41,10 +41,13 @@
 }
 
 html {
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 body, html {
+    overscroll-behavior-x: none;
+    width: 100%;
+
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
@@ -719,12 +722,62 @@ a[href="#"] {
 }
 
 
+/*
 #timeline-container {
     display: grid;
     grid-template-columns: 6em auto;
     grid-template-rows: auto;
 
     margin-left: 10px;
+}
+*/
+
+#timelineContainer {
+    width: calc(100vw - 16px);
+    overflow-x: clip;
+    overflow-y: clip;
+
+    --horizontal-scroll: 0px;
+}
+
+#timelineHorizontalScrollbar {
+    position: sticky;
+    bottom: 2px;
+    width: calc(100% - 10px);
+    height: 14px;
+    border: var(--background-color) 2px solid;
+    background-color: var(--secondary-color);
+    justify-self: center;
+
+    z-index: 1000;
+
+    border-radius: 10px;
+}
+#timelineHorizontalScrollbarThumb {
+    position: absolute;
+
+    background-color: var(--background-color);
+
+    border-radius: 10px;
+    height: calc(100% - 6px);
+    margin: 3px 3px;
+
+    cursor: grab;
+
+    --timeline-thumb-width: calc(((100% - 2px) / var(--timeline-total-width, 1)) * 100%);
+    --scroll-percent: calc(var(--horizontal-scroll) / (var(--timeline-scroll-width, 1)) * -100%);
+
+    width: var(--timeline-thumb-width);
+    left: calc(var(--scroll-percent) - (var(--timeline-thumb-width) + 6px) * (var(--scroll-percent) / 100%));
+}
+#timelineHorizontalScrollbarThumb:hover {
+    background-color: var(--background-color-hover);
+}
+#timelineHorizontalScrollbarThumb:active {
+    background-color: var(--background-color-active);
+}
+body.project-focused #timelineHorizontalScrollbar {
+    display: none;
 }
 
 #timeline {
@@ -741,6 +794,8 @@ a[href="#"] {
     padding-top: 20px;
     column-gap: 20px;
 
+    overflow-x: visible;
+
     interpolate-size: allow-keywords;
     transition: grid-template-columns 0.3s ease -0.1s;
 }
@@ -749,6 +804,9 @@ a[href="#"] {
     font-size: 1em;
     font-family: 'Atkinson Hyperlegible Mono', monospace;
     color: var(--timeline-font-color);
+}
+body:not(.project-focused) #timeline > .timeline-element {
+    z-index: 2;
 }
 
 #timeline > div.timeline-element {
@@ -820,6 +878,25 @@ a[href="#"] {
     transform: translateX(6ch);
 }
 
+.timelineBackground {
+    position: absolute;
+    top: -10px;
+    left: -20px;
+    width: calc(6em + 1em + 20px);
+    height: calc(100% + 20px);
+
+    grid-column: 1;
+    grid-row: 1 / -1;
+
+    background-color: var(--background-color);
+    z-index: 1;
+
+    transition: background-color 0.3s ease;
+}
+body.project-focused .timelineBackground {
+    z-index: -1;
+}
+
 /*
 #timeline > div > .current {
     font-size: 10px;
@@ -865,6 +942,8 @@ a[href="#"] {
     opacity: 0;
 
     transform: translateX(-100px);
+    /* TODO: just guess and checked this gng, do the actual calc */
+    left: max(var(--horizontal-scroll, 0), var(--project-col-start) * -330px - (100vw - 270px));
 
     interpolate-size: allow-keywords;
     /* NOTE: when editing also check in .project.in-view.project-focused; these set to unfocused */
@@ -877,6 +956,11 @@ a[href="#"] {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+}
+@media only screen and (min-width: 450px) {
+    .project {
+        left: max(var(--horizontal-scroll, 0), var(--project-col-start) * -325px);
+    }
 }
 
 .project::after {
@@ -894,7 +978,7 @@ a[href="#"] {
     transform: translateX(0);
     opacity: var(--project-opacity, 1);
     pointer-events: var(--project-pointer-events, auto);
-    left: 0;
+    /* left: 0; */
 }
 
 .project.in-view:hover:not(.project-focused) {
@@ -911,6 +995,13 @@ a[href="#"] {
 .project.in-view:active:not(.project-focused) {
     box-shadow: 0 2px 4px var(--project-shadow-color-active);
 }
+
+body:not(.project-focused) .project.in-view:not(.project-focused) {
+    min-width: 300px;
+    max-width: calc(var(--timeline-width, none) - 30px - (30px * var(--can-scroll, 1)));
+    justify-self: left;
+}
+
 .project.in-view.project-focused {
     cursor: default;
     pointer-events: auto;
@@ -918,13 +1009,13 @@ a[href="#"] {
     height: calc(var(--project-max-height, auto) - 20px); /* give room for bottom date */
     margin-bottom: 30px;
     width: 100vw;
-    max-width: calc(100vw - 6em - 20px);
+    max-width: calc(100vw - 3.5em - 20px);
     /* So the issue of the left side projects snapping back is cuz they too small
     so when growing (esp on smaller screens), so make delay on cols -0.1s (experiment) */
-    left: -3em;
+    left: -6em;
     /* NOTE: when editing also check in .project;                these set to focus            */
     transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, 
-    height 0.3s ease, width 0.2s ease 0.05s, left 0.2s linear 0.1s,
+    height 0.3s ease, width 0.2s ease 0.05s, left 0.2s linear -0.1s,
     background-color 0.3s ease;
 
     user-select: auto;
@@ -1024,10 +1115,18 @@ a[href="#"] {
     width: 90%;
     overflow-y: hidden;
     overflow-x: hidden;
+
+    max-height: 52px;
 }
 .project:not(.project-focused) .tags {
     max-height: 52px;
 }
+@media only screen and (min-width: 550px) {
+    .project.project-focused .tags {
+        max-height: none;
+    }
+}
+
 
 .project p {
     margin: 10px 20px;
