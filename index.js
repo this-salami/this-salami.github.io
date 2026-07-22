@@ -397,7 +397,11 @@ function updateProject1fr(timelineCount) {
 
     const timelineColPadding = 20 * (timelineCount) - 10; // 20px padding per column
     const barWidth = getEmInPixels(timelineElement) * 8; // 8em in pixels
-    const timelineScrollWidth = timelineCount * 320 + timelineColPadding - timelineElement.getBoundingClientRect().width + barWidth;
+    let mobileAdjust = 0;
+    if (window.innerWidth < 450) {
+        mobileAdjust = -20;
+    }
+    const timelineScrollWidth = timelineCount * 320 + timelineColPadding - timelineElement.getBoundingClientRect().width + barWidth + mobileAdjust;
     root.dataset.timelineScrollWidth = timelineScrollWidth;
     timelineContainer.style.setProperty('--timeline-total-width', `${timelineScrollWidth + timelineElement.getBoundingClientRect().width}px`);
     timelineContainer.style.setProperty('--timeline-scroll-width', `${timelineScrollWidth}px`);
@@ -1081,9 +1085,11 @@ function createProjectTimelines(timelines, start, end = new Date(), whitespaceTi
                 projectElement.style.gridColumn = `${i + 2} / span ${projectSpan}`;
 
                 if (projectSpan > 1) {
-                    projectElement.style.setProperty('--project-col-start', i);
+                    projectElement.style.setProperty('--project-col-start', i + 1);
+                    projectElement.style.setProperty('--project-spans-more', 1);
                 } else {
                     projectElement.style.setProperty('--project-col-start', timelines.length + 1);
+                    projectElement.style.setProperty('--project-spans-more', 0);
                 }
                 projectElement.style.setProperty('--project-max-height', `calc(${currRowCount} / ${totalRows} * 100vh - 60px)`);
             });

@@ -742,8 +742,8 @@ a[href="#"] {
 
 #timelineHorizontalScrollbar {
     position: sticky;
-    bottom: 2px;
-    width: calc(100% - 10px);
+    bottom: 20px;
+    width: calc(100% - 10px - 6em);
     height: 14px;
     border: var(--background-color) 2px solid;
     background-color: var(--secondary-color);
@@ -943,11 +943,17 @@ body.project-focused .timelineBackground {
 
     transform: translateX(-100px);
     /* TODO: just guess and checked this gng, do the actual calc */
-    left: max(var(--horizontal-scroll, 0), var(--project-col-start) * -330px - (100vw - 270px));
+    left: max(
+        var(--horizontal-scroll, 0), 
+        (var(--project-col-start) - 1) * -320px
+        - 20px * (var(--project-col-start) - 1) /* stick, calc proj gaps */
+        + (100vw - 6em - 50px - 320px) * var(--project-spans-more) /* stick, calc span > 1 */
+        - 20px * (var(--project-spans-more, 0) - 1) /* stick, calc span === 1 */
+        );
 
     interpolate-size: allow-keywords;
     /* NOTE: when editing also check in .project.in-view.project-focused; these set to unfocused */
-    transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease, 
+    transition: box-shadow 0.3s ease, opacity 0.3s ease, transform 0.3s ease -0.2s, 
     height 0.3s ease, width 0.3s ease -0.1s, left 0.3s linear -0.3s, 
     background-color 0.3s ease;
 
@@ -959,7 +965,12 @@ body.project-focused .timelineBackground {
 }
 @media only screen and (min-width: 450px) {
     .project {
-        left: max(var(--horizontal-scroll, 0), var(--project-col-start) * -325px);
+        left: max(
+            var(--horizontal-scroll, 0), 
+            (var(--project-col-start) - 1) * -1 * (var(--project-1fr, 300px)) /* stick, calc proj widths */
+            - 20px * (var(--project-col-start) - 1) /* stick, calc proj gaps */
+            - 20px * ((var(--project-col-start) - 1) / (var(--project-col-start) - 1)) /* stick, calc multi proj row */
+            );
     }
 }
 

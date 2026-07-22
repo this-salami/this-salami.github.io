@@ -43,6 +43,7 @@ container.addEventListener('wheel', (e) => {
     
 }, { passive: false });
 
+let isTouching = false;
 container.addEventListener('touchstart', (e) => {
     if (document.body.style.position === 'fixed') return;
 
@@ -54,15 +55,21 @@ container.addEventListener('touchstart', (e) => {
     const onTouchMove = (e) => {
         if (e.touches.length !== 1) return;
         const deltaX = e.touches[0].clientX - startX;
-        targetScrollLeft = startScrollLeft - deltaX;
+
+        // TODO: test responsiveness
+        const timelineWidth = timelineElement.getBoundingClientRect().width - getEmInPixels(timelineElement, 6) - 20;
+        const percentDelta = deltaX * (maxScroll / timelineWidth);
+        targetScrollLeft = startScrollLeft - percentDelta;
         targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScroll));
     };
 
     const onTouchEnd = () => {
+        isTouching = false;
         document.removeEventListener('touchmove', onTouchMove);
         document.removeEventListener('touchend', onTouchEnd);
     };
 
+    isTouching = true;
     document.addEventListener('touchmove', onTouchMove, { passive: false });
     document.addEventListener('touchend', onTouchEnd);
 });
@@ -74,7 +81,24 @@ scrollbarThumb.addEventListener('mousedown', (e) => {
     const startScrollLeft = targetScrollLeft;
     const onMouseMove = (e) => {
         const deltaX = e.clientX - startX;
-        targetScrollLeft = startScrollLeft + deltaX;
+        // css equation: left: calc(var(--scroll-percent) - (var(--timeline-thumb-width) + 6px) * (var(--scroll-percent) / 100%));
+        // left = scrollPercent - (thumbWidth + 6px) * (scrollPercent / 100)
+        // left = scrollPercent * (1 - (thumbWidth + 6px) / 100)
+        // scrollPercent = left / (1 - (thumbWidth + 6px) / 100)
+
+        // first attempt (using css equations)
+        //const deltaScrollPercent = (deltaX / (1 - (thumbWidth + 6)));
+        //targetScrollLeft = startScrollLeft + (deltaX * maxScroll / scrollbar.getBoundingClientRect().width);
+        
+
+        // TOOD: math is a little guess & check, figure out the real calc
+        const scrollbarWidth = scrollbar.getBoundingClientRect().width;
+        const thumbWidth = scrollbarThumb.getBoundingClientRect().width + 6;
+
+        const thumbWidthPercent = scrollbarWidth > 0 ? (thumbWidth / scrollbarWidth) : 100;
+
+        const deltaScroll = (deltaX / thumbWidthPercent);
+        targetScrollLeft = startScrollLeft + (deltaScroll);
         targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScroll));
     }
     const onMouseUp = () => {
@@ -87,7 +111,8 @@ scrollbarThumb.addEventListener('mousedown', (e) => {
 
 
 function animate() {
-    scrollLeft += (targetScrollLeft - scrollLeft) * 0.15; // easing factor
+    const easingFactor = isTouching ? 0.3 : 0.15;
+    scrollLeft += (targetScrollLeft - scrollLeft) * easingFactor; // easing factor
     applyScrollPosition(scrollLeft);
     requestAnimationFrame(animate);
 }
